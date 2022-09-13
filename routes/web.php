@@ -15,11 +15,19 @@ use Inertia\Inertia;
 |
 */
 
+Route::post('/get_results', [
+    \App\Http\Controllers\ResultsController::class, 'results'
+])->name('results');
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'passedServers' => \App\Models\Server::with(['networks', 'user'])->limit(100)->get()
+        'can_login' => Route::has('login'),
+        'can_register' => Route::has('register'),
+        'server_count' => \App\Models\Server::count(),
+        'passed_servers' => \App\Models\Server::with(['networks', 'user'])
+        ->orderBy('created_at', 'desc')
+        ->limit(50)
+        ->get()
     ]);
 });
 

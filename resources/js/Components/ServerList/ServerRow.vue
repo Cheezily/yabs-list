@@ -9,7 +9,7 @@
 		<td class="pl-2">{{ format_ram_swap(server.ram) }}</td>
 		<td class="pl-2">{{ format_disk_speed(server.disk_4k_total_speed) }}</td>
 		<td class="pl-2">{{ format_iops(server.disk_4k_total_iops) }}</td>
-		<td class="pl-2">{{ average_network_speed(server.networks) }}</td>
+		<td class="pl-2">{{ format_disk_speed(server.average_network_speed) }}</td>
 		<td class="pl-2 pr-2">{{ server.geekbench_5_single }}</td>
 		<td class="pl-2 pr-2">{{ server.geekbench_5_multi }}</td>
 	</tr>
@@ -47,18 +47,18 @@
 				if(iops > 1000) {return (iops / 1000).toFixed(2) + 'K'}
 				return iops
 			},
-			average_network_speed(networks) {
-				let total = 0
-				let average = 0
-				for(let i = 0; i < networks.length; i++) {
-					total += networks[i].send_speed
-					total += networks[i].receive_speed
-				}
-				average = total / (networks.length * 2) / 1000
-				if(average > 1000000) return (average / 1000000).toFixed(2) + ' GB/s'
-				if(average > 1000) return (average / 1000).toFixed(2) + ' MB/s'
-				return average.toFixed(2) + ' KB/s'
-			}
+			// average_network_speed(networks) {
+			// 	let total = 0
+			// 	let average = 0
+			// 	for(let i = 0; i < networks.length; i++) {
+			// 		total += networks[i].send_speed
+			// 		total += networks[i].receive_speed
+			// 	}
+			// 	average = total / (networks.length * 2) / 1000
+			// 	if(average > 1000000) return (average / 1000000).toFixed(2) + ' GB/s'
+			// 	if(average > 1000) return (average / 1000).toFixed(2) + ' MB/s'
+			// 	return average.toFixed(2) + ' KB/s'
+			// }
 		}
 	}
 </script>

@@ -3,25 +3,25 @@
 		<div class="">
 			<paginate
 				class="h-10"
-				:page-count="20"
+				:page-count="pageCount"
 				:page-range="3"
-				:margin-pages="2"
-				:click-handler="clickCallback"
-				:prev-text="'Prev'"
-				:next-text="'Next'"
+				:margin-pages="4"
+				:click-handler="pagination_click"
+				:prev-text="'<<'"
+				:next-text="'>>'"
 				:container-class="'pagination'"
 				:page-class="'page-item'"
 			></paginate>
 		</div>
 
-		<table class="server-table text-xs">
+		<table class="server-table text-xs mt-4">
 			<thead>
 				<tr>
 					<th class="pl-2">
-						<span @click="sort_string('provider_name')" 
+						<span @click="sort_results('provider_name')" 
 						class="th-text">Provider <font-awesome-icon icon="fa-sort" /></span></th>
 					<th class="pl-2">
-						<span @click="sort_string('type')" 
+						<span @click="sort_results('type')" 
 						class="th-text">Type <font-awesome-icon icon="fa-sort" /></span>
 					</th>
 					<th class="pl-2">
@@ -29,31 +29,31 @@
 						</span>
 					</th>
 					<th class="pl-2">
-						<span @click="sort_string('city')" 
+						<span @click="sort_results('city')" 
 						class="th-text">Where <font-awesome-icon icon="fa-sort" /></span>
 					</th>
 					<th class="pl-2">
-						<span @click="sort_string('cpu')"
+						<span @click="sort_results('cpu')"
 						class="th-text">CPU <font-awesome-icon icon="fa-sort" /></span>
 					</th>
 					<th class="pl-2">
-						<span @click="sort_numeric('cores')"
+						<span @click="sort_results('cores')"
 						class="th-text">Cores <font-awesome-icon icon="fa-sort" /></span>
 					</th>
 					<th class="pl-2 pr-2">
-						<span @click="sort_numeric('ram')"
+						<span @click="sort_results('ram')"
 						class="th-text">RAM <font-awesome-icon icon="fa-sort" /></span>
 					</th>
 					<th class="pl-2 pr-2">
-						<span @click="sort_numeric('disk_4k_total_speed')"
+						<span @click="sort_results('disk_4k_total_speed')"
 						class="th-text">4K Total Speed <font-awesome-icon icon="fa-sort" /></span>
 					</th>
 					<th class="pl-2 pr-2">
-						<span @click="sort_numeric('disk_4k_total_iops')"
+						<span @click="sort_results('disk_4k_total_iops')"
 						class="th-text">4K Total IOPS <font-awesome-icon icon="fa-sort" /></span>
 					</th>
 					<th class="pl-2 pr-2">
-						<span @click="sort_network_speed()"
+						<span @click="sort_results('average_network_speed')"
 						class="th-text">AVG Network <font-awesome-icon icon="fa-sort" /></span>
 					</th>
 					<th class="pl-2 pr-2">
@@ -88,7 +88,9 @@
 	
 		export default {
 			props: [
-				'passedServers'
+				'passed_servers',
+				'passed_server_count',
+				'user_id'
 			],
 			components: {
 					ServerRow,
@@ -99,67 +101,145 @@
 				return {
 					servers: [],
 					hovered_server: {},
-					sort_direction: 'asc'
+					options_open: false,
+					show_columns: {
+						user: false,
+						provider_name: true,
+						when: false,
+						city: true,
+						cpu: true,
+						cores: true,
+						clock_speed: false,
+						ram: true,
+						swap: false,
+						distro: false,
+						kernel: false,
+						aes_ni: false,
+						vm_x: false,
+						disk_4k_read_speed: false,
+						disk_4k_write_speed: false,
+						disk_4k_total_speed: true,
+						disk_4k_read_iops: false,
+						disk_4k_write_iops: false,
+						disk_4k_total_iops: true,
+						disk_64k_read_speed: false,
+						disk_64k_write_speed: false,
+						disk_64k_total_speed: false,
+						disk_64k_read_iops: false,
+						disk_64k_write_iops: false,
+						disk_64k_total_iops: false,
+						disk_512k_read_speed: false,
+						disk_512k_write_speed: false,
+						disk_512k_total_speed: false,
+						disk_512k_read_iops: false,
+						disk_512k_write_iops: false,
+						disk_512k_total_iops: false,
+						disk_1m_read_speed: false,
+						disk_1m_write_speed: false,
+						disk_1m_total_speed: false,
+						disk_1m_read_iops: false,
+						disk_1m_write_iops: false,
+						disk_1m_total_iops: false,
+						geekbench_5_single: true,
+						geekbench_5_multi: true,
+						type: true,
+						virtualization: false
+					},
+					sort_direction: 'asc',
+					limit: 50,
+					order_by: 'id',
+					page: 1,
+					last_sort: '',
+					pageCount: 0
 				}
 			},
 			methods: {
+				sort_results(field) {
+					if(this.last_sort === field) {
+						if(this.sort_direction === 'asc') {
+							this.sort_direction = 'desc'
+						} else {
+							this.sort_direction = 'asc'
+						}
+					}
+					this.order_by = field
+					this.last_sort = field
+					this.results_query()
+				},
+				results_query() {
+					axios.post('/get_results', {
+							order_by: this.order_by,
+							limit: this.limit,
+							sort_direction: this.sort_direction,
+							page: this.page,
+							user_id: this.user_id
+					})
+					.then(res => {
+							this.servers = res.data.results
+							this.server_count = res.data.server_count
+							this.pageCount = Math.ceil(this.server_count / this.limit)
+					})
+        },
 				hover_on_server(server) {
 					this.hovered_server = server
 				},
 				clear_hovered_server() {
 					this.hovered_server = {}
 				},
-				sort_string(attribute) {
-					if(this.sort_direction === 'asc') {
-						this.sort_direction = 'desc'
-						this.servers.sort((a, b) => {
-							if(a[attribute].toLowerCase() < b[attribute].toLowerCase()) { return -1; }
-							if(a[attribute].toLowerCase() > b[attribute].toLowerCase()) { return 1; }
-							return 0
-						})
-					} else {
-						this.sort_direction = 'asc'
-						this.servers.sort((a, b) => {
-							if(a[attribute].toLowerCase() > b[attribute].toLowerCase()) { return -1; }
-							if(a[attribute].toLowerCase() < b[attribute].toLowerCase()) { return 1; }
-							return 0
-						})
-					}
+				pagination_click(g) {
+					console.log(g)
 				},
-				sort_numeric(attribute) {
-					if(this.sort_direction == 'asc') {
-						this.sort_direction = 'desc'
-						this.servers.sort((a, b) => {
-							if(a[attribute] < b[attribute]) {return -1;}
-							if(a[attribute] > b[attribute]) {return 1;}
-							return 0
-						})
-					} else {
-						this.sort_direction = 'asc'
-						this.servers.sort((a, b) => {
-							if(a[attribute] > b[attribute]) {return -1;}
-							if(a[attribute] < b[attribute]) {return 1;}
-							return 0
-						})
-					}
-				},
-				sort_network_speed() {
-					if(this.sort_direction == 'asc') {
-						this.sort_direction = 'desc'
-						this.servers.sort((a, b) => {
-							if(this.raw_average_network_speed(a.networks) < this.raw_average_network_speed(b.networks)) {return -1;}
-							if(this.raw_average_network_speed(a.networks) > this.raw_average_network_speed(b.networks)) {return 1;}
-							return 0
-						})
-					} else {
-						this.sort_direction = 'asc'
-						this.servers.sort((a, b) => {
-							if(this.raw_average_network_speed(a.networks) > this.raw_average_network_speed(b.networks)) {return -1;}
-							if(this.raw_average_network_speed(a.networks) < this.raw_average_network_speed(b.networks)) {return 1;}
-							return 0
-						})
-					}
-				},
+				// sort_string(attribute) {
+				// 	if(this.sort_direction === 'asc') {
+				// 		this.sort_direction = 'desc'
+				// 		this.servers.sort((a, b) => {
+				// 			if(a[attribute].toLowerCase() < b[attribute].toLowerCase()) { return -1; }
+				// 			if(a[attribute].toLowerCase() > b[attribute].toLowerCase()) { return 1; }
+				// 			return 0
+				// 		})
+				// 	} else {
+				// 		this.sort_direction = 'asc'
+				// 		this.servers.sort((a, b) => {
+				// 			if(a[attribute].toLowerCase() > b[attribute].toLowerCase()) { return -1; }
+				// 			if(a[attribute].toLowerCase() < b[attribute].toLowerCase()) { return 1; }
+				// 			return 0
+				// 		})
+				// 	}
+				// },
+				// sort_numeric(attribute) {
+				// 	if(this.sort_direction == 'asc') {
+				// 		this.sort_direction = 'desc'
+				// 		this.servers.sort((a, b) => {
+				// 			if(a[attribute] < b[attribute]) {return -1;}
+				// 			if(a[attribute] > b[attribute]) {return 1;}
+				// 			return 0
+				// 		})
+				// 	} else {
+				// 		this.sort_direction = 'asc'
+				// 		this.servers.sort((a, b) => {
+				// 			if(a[attribute] > b[attribute]) {return -1;}
+				// 			if(a[attribute] < b[attribute]) {return 1;}
+				// 			return 0
+				// 		})
+				// 	}
+				// },
+				// sort_network_speed() {
+				// 	if(this.sort_direction == 'asc') {
+				// 		this.sort_direction = 'desc'
+				// 		this.servers.sort((a, b) => {
+				// 			if(this.raw_average_network_speed(a.networks) < this.raw_average_network_speed(b.networks)) {return -1;}
+				// 			if(this.raw_average_network_speed(a.networks) > this.raw_average_network_speed(b.networks)) {return 1;}
+				// 			return 0
+				// 		})
+				// 	} else {
+				// 		this.sort_direction = 'asc'
+				// 		this.servers.sort((a, b) => {
+				// 			if(this.raw_average_network_speed(a.networks) > this.raw_average_network_speed(b.networks)) {return -1;}
+				// 			if(this.raw_average_network_speed(a.networks) < this.raw_average_network_speed(b.networks)) {return 1;}
+				// 			return 0
+				// 		})
+				// 	}
+				// },
 				raw_average_network_speed(networks) {
 					let total = 0
 					for(let i = 0; i < networks.length; i++) {
@@ -169,8 +249,11 @@
 					return total / (networks.length * 2) / 1000
 				}
 			},
+			computed: {
+			},
 			mounted() {
-				this.servers = this.passedServers
+				this.servers = this.passed_servers
+				this.pageCount = Math.ceil(this.passed_server_count / this.limit)
 			}
 		}
 	</script>
@@ -186,10 +269,24 @@
 		color: darkorange;
 	}
 
-	/* .page-item {
+	.pagination {
+		display: block;
+	}
+
+	.page-item {
 		display: inline-block;
 		width: 40px;
-		border: 1px solid #bbb;
 		padding: 10px;
-	} */
+		/* border-top: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+		border-left: 1px solid #ccc;
+		border-right: 1px solid #ccc; */
+		text-align: center;
+		border-radius: 4px;
+	}
+
+	.page-item:hover {
+		cursor: pointer;
+		background: rgb(211, 145, 211);
+	}
 </style>

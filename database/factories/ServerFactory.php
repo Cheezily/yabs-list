@@ -168,6 +168,7 @@ class ServerFactory extends Factory
             'geekbench_5_single' => $geekbench_5_single,
             'geekbench_5_multi' => $geekbench_5_multi,
             'type' => $type,
+            'average_network_speed' => mt_rand(100000, 3000000000),
             'virtualization' => $type == 'vps' ? $virtualization : null,
         ];
     }
