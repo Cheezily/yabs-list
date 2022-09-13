@@ -121,7 +121,7 @@ class ServerFactory extends Factory
         $disk_1m_total_iops = $disk_1m_read_iops + $disk_1m_write_iops;
 
         $geekbench_5_single = mt_rand(75, 3500);
-        $geekbench_5_multi = $geekbench_5_single * $cores * mt_rand(.6, .95);
+        $geekbench_5_multi = $geekbench_5_single * $cores * (mt_rand(75, 95) / 100);
 
         $type = mt_rand(0,1) == 1 ? 'vps' : 'dedi';
         $virt_types = explode(',', Setting::first()->virt_types);

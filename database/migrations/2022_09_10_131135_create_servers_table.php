@@ -59,6 +59,8 @@ return new class extends Migration
             $table->string('virtualization')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

@@ -22,6 +22,8 @@ return new class extends Migration
             $table->bigInteger('send_speed')->nullable();
             $table->bigInteger('receive_speed')->nullable();
             $table->timestamps();
+
+            $table->foreign('server_id')->references('id')->on('servers');
         });
     }
 

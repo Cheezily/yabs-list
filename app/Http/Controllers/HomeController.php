@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Server;
 use App\Models\Setting;
 use App\Models\User;
@@ -19,6 +20,11 @@ class HomeController extends Controller
             ])
             ->where('id', Auth::user()->id)
             ->first();
+
+        return Inertia::render('Dashboard', [
+            'user' => $user,
+            'settings' => Setting::first(),
+        ]);
 
         return view('dashboard', [
             'user' => $user,
