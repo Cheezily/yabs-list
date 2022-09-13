@@ -59,7 +59,52 @@ class ServerFactory extends Factory
 //        $table->integer('geekbench-5-link');
 //        $table->string('virtualization');
 //        $table->string('note')->nullable();
+
+
         $user_count = User::count();
+
+        $provider_names = [
+            'Smith, Langosh and Bernier',
+            'Wisozk-Nikolaus',
+            'Stoltenberg, Hirthe and Hettinger',
+            'Moen LLC',
+            'Padberg-Jones',
+            'Beahan, Gutkowski and Hammes',
+            'Hauck, Kuhn and Cartwright',
+            'Bernier, Strosin and Sawayn',
+            'Harris LLC',
+            'Abbott, Gibson and Davis',
+            'Rogahn Group',
+            'Gibson-Yost',
+            'Auer, Gutkowski and Torphy',
+            'Cummerata, Dare and Langosh',
+            'Tillman-Frami',
+            'Cummings and Sons',
+            'Bayer, Kshlerin and Bailey',
+            'Lehner, Funk and Witting',
+            'Brakus Ltd',
+            'Kub-Schmidt',
+            'Murphy-Hill',
+            'Mertz Group',
+            'Huels, Kreiger and Parker',
+            'Von LLC',
+            'Goodwin, Gorczany and Rolfson',
+            'Herzog-Hane',
+            'Gleason-Heathcote',
+            'Mosciski-Volkman',
+            'Mayert, Rutherford and Purdy',
+            'Jacobs, Yost and Macejkovic',
+            'Funk LLC',
+            'Feest-Lueilwitz',
+            'Boyle LLC',
+            'Friesen, Goldner and Roob',
+            'Corkery, Ondricka and Leannon',
+            'Flatley, Corkery and Dickens',
+            'Friesen-Pacocha',
+            'Runolfsdottir-Dach',
+            'Hettinger, Bechtelar and Roob',
+            'Thompson, Roberts and Rempel'
+        ];
 
         $cities = [
             'Tokyo', 'Delhi', 'Shanghai', 'Cairo', 'Tampa', 'Los Angeles', 'Chicago', 'Atlanta', 'Singapore',
@@ -129,7 +174,7 @@ class ServerFactory extends Factory
 
         return [
             'user_id' => mt_rand(0,3) > 1 ? mt_rand(1, $user_count - 1) : null,
-            'provider_name' => fake()->words(mt_rand(1,4), true),
+            'provider_name' => $provider_names[array_rand($provider_names)],
             'when' => strval(date('Y-m-d H:i:s')),
             'city' => $cities[array_rand($cities)],
             'cpu' => $cpus[array_rand($cpus)],
@@ -169,7 +214,7 @@ class ServerFactory extends Factory
             'geekbench_5_multi' => $geekbench_5_multi,
             'type' => $type,
             'average_network_speed' => mt_rand(100000, 3000000000),
-            'virtualization' => $type == 'vps' ? $virtualization : null,
+            'virtualization' => $type == 'vps' ? $virtualization : 'N/A',
         ];
     }
 }

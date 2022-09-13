@@ -1,24 +1,63 @@
 <template>
 	<tr class="" @mouseover="hover_server" @mouseleave="clear_hovered_server">
-		<td class="pl-2">{{ server.provider_name }}</td>
-		<td class="pl-2">{{ server.type }}</td>
-		<td class="pl-2">{{ new Date(server.when).toLocaleString() }}</td>
-		<td class="pl-2">{{ server.city }}</td>
-		<td class="pl-2">{{ server.cpu }}</td>
-		<td class="pl-2">{{ server.cores }}</td>
-		<td class="pl-2">{{ format_ram_swap(server.ram) }}</td>
-		<td class="pl-2">{{ format_disk_speed(server.disk_4k_total_speed) }}</td>
-		<td class="pl-2">{{ format_iops(server.disk_4k_total_iops) }}</td>
-		<td class="pl-2">{{ format_disk_speed(server.average_network_speed) }}</td>
-		<td class="pl-2 pr-2">{{ server.geekbench_5_single }}</td>
-		<td class="pl-2 pr-2">{{ server.geekbench_5_multi }}</td>
+		<td v-if="passed_show_columns.provider_name" class="pl-2">{{ server.provider_name }}</td>
+		<td v-if="passed_show_columns.type" class="pl-2">{{ server.type }}</td>
+		<td v-if="passed_show_columns.virtualization" class="pl-2">{{ server.virtualization }}</td>
+		<td v-if="passed_show_columns.when" class="pl-2">{{ new Date(server.when).toLocaleString() }}</td>
+		<td v-if="passed_show_columns.city" class="pl-2">{{ server.city }}</td>
+		<td v-if="passed_show_columns.cpu" class="pl-2">{{ server.cpu }}</td>
+		<td v-if="passed_show_columns.cores" class="pl-2">{{ server.cores }}</td>
+		<td v-if="passed_show_columns.clock_speed" class="pl-2">{{ server.clock_speed }}</td>
+		<td v-if="passed_show_columns.ram" class="pl-2">{{ format_ram_swap(server.ram) }}</td>
+		<td v-if="passed_show_columns.swap" class="pl-2">{{ format_ram_swap(server.swap) }}</td>
+		<td v-if="passed_show_columns.distro" class="pl-2">{{ server.distro }}</td>
+		<td v-if="passed_show_columns.kernel" class="pl-2">{{ server.kernel }}</td>
+		<td v-if="passed_show_columns.aes_ni" class="pl-2">{{ server.aes_ni ? 'Yes' : 'No' }}</td>
+		<td v-if="passed_show_columns.vm_x" class="pl-2">{{ server.vm_x ? 'Yes' : 'No' }}</td>
+		<td v-if="passed_show_columns.geekbench_5_single" class="pl-2">{{ server.geekbench_5_single }}</td>
+		<td v-if="passed_show_columns.geekbench_5_multi" class="pl-2">{{ server.geekbench_5_multi }}</td>
+
+		<td v-if="passed_show_columns.disk_4k_read_speed" class="pl-2">{{ format_disk_speed(server.disk_4k_read_speed) }}</td>
+		<td v-if="passed_show_columns.disk_4k_write_speed" class="pl-2">{{ format_disk_speed(server.disk_4k_write_speed) }}</td>
+		<td v-if="passed_show_columns.disk_4k_total_speed" class="pl-2">{{ format_disk_speed(server.disk_4k_total_speed) }}</td>
+
+		<td v-if="passed_show_columns.disk_4k_read_iops" class="pl-2">{{ format_disk_speed(server.disk_4k_read_iops) }}</td>
+		<td v-if="passed_show_columns.disk_4k_write_iops" class="pl-2">{{ format_disk_speed(server.disk_4k_write_iops) }}</td>
+		<td v-if="passed_show_columns.disk_4k_total_iops" class="pl-2">{{ format_disk_speed(server.disk_4k_total_iops) }}</td>
+
+		<td v-if="passed_show_columns.disk_64k_read_speed" class="pl-2">{{ format_disk_speed(server.disk_64k_read_speed) }}</td>
+		<td v-if="passed_show_columns.disk_64k_write_speed" class="pl-2">{{ format_disk_speed(server.disk_64k_write_speed) }}</td>
+		<td v-if="passed_show_columns.disk_64k_total_speed" class="pl-2">{{ format_disk_speed(server.disk_64k_total_speed) }}</td>
+
+		<td v-if="passed_show_columns.disk_64k_read_iops" class="pl-2">{{ format_disk_speed(server.disk_64k_read_iops) }}</td>
+		<td v-if="passed_show_columns.disk_64k_write_iops" class="pl-2">{{ format_disk_speed(server.disk_64k_write_iops) }}</td>
+		<td v-if="passed_show_columns.disk_64k_total_iops" class="pl-2">{{ format_disk_speed(server.disk_64k_total_iops) }}</td>
+
+		<td v-if="passed_show_columns.disk_512k_read_speed" class="pl-2">{{ format_disk_speed(server.disk_512k_read_speed) }}</td>
+		<td v-if="passed_show_columns.disk_512k_write_speed" class="pl-2">{{ format_disk_speed(server.disk_512k_write_speed) }}</td>
+		<td v-if="passed_show_columns.disk_512k_total_speed" class="pl-2">{{ format_disk_speed(server.disk_512k_total_speed) }}</td>
+
+		<td v-if="passed_show_columns.disk_512k_read_iops" class="pl-2">{{ format_disk_speed(server.disk_512k_read_iops) }}</td>
+		<td v-if="passed_show_columns.disk_512k_write_iops" class="pl-2">{{ format_disk_speed(server.disk_512k_write_iops) }}</td>
+		<td v-if="passed_show_columns.disk_512k_total_iops" class="pl-2">{{ format_disk_speed(server.disk_512k_total_iops) }}</td>
+
+		<td v-if="passed_show_columns.disk_1m_read_speed" class="pl-2">{{ format_disk_speed(server.disk_1m_read_speed) }}</td>
+		<td v-if="passed_show_columns.disk_1m_write_speed" class="pl-2">{{ format_disk_speed(server.disk_1m_write_speed) }}</td>
+		<td v-if="passed_show_columns.disk_1m_total_speed" class="pl-2">{{ format_disk_speed(server.disk_1m_total_speed) }}</td>
+
+		<td v-if="passed_show_columns.disk_1m_read_iops" class="pl-2">{{ format_disk_speed(server.disk_1m_read_iops) }}</td>
+		<td v-if="passed_show_columns.disk_1m_write_iops" class="pl-2">{{ format_disk_speed(server.disk_1m_write_iops) }}</td>
+		<td v-if="passed_show_columns.disk_1m_total_iops" class="pl-2">{{ format_disk_speed(server.disk_1m_total_iops) }}</td>
+
+		<td v-if="passed_show_columns.average_network_speed" class="pl-2">{{ format_disk_speed(server.average_network_speed) }}</td>
 	</tr>
 </template>
 
 <script>
 	export default {
 		props: [
-			'server'
+			'server',
+			'passed_show_columns'
 		],
 		data() {
 			return {

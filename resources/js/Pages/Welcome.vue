@@ -47,22 +47,6 @@ export default {
             </div>
         </div>
 
-        <div class="max-w-10xl mx-auto sm:px-2 lg:px-8">
-            <div class="flex justify-center">
-                <button @click="options_open = true"
-                class="bg-blue-400 hover:bg-blue-500 text-white font-bold rounded-none px-4 py-2 mb-3">Open Options</button>
-
-                <select class="h-10 ml-5">
-                    <option>20</option>
-                    <option>100</option>
-                    <option>200</option>
-                    <option>500</option>
-                </select>
-            </div>
-
-
-        </div>
-
         <div class="bg-gray-100 flex justify-center max-w-10xl mx-auto sm:px-2 lg:px-8">
             <div class="bg-white rounded sm:items-center sm:justify-between h-5/6 mb-400 p-10 shadow">
                 <ServerList 

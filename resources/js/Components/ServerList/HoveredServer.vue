@@ -100,7 +100,7 @@
 		left: 0;
 		right: 0;
 		margin: 0 auto;
-		z-index: 100;
+		z-index: 10;
 		height: 280px;
 		max-width: 1000px;
 		padding: 10px 12px 20px;

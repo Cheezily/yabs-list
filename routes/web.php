@@ -35,8 +35,9 @@ Route::get('/dashboard', [
     \App\Http\Controllers\HomeController::class, 'index'
 ])->middleware(['auth', 'verified'])->name('dashboard');
 
-// Route::get('/dashboard', function () {
-//     return Inertia::render('Dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/get_options_counts', [
+    \App\Http\Controllers\ServerController::class, 'get_options_counts'
+])->name('metrics');
 
 require __DIR__.'/auth.php';
