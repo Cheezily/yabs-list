@@ -217,12 +217,12 @@
 			</thead>
 			<tbody>
 				<ServerRow 
-				v-for="server in servers" 
+				v-for="(server, index) in servers"
 				@hover_on_server="hover_on_server"
 				@clear_hovered_server="clear_hovered_server"
 				:server="server"
 				:passed_show_columns="show_columns"
-				:key="server.id">
+				:key="index">
 				</ServerRow>
 			</tbody>
 		</table>
@@ -339,7 +339,6 @@
 					this.results_query()
 				},
 				results_query() {
-					console.log('refreshing list')
 					this.loading = true
 					axios.post('/get_results', {
 							order_by: this.order_by,

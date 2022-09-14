@@ -306,7 +306,7 @@
 			get_options_counts() {
 				axios.get('/get_options_counts')
 				.then(res => {
-					console.log(res.data)
+					// console.log(res.data)
 					this.options = res.data
 				})
 			},
