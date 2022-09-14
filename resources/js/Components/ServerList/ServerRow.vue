@@ -1,6 +1,10 @@
 <template>
-	<tr class="" @mouseover="hover_server" @mouseleave="clear_hovered_server">
-		<td v-if="passed_show_columns.provider_name" class="pl-2">{{ server.provider_name }}</td>
+	<tr class="" @click="hover_server">
+		<td v-if="passed_show_columns.provider_name" class="pl-1">
+			<span v-if="server.note" class="text-purple-700 w-20"><font-awesome-icon icon="fa-message" /></span>
+			<span v-else class="pl-4"></span>
+			{{ server.provider_name }}
+		</td>
 		<td v-if="passed_show_columns.type" class="pl-2">{{ server.type }}</td>
 		<td v-if="passed_show_columns.virtualization" class="pl-2">{{ server.virtualization }}</td>
 		<td v-if="passed_show_columns.when" class="pl-2">{{ new Date(server.when).toLocaleString() }}</td>

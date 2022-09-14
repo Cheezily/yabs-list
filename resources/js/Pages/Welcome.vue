@@ -25,7 +25,7 @@ export default {
         },
     },
     mounted() {
-        console.log(this.can_login)
+        console.log(this.passed_servers)
         this.servers = this.passed_servers
     }
 }
@@ -48,7 +48,7 @@ export default {
         </div>
 
         <div class="bg-gray-100 flex justify-center max-w-10xl mx-auto sm:px-2 lg:px-8">
-            <div class="bg-white rounded sm:items-center sm:justify-between h-5/6 mb-400 p-10 shadow">
+            <div class="bg-white rounded sm:items-center sm:justify-between h-5/6 mb-400 p-6 shadow">
                 <ServerList 
                 :passed_server_count=server_count 
                 :passed_servers=passed_servers>

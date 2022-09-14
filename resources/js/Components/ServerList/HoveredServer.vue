@@ -1,65 +1,36 @@
 <template>
 	<div>
 		<Transition name="slide-fade">
-			<div v-if="Object.keys(hovered_server).length > 0" 
+			<div v-if="Object.keys(selected_server).length > 0" 
 				class="hovered-server text-xs rounded-tl rounded-tr">
+
+				<button 
+				@click="$emit('clear_selected_server')"
+				class="close-options">
+					<font-awesome-icon class="close-icon" icon="fa-xmark" />
+				</button>
+
 				<div class="flex justify-between">
-					<div>
-						<p class="column-title mb-2">Disk Speed</p>
-						<ul>
-							<li>4K Read Speed 
-								{{ format_disk_speed(hovered_server.disk_4k_read_speed) }} 
-								<b>({{ format_iops(hovered_server.disk_4k_read_iops) }} IOPS)</b>
-							</li>
-							<li>4K Write Speed 
-								{{ format_disk_speed(hovered_server.disk_4k_write_speed) }}
-								<b>({{ format_iops(hovered_server.disk_4k_write_iops) }} IOPS)</b>
-							</li>
-							<li>4K Total Speed 
-								{{ format_disk_speed(hovered_server.disk_4k_total_speed) }}
-								<b>({{ format_iops(hovered_server.disk_4k_total_iops) }} IOPS)</b>
-							</li>
-							<li class="divider"></li>
-							<li>64K Read Speed 
-								{{ format_disk_speed(hovered_server.disk_64k_read_speed) }} 
-								<b>({{ format_iops(hovered_server.disk_64k_read_iops) }} IOPS)</b>
-							</li>
-							<li>64K Write Speed 
-								{{ format_disk_speed(hovered_server.disk_64k_write_speed) }}
-								<b>({{ format_iops(hovered_server.disk_64k_write_iops) }} IOPS)</b>
-							</li>
-							<li>64K Total Speed 
-								{{ format_disk_speed(hovered_server.disk_64k_total_speed) }}
-								<b>({{ format_iops(hovered_server.disk_64k_total_iops) }} IOPS)</b>
-							</li>
-							<li class="divider"></li>
-							<li>512K Read Speed 
-								{{ format_disk_speed(hovered_server.disk_512k_read_speed) }} 
-								<b>({{ format_iops(hovered_server.disk_512k_read_iops) }} IOPS)</b>
-							</li>
-							<li>512K Write Speed 
-								{{ format_disk_speed(hovered_server.disk_512k_write_speed) }}
-								<b>({{ format_iops(hovered_server.disk_512k_write_iops) }} IOPS)</b>
-							</li>
-							<li>512K Total Speed 
-								{{ format_disk_speed(hovered_server.disk_512k_total_speed) }}
-								<b>({{ format_iops(hovered_server.disk_512k_total_iops) }} IOPS)</b>
-							</li>
-							<li class="divider"></li>
-							<li>1M Read Speed 
-								{{ format_disk_speed(hovered_server.disk_1m_read_speed) }} 
-								<b>({{ format_iops(hovered_server.disk_1m_read_iops) }} IOPS)</b>
-							</li>
-							<li>1M Write Speed 
-								{{ format_disk_speed(hovered_server.disk_1m_write_speed) }}
-								<b>({{ format_iops(hovered_server.disk_1m_write_iops) }} IOPS)</b>
-							</li>
-							<li>1M Total Speed 
-								{{ format_disk_speed(hovered_server.disk_1m_total_speed) }}
-								<b>({{ format_iops(hovered_server.disk_1m_total_iops) }} IOPS)</b>
+					<div class="-mt-4 w-6/12">
+						<p class="column-title mb-2 text-sm">Network Tests</p>
+						<ul class="">
+							<li v-for="network in selected_server.networks" :key=network.id
+							class="mb-3">
+								<p><b>{{ network.location }}</b> - {{ network.provider }}</p>
+								<p>Receive Speed: ({{ format_network_speed(network.receive_speed) }})</p>
+								<p>Send Speed: ({{ format_network_speed(network.send_speed) }})</p>
 							</li>
 						</ul>
 					</div>
+
+					<div class="-mt-4 w-5/12">
+						<p class="column-title mb-2 text-sm">Note:</p>
+						<div class="text-xs">
+							{{ selected_server.note }}
+						</div>
+					</div>
+
+					<div class="-ml-2 w-60"></div>
 				</div>
 			</div>
 		</Transition>
@@ -69,22 +40,24 @@
 <script>
 	export default {
 		props: [
-			'hovered_server'
+			'selected_server'
 		],
 		methods: {
-			format_disk_speed(speed) {
+			format_network_speed(speed) {
+				if(speed === 'busy') {return 'Busy'}
 				let speed_k = speed / 1000
 				if(speed_k > 1000000) return (speed_k / 1000000).toFixed(2) + ' GB/s'
 				if(speed_k > 1000) return (speed_k / 1000).toFixed(2) + ' MB/s'
 				return speed_k.toFixed(2) + ' KB/s'
 			},
-			format_iops(iops) {
-				if(iops > 1000) {return (iops / 1000).toFixed(2) + 'K'}
-				return iops
+		},
+		watch: {
+			selected_server() {
+				console.log(this.selected_server)
 			}
 		},
 		mounted() {
-			console.log(this.hovered_server)
+			console.log(this.selected_server)
 		}
 	}
 </script>
@@ -101,9 +74,10 @@
 		right: 0;
 		margin: 0 auto;
 		z-index: 10;
-		height: 280px;
-		max-width: 1000px;
+		height: 360px;
+		max-width: 800px;
 		padding: 10px 12px 20px;
+		overflow: auto;
 		box-shadow: 0 10px 10px 4px #777;
 		background: rgb(224,223,255);
 		background: linear-gradient(180deg, rgb(233, 232, 255) 0%, rgb(230, 230, 255) 40%, rgb(232, 251, 255) 100%); 
@@ -113,6 +87,18 @@
 		border-bottom: 1px solid #bbb;
 		margin-top: 5px;
 		margin-bottom: 5px;
+	}
+
+	.close-icon {
+		position: absolute;
+		right: 10px;
+		top: 10px;
+		font-size: 24px;
+		color: #000;
+	}
+
+	.close-icon:hover {
+		color: rgb(153, 60, 182);
 	}
 
 	.slide-fade-enter-active {

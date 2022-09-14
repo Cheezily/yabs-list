@@ -215,6 +215,7 @@ class ServerFactory extends Factory
             'type' => $type,
             'average_network_speed' => mt_rand(100000, 3000000000),
             'virtualization' => $type == 'vps' ? $virtualization : 'N/A',
+            'note' => mt_rand(0,3) == 3 ? fake()->sentence(mt_rand(5,20)) : null
         ];
     }
 }

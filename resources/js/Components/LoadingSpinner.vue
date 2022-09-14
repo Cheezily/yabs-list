@@ -26,8 +26,10 @@
 		height: 0;
 		margin: 8px;
 		box-sizing: border-box;
-		border: 26px solid limegreen;
-		border-color: limegreen transparent limegreen transparent;
+		/* border: 26px solid limegreen; */
+		border: 26px double rgba(191,191,255,1);
+		/* border-color: limegreen transparent limegreen transparent; */
+		border-color: rgba(224,223,255,1) transparent rgba(191,191,255,1) transparent;
 		animation: lds-hourglass 1.2s infinite;
 	}
 	@keyframes lds-hourglass {
