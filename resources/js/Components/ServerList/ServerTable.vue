@@ -13,7 +13,7 @@
 				<button @click="options_open = !options_open"
 				class="options-button font-bold rounded-none px-4 py-2 mb-3">Open Options</button>
 
-				<select class="h-10 ml-5"
+				<select class="per-page-select h-10 ml-5"
 					@change="results_query"
 					v-model="limit">
 					<option value=20>20 Per Page</option>
@@ -461,10 +461,13 @@
 		color: darkorange;
 	}
 
-	.options-button {
+	.options-button,
+	.per-page-select {
 		/* background: linear-gradient(176deg, rgba(224,223,255,1) 0%, rgba(191,191,255,1) 10%, rgba(153,238,255,1) 100%); */
 		background: linear-gradient(176deg, rgb(181, 178, 255) 0%, rgb(166, 166, 255) 10%, rgb(90, 228, 255) 100%);
 		color: #000;
+		border: none;
+		font-weight: bold;
 	}
 
 	.pagination {
