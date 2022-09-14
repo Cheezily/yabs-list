@@ -256,6 +256,12 @@
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">1M Total IOPS</span>
 						</li>
+						<li class="ml-2 text-xs">
+							<input type="checkbox" 
+							v-model="show_columns.average_network_speed"
+							@change="$emit('change_table_columns', show_columns)">
+							<span class="ml-1">Average Network Speed</span>
+						</li>
 					</ul>
 				</transition>
 			</div>

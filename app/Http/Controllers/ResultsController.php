@@ -14,6 +14,7 @@ class ResultsController extends Controller
         ->join('networks', 'networks.server_id', '=', 'servers.id')
         ->join('users', 'servers.user_id', '=', 'users.id')
         ->select([
+            'servers.id',
             'servers.provider_name',
             'servers.type',
             'servers.when',
@@ -71,7 +72,7 @@ class ResultsController extends Controller
         }
         
         $results = $query->limit($request->limit)
-        ->offset($request->page)
+        ->offset($request->page * $request->limit)
         ->get();
 
         return response()->json([

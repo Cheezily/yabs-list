@@ -13,11 +13,13 @@
 				<button @click="options_open = !options_open"
 				class="bg-blue-400 hover:bg-blue-500 text-white font-bold rounded-none px-4 py-2 mb-3">Open Options</button>
 
-				<select class="h-10 ml-5" v-model="limit">
-					<option value=20>50 Per Page</option>
+				<select class="h-10 ml-5" 
+					@change="results_query"
+					v-model="limit">
+					<option value=20>20 Per Page</option>
+					<option value=50>50 Per Page</option>
 					<option value=100>100 Per Page</option>
-					<option value=200>250 Per Page</option>
-					<option value=500>500 Per Page</option>
+					<option value=250>250 Per Page</option>
 				</select>
 			</div>
 		</div>
@@ -207,7 +209,7 @@
 						class="th-text">1M Total IOPS <font-awesome-icon icon="fa-sort" /></span>
 					</th>
 
-					<th class="pl-2 pr-2">
+					<th v-if="show_columns.average_network_speed" class="pl-2 pr-2">
 						<span @click="sort_results('average_network_speed')"
 						class="th-text">AVG Network <font-awesome-icon icon="fa-sort" /></span>
 					</th>
@@ -225,8 +227,15 @@
 			</tbody>
 		</table>
 
+		<ErrorPopup
+		:error_message=error_message
+		></ErrorPopup>
+
 		<HoveredServer 
-		:hovered_server=hovered_server></HoveredServer>
+		:hovered_server=hovered_server>
+		</HoveredServer>
+
+		<LoadingSpinner v-if="loading"></LoadingSpinner>
 
 	</div>
 </template>
@@ -236,6 +245,8 @@
 	import HoveredServer from './HoveredServer.vue'
 	import Paginate from 'vuejs-paginate-next';
 	import OptionsList from './OptionsList.vue'
+	import ErrorPopup from '../ErrorPopup.vue';
+	import LoadingSpinner from '../LoadingSpinner.vue'
 	
 		export default {
 			props: [
@@ -248,7 +259,9 @@
     HoveredServer,
     OptionsList,
     paginate: Paginate,
-    OptionsList
+    OptionsList,
+		ErrorPopup,
+		LoadingSpinner
 },
 			data() {
 				return {
@@ -304,7 +317,9 @@
 					order_by: 'id',
 					page: 1,
 					last_sort: '',
-					pageCount: 0
+					pageCount: 0,
+					loading: false,
+					error_message: ''
 				}
 			},
 			methods: {
@@ -324,6 +339,8 @@
 					this.results_query()
 				},
 				results_query() {
+					console.log('refreshing list')
+					this.loading = true
 					axios.post('/get_results', {
 							order_by: this.order_by,
 							limit: this.limit,
@@ -335,6 +352,14 @@
 							this.servers = res.data.results
 							this.server_count = res.data.server_count
 							this.pageCount = Math.ceil(this.server_count / this.limit)
+							this.loading = false
+					})
+					.catch(err => {
+						this.error_message = err.data
+						setTimeout(() => {
+							this.error_message = ''
+						}, 1000)
+						this.loading = false
 					})
         },
 				hover_on_server(server) {
@@ -344,6 +369,8 @@
 					this.hovered_server = {}
 				},
 				pagination_click(g) {
+					this.page = g
+					this.results_query()
 					console.log(g)
 				},
 				// sort_string(attribute) {
@@ -442,8 +469,14 @@
 		border-radius: 4px;
 	}
 
+	.page-item + .active {
+		background: rgb(224,223,255);
+		background: linear-gradient(176deg, rgba(224,223,255,1) 0%, rgba(191,191,255,1) 10%, rgba(153,238,255,1) 100%);
+	}
+
 	.page-item:hover {
 		cursor: pointer;
-		background: rgb(211, 145, 211);
+		background: #ddd;
+		/* background: rgb(166, 148, 248); */
 	}
 </style>
