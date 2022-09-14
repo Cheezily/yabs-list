@@ -79,7 +79,6 @@
 		padding: 10px 12px 20px;
 		overflow: auto;
 		box-shadow: 0 10px 10px 4px #777;
-		background: rgb(224,223,255);
 		background: linear-gradient(180deg, rgb(233, 232, 255) 0%, rgb(230, 230, 255) 40%, rgb(232, 251, 255) 100%); 
 	}
 
