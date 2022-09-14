@@ -25,33 +25,33 @@
 		<td v-if="passed_show_columns.disk_4k_write_speed" class="pl-2">{{ format_disk_speed(server.disk_4k_write_speed) }}</td>
 		<td v-if="passed_show_columns.disk_4k_total_speed" class="pl-2">{{ format_disk_speed(server.disk_4k_total_speed) }}</td>
 
-		<td v-if="passed_show_columns.disk_4k_read_iops" class="pl-2">{{ format_disk_speed(server.disk_4k_read_iops) }}</td>
-		<td v-if="passed_show_columns.disk_4k_write_iops" class="pl-2">{{ format_disk_speed(server.disk_4k_write_iops) }}</td>
-		<td v-if="passed_show_columns.disk_4k_total_iops" class="pl-2">{{ format_disk_speed(server.disk_4k_total_iops) }}</td>
+		<td v-if="passed_show_columns.disk_4k_read_iops" class="pl-2">{{ format_iops(server.disk_4k_read_iops) }}</td>
+		<td v-if="passed_show_columns.disk_4k_write_iops" class="pl-2">{{ format_iops(server.disk_4k_write_iops) }}</td>
+		<td v-if="passed_show_columns.disk_4k_total_iops" class="pl-2">{{ format_iops(server.disk_4k_total_iops) }}</td>
 
 		<td v-if="passed_show_columns.disk_64k_read_speed" class="pl-2">{{ format_disk_speed(server.disk_64k_read_speed) }}</td>
 		<td v-if="passed_show_columns.disk_64k_write_speed" class="pl-2">{{ format_disk_speed(server.disk_64k_write_speed) }}</td>
 		<td v-if="passed_show_columns.disk_64k_total_speed" class="pl-2">{{ format_disk_speed(server.disk_64k_total_speed) }}</td>
 
-		<td v-if="passed_show_columns.disk_64k_read_iops" class="pl-2">{{ format_disk_speed(server.disk_64k_read_iops) }}</td>
-		<td v-if="passed_show_columns.disk_64k_write_iops" class="pl-2">{{ format_disk_speed(server.disk_64k_write_iops) }}</td>
-		<td v-if="passed_show_columns.disk_64k_total_iops" class="pl-2">{{ format_disk_speed(server.disk_64k_total_iops) }}</td>
+		<td v-if="passed_show_columns.disk_64k_read_iops" class="pl-2">{{ format_iops(server.disk_64k_read_iops) }}</td>
+		<td v-if="passed_show_columns.disk_64k_write_iops" class="pl-2">{{ format_iops(server.disk_64k_write_iops) }}</td>
+		<td v-if="passed_show_columns.disk_64k_total_iops" class="pl-2">{{ format_iops(server.disk_64k_total_iops) }}</td>
 
 		<td v-if="passed_show_columns.disk_512k_read_speed" class="pl-2">{{ format_disk_speed(server.disk_512k_read_speed) }}</td>
 		<td v-if="passed_show_columns.disk_512k_write_speed" class="pl-2">{{ format_disk_speed(server.disk_512k_write_speed) }}</td>
 		<td v-if="passed_show_columns.disk_512k_total_speed" class="pl-2">{{ format_disk_speed(server.disk_512k_total_speed) }}</td>
 
-		<td v-if="passed_show_columns.disk_512k_read_iops" class="pl-2">{{ format_disk_speed(server.disk_512k_read_iops) }}</td>
-		<td v-if="passed_show_columns.disk_512k_write_iops" class="pl-2">{{ format_disk_speed(server.disk_512k_write_iops) }}</td>
-		<td v-if="passed_show_columns.disk_512k_total_iops" class="pl-2">{{ format_disk_speed(server.disk_512k_total_iops) }}</td>
+		<td v-if="passed_show_columns.disk_512k_read_iops" class="pl-2">{{ format_iops(server.disk_512k_read_iops) }}</td>
+		<td v-if="passed_show_columns.disk_512k_write_iops" class="pl-2">{{ format_iops(server.disk_512k_write_iops) }}</td>
+		<td v-if="passed_show_columns.disk_512k_total_iops" class="pl-2">{{ format_iops(server.disk_512k_total_iops) }}</td>
 
 		<td v-if="passed_show_columns.disk_1m_read_speed" class="pl-2">{{ format_disk_speed(server.disk_1m_read_speed) }}</td>
 		<td v-if="passed_show_columns.disk_1m_write_speed" class="pl-2">{{ format_disk_speed(server.disk_1m_write_speed) }}</td>
 		<td v-if="passed_show_columns.disk_1m_total_speed" class="pl-2">{{ format_disk_speed(server.disk_1m_total_speed) }}</td>
 
-		<td v-if="passed_show_columns.disk_1m_read_iops" class="pl-2">{{ format_disk_speed(server.disk_1m_read_iops) }}</td>
-		<td v-if="passed_show_columns.disk_1m_write_iops" class="pl-2">{{ format_disk_speed(server.disk_1m_write_iops) }}</td>
-		<td v-if="passed_show_columns.disk_1m_total_iops" class="pl-2">{{ format_disk_speed(server.disk_1m_total_iops) }}</td>
+		<td v-if="passed_show_columns.disk_1m_read_iops" class="pl-2">{{ format_iops(server.disk_1m_read_iops) }}</td>
+		<td v-if="passed_show_columns.disk_1m_write_iops" class="pl-2">{{ format_iops(server.disk_1m_write_iops) }}</td>
+		<td v-if="passed_show_columns.disk_1m_total_iops" class="pl-2">{{ format_iops(server.disk_1m_total_iops) }}</td>
 
 		<td v-if="passed_show_columns.average_network_speed" class="pl-2">{{ format_disk_speed(server.average_network_speed) }}</td>
 	</tr>
