@@ -277,7 +277,7 @@
 					<ul v-if="cores_open">
 						<li v-for="(option, index) in options.cores" :key="index"
 						class="flex justify-center w-100 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_cores, index)">
+						<input checked type="checkbox" @click="select_index_item(selected_items.selected_cores, index)">
 							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -293,7 +293,7 @@
 					<ul v-if="ram_open">
 						<li v-for="(option, index) in options.ram" :key="index"
 						class="flex justify-center w-100 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_ram, index)">
+						<input checked type="checkbox" @click="select_index_item(selected_items.selected_ram, index)">
 							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -309,7 +309,7 @@
 					<ul v-if="gb5_single_open">
 						<li v-for="(option, index) in options.geekbench_5_single" :key="index"
 						class="flex justify-center w-100 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_gb5_single, index)">
+						<input checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_single, index)">
 							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -325,7 +325,7 @@
 					<ul v-if="gb5_multi_open">
 						<li v-for="(option, index) in options.geekbench_5_multi" :key="index"
 						class="flex justify-center w-100 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_gb5_multi, index)">
+						<input checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_multi, index)">
 							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -341,7 +341,7 @@
 					<ul v-if="disk_4k_read_open">
 						<li v-for="(option, index) in options.disk_4k_read_speed" :key="index"
 						class="flex justify-center w-100 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_4k_read_speed, index)">
+						<input checked type="checkbox" @click="select_index_item(selected_items.selected_4k_read_speed, index)">
 							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -357,7 +357,7 @@
 					<ul v-if="disk_4k_write_open">
 						<li v-for="(option, index) in options.disk_4k_write_speed" :key="index"
 						class="flex justify-center w-100 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_4k_write_speed, index)">
+						<input checked type="checkbox" @click="select_index_item(selected_items.selected_4k_write_speed, index)">
 							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -373,7 +373,7 @@
 					<ul v-if="iops_4k_open">
 						<li v-for="(option, index) in options.disk_4k_total_iops" :key="index"
 						class="flex justify-center w-100 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_4k_total_iops,index)">
+						<input checked type="checkbox" @click="select_index_item(selected_items.selected_4k_total_iops,index)">
 							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -389,7 +389,7 @@
 					<ul v-if="providers_open">
 						<li v-for="option in options.providers" :key="option"
 						class="w-11/12 mb-px">
-							<input checked type="checkbox" @click="select_index_item(selected_providers, Object.values(option)[0])">
+							<input checked type="checkbox" @click="select_index_item(selected_items.selected_providers, Object.values(option)[0])">
 							<span class="pl-1">{{ Object.values(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[1] }})</span>
 						</li>
@@ -422,14 +422,16 @@
 				disk_4k_read_open: false,
 				disk_4k_write_open: false,
 				iops_4k_open: false,
-				selected_ram: [],
-				selected_cores: [],
-				selected_providers: [],
-				selected_4k_read_speed: [],
-				selected_4k_write_speed: [],
-				selected_4k_total_iops: [],
-				selected_gb5_single: [],
-				selected_gb5_multi: [],
+				selected_items: {
+					selected_ram: [],
+					selected_cores: [],
+					selected_providers: [],
+					selected_4k_read_speed: [],
+					selected_4k_write_speed: [],
+					selected_4k_total_iops: [],
+					selected_gb5_single: [],
+					selected_gb5_multi: [],
+				}
 			}
 		},
 		methods: {
@@ -440,14 +442,14 @@
 					this.options = res.data
 					console.log('options')
 					console.log(this.options)
-					for (const [key] of Object.entries(this.options.cores)) {this.selected_cores.push(key)}
-					for (const [key] of Object.entries(this.options.ram)) {this.selected_ram.push(key)}
-					for (const [key] of Object.entries(this.options.geekbench_5_single)) {this.selected_gb5_single.push(key)}
-					for (const [key] of Object.entries(this.options.geekbench_5_multi)) {this.selected_gb5_multi.push(key)}
-					for (const [key] of Object.entries(this.options.disk_4k_read_speed)) {this.selected_4k_read_speed.push(key)}
-					for (const [key] of Object.entries(this.options.disk_4k_write_speed)) {this.selected_4k_write_speed.push(key)}
-					for (const [key] of Object.entries(this.options.disk_4k_total_iops)) {this.selected_4k_total_iops.push(key)}
-					for (const [key, value] of Object.entries(this.options.providers)) {this.selected_providers.push(value['provider_name'])}
+					for (const [key] of Object.entries(this.options.cores)) {this.selected_items.selected_cores.push(key)}
+					for (const [key] of Object.entries(this.options.ram)) {this.selected_items.selected_ram.push(key)}
+					for (const [key] of Object.entries(this.options.geekbench_5_single)) {this.selected_items.selected_gb5_single.push(key)}
+					for (const [key] of Object.entries(this.options.geekbench_5_multi)) {this.selected_items.selected_gb5_multi.push(key)}
+					for (const [key] of Object.entries(this.options.disk_4k_read_speed)) {this.selected_items.selected_4k_read_speed.push(key)}
+					for (const [key] of Object.entries(this.options.disk_4k_write_speed)) {this.selected_items.selected_4k_write_speed.push(key)}
+					for (const [key] of Object.entries(this.options.disk_4k_total_iops)) {this.selected_items.selected_4k_total_iops.push(key)}
+					for (const [key, value] of Object.entries(this.options.providers)) {this.selected_items.selected_providers.push(value['provider_name'])}
 				})
 			},
 			select_index_item(list, index) {
@@ -458,57 +460,15 @@
 					console.log('adding index')
 					list.push(index)
 				}
+				console.log('updating results from options list')
+				this.$emit('update_query', this.selected_items)
 			},
-			// select_cores(option) {
-			// 	console.log(option)
-			// 	console.log(this.selected_cores)
-			// 	if(this.selected_cores.includes(option)){
-			// 		console.log('found option')
-			// 		this.selected_cores.splice(this.selected_cores.indexOf(this.selected_cores), 1)
-			// 	} else {
-			// 		console.log('adding option')
-			// 		this.selected_cores.push(option)
-			// 	}
-			// },
-			// select_ram(option) {
-			// 	console.log(option)
-			// 	console.log(this.selected_ram)
-			// 	if(this.selected_ram.includes(option)){
-			// 		console.log('found option')
-			// 		this.selected_ram.splice(this.selected_ram.indexOf(this.selected_ram), 1)
-			// 	} else {
-			// 		console.log('adding option')
-			// 		this.selected_ram.push(option)
-			// 	}
-			// },
-			// select_provider(option) {
-			// 	console.log(option)
-			// 	console.log(this.selected_4k_iops)
-			// 	if(this.selected_4k_iops.includes(option)){
-			// 		console.log('found option')
-			// 		this.selected_4k_iops.splice(this.selected_4k_iops.indexOf(this.selected_4k_iops), 1)
-			// 	} else {
-			// 		console.log('adding option')
-			// 		this.selected_4k_iops.push(option)
-			// 	}
-			// },
-			// select_disk_4k_iops(option) {
-			// 	console.log(option)
-			// 	console.log(this.selected_providers)
-			// 	if(this.selected_providers.includes(option)){
-			// 		console.log('found option')
-			// 		this.selected_providers.splice(this.selected_providers.indexOf(this.selected_providers), 1)
-			// 	} else {
-			// 		console.log('adding option')
-			// 		this.selected_providers.push(option)
-			// 	}
-			// }
 		},
 		watch: {
 			show_columns () {
 				console.log('updating columns')
 				this.$emit('change_table_columns', this.show_columns)
-			}
+			},
 		},
 		mounted() {
 			this.get_options_counts()

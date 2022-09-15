@@ -4,6 +4,7 @@
 		<OptionsList
 		@close_options="options_open = false"
 		@change_table_columns="change_table_columns"
+		@update_query="update_query"
 		:options_open=options_open
 		:passed_show_columns=show_columns>
 		</OptionsList>
@@ -14,7 +15,7 @@
 				class="options-button font-bold rounded px-4 py-2 mb-3">Open Options</button>
 
 				<select class="per-page-select h-10 ml-5 rounded"
-					@change="results_query"
+					@change="get_results"
 					v-model="limit">
 					<option value=20>20 Per Page</option>
 					<option value=50>50 Per Page</option>
@@ -328,7 +329,9 @@
 					last_sort: '',
 					pageCount: 0,
 					loading: false,
-					error_message: ''
+					error_message: '',
+					selected_ram_options: [],
+					selected_cores_options: []
 				}
 			},
 			methods: {
@@ -345,19 +348,45 @@
 					}
 					this.order_by = field
 					this.last_sort = field
-					this.results_query()
+					this.get_results()
 				},
-				results_query() {
+				get_results() {
 					this.loading = true
 					axios.post('/get_results', {
 							order_by: this.order_by,
 							limit: this.limit,
 							sort_direction: this.sort_direction,
 							page: this.page,
-							user_id: this.user_id
+							user_id: this.user_id,
+							
 					})
 					.then(res => {
 							this.servers = res.data.results
+							this.server_count = res.data.server_count
+							this.pageCount = Math.ceil(this.server_count / this.limit)
+							this.loading = false
+					})
+					.catch(err => {
+						this.error_message = err.data
+						setTimeout(() => {
+							this.error_message = ''
+						}, 1000)
+						this.loading = false
+					})
+        },
+				update_results() {
+					this.loading = true
+					axios.post('/update_results', {
+							order_by: this.order_by,
+							limit: this.limit,
+							sort_direction: this.sort_direction,
+							page: this.page,
+							user_id: this.user_id,
+							selected_items: this.selected_items,
+					})
+					.then(res => {
+						console.log(res.data)
+							this.servers = res.data.merged
 							this.server_count = res.data.server_count
 							this.pageCount = Math.ceil(this.server_count / this.limit)
 							this.loading = false
@@ -378,60 +407,9 @@
 				},
 				pagination_click(g) {
 					this.page = g
-					this.results_query()
+					this.update_results()
 					// console.log(g)
 				},
-				// sort_string(attribute) {
-				// 	if(this.sort_direction === 'asc') {
-				// 		this.sort_direction = 'desc'
-				// 		this.servers.sort((a, b) => {
-				// 			if(a[attribute].toLowerCase() < b[attribute].toLowerCase()) { return -1; }
-				// 			if(a[attribute].toLowerCase() > b[attribute].toLowerCase()) { return 1; }
-				// 			return 0
-				// 		})
-				// 	} else {
-				// 		this.sort_direction = 'asc'
-				// 		this.servers.sort((a, b) => {
-				// 			if(a[attribute].toLowerCase() > b[attribute].toLowerCase()) { return -1; }
-				// 			if(a[attribute].toLowerCase() < b[attribute].toLowerCase()) { return 1; }
-				// 			return 0
-				// 		})
-				// 	}
-				// },
-				// sort_numeric(attribute) {
-				// 	if(this.sort_direction == 'asc') {
-				// 		this.sort_direction = 'desc'
-				// 		this.servers.sort((a, b) => {
-				// 			if(a[attribute] < b[attribute]) {return -1;}
-				// 			if(a[attribute] > b[attribute]) {return 1;}
-				// 			return 0
-				// 		})
-				// 	} else {
-				// 		this.sort_direction = 'asc'
-				// 		this.servers.sort((a, b) => {
-				// 			if(a[attribute] > b[attribute]) {return -1;}
-				// 			if(a[attribute] < b[attribute]) {return 1;}
-				// 			return 0
-				// 		})
-				// 	}
-				// },
-				// sort_network_speed() {
-				// 	if(this.sort_direction == 'asc') {
-				// 		this.sort_direction = 'desc'
-				// 		this.servers.sort((a, b) => {
-				// 			if(this.raw_average_network_speed(a.networks) < this.raw_average_network_speed(b.networks)) {return -1;}
-				// 			if(this.raw_average_network_speed(a.networks) > this.raw_average_network_speed(b.networks)) {return 1;}
-				// 			return 0
-				// 		})
-				// 	} else {
-				// 		this.sort_direction = 'asc'
-				// 		this.servers.sort((a, b) => {
-				// 			if(this.raw_average_network_speed(a.networks) > this.raw_average_network_speed(b.networks)) {return -1;}
-				// 			if(this.raw_average_network_speed(a.networks) < this.raw_average_network_speed(b.networks)) {return 1;}
-				// 			return 0
-				// 		})
-				// 	}
-				// },
 				raw_average_network_speed(networks) {
 					let total = 0
 					for(let i = 0; i < networks.length; i++) {
@@ -439,6 +417,10 @@
 						total += networks[i].receive_speed
 					}
 					return total / (networks.length * 2) / 1000
+				},
+				update_query(selected_items) {
+					this.selected_items = selected_items
+					this.update_results()
 				}
 			},
 			computed: {

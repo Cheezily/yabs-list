@@ -19,6 +19,10 @@ Route::post('/get_results', [
     \App\Http\Controllers\ResultsController::class, 'results'
 ])->name('results');
 
+Route::post('/update_results', [
+    \App\Http\Controllers\ResultsController::class, 'update_results'
+])->name('update_results');
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'can_login' => Route::has('login'),
