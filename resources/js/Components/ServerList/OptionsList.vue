@@ -408,7 +408,6 @@
 		props: [
 			'options_open',
 			'passed_show_columns',
-			'where_in'
 		],
 		data() {
 			return {
@@ -423,6 +422,7 @@
 				disk_4k_read_open: false,
 				disk_4k_write_open: false,
 				iops_4k_open: false,
+				static_provider_list: [],
 				selected_items: {
 					selected_ram: [],
 					selected_cores: [],
@@ -436,17 +436,22 @@
 			}
 		},
 		methods: {
-			get_options_counts() {
+			get_options_counts(initial = false) {
 				axios.post('/get_options_counts',
 				{
-					where_in: this.where_in,
 					selected_items: this.selected_items
 				})
 				.then(res => {
-					// console.log(res.data)
 					this.options = res.data
-					console.log('options')
-					console.log(this.options)
+					this.options.providers.sort((a, b) => {
+						if(a['provider_name'].toUpperCase() > b['provider_name'].toUpperCase()) {
+							return 1
+						}
+						if(b['provider_name'].toUpperCase() > a['provider_name'].toUpperCase()) {
+							return -1
+						}
+						return 0
+					})
 					// for (const [key] of Object.entries(this.options.cores)) {this.selected_items.selected_cores.push(key)}
 					// for (const [key] of Object.entries(this.options.ram)) {this.selected_items.selected_ram.push(key)}
 					// for (const [key] of Object.entries(this.options.geekbench_5_single)) {this.selected_items.selected_gb5_single.push(key)}
@@ -454,7 +459,41 @@
 					// for (const [key] of Object.entries(this.options.disk_4k_read_speed)) {this.selected_items.selected_4k_read_speed.push(key)}
 					// for (const [key] of Object.entries(this.options.disk_4k_write_speed)) {this.selected_items.selected_4k_write_speed.push(key)}
 					// for (const [key] of Object.entries(this.options.disk_4k_total_iops)) {this.selected_items.selected_4k_total_iops.push(key)}
-					// for (const [key, value] of Object.entries(this.options.providers)) {this.selected_items.selected_providers.push(value['provider_name'])}
+					if(initial) {
+						for (const [key, value] of Object.entries(this.options.providers)) {this.static_provider_list.push(value['provider_name'])}
+					} else {
+						
+						var to_add = []
+						this.static_provider_list.forEach((i) => {
+							let found = false
+							this.options.providers.forEach((e) => {
+								if (i === e['provider_name']) {
+									console.log('found')
+									found = true
+								}
+							})
+							if(!found) {
+								to_add.push({
+									'provider_name': i,
+									'count': 0
+								})
+							}
+						})
+
+						to_add.forEach((e) => {
+							this.options.providers.push(e)
+						})
+
+						this.options.providers.sort((a, b) => {
+							if(a['provider_name'].toUpperCase() > b['provider_name'].toUpperCase()) {
+								return 1
+							}
+							if(b['provider_name'].toUpperCase() > a['provider_name'].toUpperCase()) {
+								return -1
+							}
+							return 0
+						})
+					}
 				})
 			},
 			select_index_item(list, index) {
@@ -467,6 +506,7 @@
 				}
 				console.log('updating results from options list')
 				this.$emit('update_query', this.selected_items)
+				this.get_options_counts()
 			},
 		},
 		watch: {
@@ -474,14 +514,9 @@
 				console.log('updating columns')
 				this.$emit('change_table_columns', this.show_columns)
 			},
-			where_in () {
-				console.log('where_in')
-				console.log(this.where_in)
-				this.get_options_counts()
-			}
 		},
 		mounted() {
-			this.get_options_counts()
+			this.get_options_counts(true)
 			this.show_columns = this.passed_show_columns
 		}
 	}

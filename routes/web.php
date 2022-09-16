@@ -41,7 +41,7 @@ Route::get('/dashboard', [
 
 
 Route::post('/get_options_counts', [
-    \App\Http\Controllers\ServerController::class, 'get_options_counts'
+    \App\Http\Controllers\CountController::class, 'get_options_counts'
 ])->name('metrics');
 
 require __DIR__.'/auth.php';

@@ -41,86 +41,54 @@ class ResultsController extends Controller
         //////////////////////////////////////////////
         //////////////////////////////////////////////
 
-        $query = DB::table('servers');
-        foreach($request->selected_items['selected_ram'] as $index) {
-            $query = QueryHelper::ram_where_not($query, intval($index));
+        $merged_ids = [];
+        if($request->has('selected_items')) {
+            $query = DB::table('servers');
+            foreach($request->selected_items['selected_ram'] as $index) {
+                $query = QueryHelper::ram_where_not($query, intval($index));
+            }
+            $selected_ram = $query->select('id')->get()->pluck('id')->toArray();
+    
+    
+            $query = DB::table('servers');
+            foreach($request->selected_items['selected_cores'] as $index) {
+                $query = QueryHelper::cores_where_not($query, intval($index));
+            }
+            $selected_cores = $query->select('id')->get()->pluck('id')->toArray();
+    
+            $query = DB::table('servers');
+            $query->whereNotIn('provider_name', $request->selected_items['selected_providers']);
+            $selected_providers = $query->select('id')->get()->pluck('id')->toArray();
+    
+            $query = DB::table('servers');
+            foreach($request->selected_items['selected_gb5_single'] as $index) {
+                $query = QueryHelper::geekbench_5_single_where_not($query, intval($index));
+            }
+            $selected_gb5_single = $query->select('id')->get()->pluck('id')->toArray();
+    
+    
+            $query = DB::table('servers');
+            foreach($request->selected_items['selected_gb5_multi'] as $index) {
+                $query = QueryHelper::geekbench_5_multi_where_not($query, intval($index));
+            }
+            $selected_gb5_multi = $query->select('id')->get()->pluck('id')->toArray();
+
+            $merged_ids = array_intersect(
+                $selected_ram,
+                $selected_cores,
+                $selected_providers,
+                $selected_gb5_single,
+                $selected_gb5_multi
+            );
         }
-        $selected_ram = $query->select('id')->get()->pluck('id')->toArray();
 
-
-        $query = DB::table('servers');
-        foreach($request->selected_items['selected_cores'] as $index) {
-            $query = QueryHelper::cores_where_not($query, intval($index));
-        }
-        $selected_cores = $query->select('id')->get()->pluck('id')->toArray();
-
-        $query = DB::table('servers');
-        $query->whereNotIn('provider_name', $request->selected_items['selected_providers']);
-        $selected_providers = $query->select('id')->get()->pluck('id')->toArray();
-
-        $query = DB::table('servers');
-        foreach($request->selected_items['selected_gb5_single'] as $index) {
-            $query = QueryHelper::geekbench_5_single_where_not($query, intval($index));
-        }
-        $selected_gb5_single = $query->select('id')->get()->pluck('id')->toArray();
-
-
-        $query = DB::table('servers');
-        foreach($request->selected_items['selected_gb5_multi'] as $index) {
-            $query = QueryHelper::geekbench_5_multi_where_not($query, intval($index));
-        }
-        $selected_gb5_multi = $query->select('id')->get()->pluck('id')->toArray();
-
-
-        $merged_ids = array_intersect(
-            $selected_ram,
-            $selected_cores,
-            $selected_providers,
-            $selected_gb5_single,
-            $selected_gb5_multi
-        );
-
-        $test = Server::whereIn('id', $merged_ids)
-            ->distinct()
-            ->orderBy($request->order_by, $request->sort_direction)
-            ->limit($request->limit);
-
-
-
-        // $test = Server::where(function ($q) use ($request) {
-        //     $q->select('id')
-        //         ->from('servers');
-
-        //         $use_or = false;
-        //         foreach($request->selected_items['selected_cores'] as $index) {
-        //             $q = QueryHelper::cores_where($q, intval($index), $use_or);
-        //             $use_or = true;
-        //         }
-        //     })
-        //     ->distinct()
-        //     ->orderBy($request->order_by, $request->sort_direction)
-        //     ->get();
-
-
-        // $test = Server::where(function ($q) use ($request) {
-        //     $q->select('id')
-        //         ->from('servers')
-        //         ->where('ram', '<', 512);
-        //     })
-        //     ->distinct()
-        //     ->orderBy($request->order_by, $request->sort_direction)
-        //     ->get();
-
-
-        // $query->orderBy($request->order_by, $request->sort_direction);
-
-        // if(!is_null($request->user_id)) {
-        //     $query->where('user_id', $request->user_id);
-        // }
-        
-        // $results = $query->limit($request->limit)
-        // ->offset(($request->page - 1) * $request->limit)
-        // ->get();
+        $test = Server::distinct();
+            if(!empty($merged_ids)) {
+                $test->whereIn('id', $merged_ids);
+            }
+            $test->orderBy($request->order_by, $request->sort_direction)
+                ->offset($request->limit * ($request->page - 1))
+                ->limit($request->limit);
 
         return response()->json([
             // 'cores_results' => $selected_cores,
@@ -128,6 +96,7 @@ class ResultsController extends Controller
             'merged_count' => count($merged_ids),
             'merged' => $test->get(),
             'count' => $test->count(),
+            'page' => $request->page,
             'server_count' => Server::count()
         ]);
     }
