@@ -439,21 +439,22 @@
 			get_options_counts() {
 				axios.post('/get_options_counts',
 				{
-					where_in: this.where_in
+					where_in: this.where_in,
+					selected_items: this.selected_items
 				})
 				.then(res => {
 					// console.log(res.data)
 					this.options = res.data
 					console.log('options')
 					console.log(this.options)
-					for (const [key] of Object.entries(this.options.cores)) {this.selected_items.selected_cores.push(key)}
-					for (const [key] of Object.entries(this.options.ram)) {this.selected_items.selected_ram.push(key)}
-					for (const [key] of Object.entries(this.options.geekbench_5_single)) {this.selected_items.selected_gb5_single.push(key)}
-					for (const [key] of Object.entries(this.options.geekbench_5_multi)) {this.selected_items.selected_gb5_multi.push(key)}
-					for (const [key] of Object.entries(this.options.disk_4k_read_speed)) {this.selected_items.selected_4k_read_speed.push(key)}
-					for (const [key] of Object.entries(this.options.disk_4k_write_speed)) {this.selected_items.selected_4k_write_speed.push(key)}
-					for (const [key] of Object.entries(this.options.disk_4k_total_iops)) {this.selected_items.selected_4k_total_iops.push(key)}
-					for (const [key, value] of Object.entries(this.options.providers)) {this.selected_items.selected_providers.push(value['provider_name'])}
+					// for (const [key] of Object.entries(this.options.cores)) {this.selected_items.selected_cores.push(key)}
+					// for (const [key] of Object.entries(this.options.ram)) {this.selected_items.selected_ram.push(key)}
+					// for (const [key] of Object.entries(this.options.geekbench_5_single)) {this.selected_items.selected_gb5_single.push(key)}
+					// for (const [key] of Object.entries(this.options.geekbench_5_multi)) {this.selected_items.selected_gb5_multi.push(key)}
+					// for (const [key] of Object.entries(this.options.disk_4k_read_speed)) {this.selected_items.selected_4k_read_speed.push(key)}
+					// for (const [key] of Object.entries(this.options.disk_4k_write_speed)) {this.selected_items.selected_4k_write_speed.push(key)}
+					// for (const [key] of Object.entries(this.options.disk_4k_total_iops)) {this.selected_items.selected_4k_total_iops.push(key)}
+					// for (const [key, value] of Object.entries(this.options.providers)) {this.selected_items.selected_providers.push(value['provider_name'])}
 				})
 			},
 			select_index_item(list, index) {

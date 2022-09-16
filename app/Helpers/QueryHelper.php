@@ -42,13 +42,24 @@ class QueryHelper {
     }
 
 
-    public static function cores_count(Request $request)
+    public static function cores_count($merged_ids = null)
     {
+        if(!empty($merged_ids)) {
+            return [
+                1 => ['> 16 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 1)->whereIn('id', $merged_ids)->count()],
+                2 => ['11 to 16 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 2)->whereIn('id', $merged_ids)->count()],
+                3 => ['8 to 10 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 3)->whereIn('id', $merged_ids)->count()],
+                4 => ['4 to 7 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 4)->whereIn('id', $merged_ids)->count()],
+                5 => ['3 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 5)->whereIn('id', $merged_ids)->count()],
+                6 => ['2 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 6)->whereIn('id', $merged_ids)->count()],
+                7 => ['1 Core' => QueryHelper::cores_where(QueryHelper::start_query(), 7)->whereIn('id', $merged_ids)->count()],
+            ];            
+        }
         return [
             1 => ['> 16 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 1)->count()],
-            2 => ['12 to 16 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 2)->count()],
-            3 => ['8 to 12 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 3)->count()],
-            4 => ['4 to 8 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 4)->count()],
+            2 => ['11 to 16 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 2)->count()],
+            3 => ['8 to 10 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 3)->count()],
+            4 => ['4 to 7 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 4)->count()],
             5 => ['3 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 5)->count()],
             6 => ['2 Cores' => QueryHelper::cores_where(QueryHelper::start_query(), 6)->count()],
             7 => ['1 Core' => QueryHelper::cores_where(QueryHelper::start_query(), 7)->count()],
@@ -56,28 +67,44 @@ class QueryHelper {
     }
 
 
-    public static function cores_where($query, $index, $use_or = false)
+    public static function cores_where($query, $index)
     {
-        if($index == 1 && !$use_or) {return $query->where('cores', '>', 16);}
-        if($index == 2 && !$use_or) {return $query->whereBetween('cores', [12, 16]);}
-        if($index == 3 && !$use_or) {return $query->whereBetween('cores', [8, 12]);}
-        if($index == 4 && !$use_or) {return $query->whereBetween('cores', [4, 8]);}
-        if($index == 5 && !$use_or) {return $query->where('cores', '=', 3);}
-        if($index == 6 && !$use_or) {return $query->where('cores', '=', 2);}
-        if($index == 7 && !$use_or) {return $query->where('cores', '=', 1);}
-        
-        if($index == 1 && $use_or) {return $query->orWhere('cores', '>', 16);}
-        if($index == 2 && $use_or) {return $query->orWhereBetween('cores', [12, 16]);}
-        if($index == 3 && $use_or) {return $query->orWhereBetween('cores', [8, 12]);}
-        if($index == 4 && $use_or) {return $query->orWhereBetween('cores', [4, 8]);}
-        if($index == 5 && $use_or) {return $query->orWhere('cores', '=', 3);}
-        if($index == 6 && $use_or) {return $query->orWhere('cores', '=', 2);}
-        if($index == 7 && $use_or) {return $query->orWhere('cores', '=', 1);}
+        if($index == 1) {return $query->where('cores', '>', 16);}
+        if($index == 2) {return $query->whereIn('cores', [11, 12, 13, 14, 15, 16]);}
+        if($index == 3) {return $query->whereIn('cores', [8, 9, 10]);}
+        if($index == 4) {return $query->whereIn('cores', [4, 5, 6, 7]);}
+        if($index == 5) {return $query->where('cores', '=', 3);}
+        if($index == 6) {return $query->where('cores', '=', 2);}
+        if($index == 7) {return $query->where('cores', '=', 1);}
     }
 
 
-    public static function ram_count(Request $request)
+    public static function cores_where_not($query, $index)
     {
+        if($index == 1) {return $query->where('cores', '<=', 16);}
+        if($index == 2) {return $query->whereNotIn('cores', [11, 12, 13, 14, 15, 16]);}
+        if($index == 3) {return $query->whereNotIn('cores', [8, 9, 10]);}
+        if($index == 4) {return $query->whereNotIn('cores', [4, 5, 6, 7]);}
+        if($index == 5) {return $query->where('cores', '<>', 3);}
+        if($index == 6) {return $query->where('cores', '<>', 2);}
+        if($index == 7) {return $query->where('cores', '<>', 1);}
+    } 
+
+
+    public static function ram_count($merged_ids = null)
+    {
+        if(!empty($merged_ids)) {
+            return [
+                1 => ['> 24GB' => QueryHelper::ram_where(QueryHelper::start_query(), 1)->whereIn('id', $merged_ids)->count()],
+                2 => ['16GB to 24GB' => QueryHelper::ram_where(QueryHelper::start_query(), 2)->whereIn('id', $merged_ids)->count()],
+                3 => ['8GB to 16GB' => QueryHelper::ram_where(QueryHelper::start_query(), 3)->whereIn('id', $merged_ids)->count()],
+                4 => ['4GB to 8GB' => QueryHelper::ram_where(QueryHelper::start_query(), 4)->whereIn('id', $merged_ids)->count()],
+                5 => ['2GB to 4GB' => QueryHelper::ram_where(QueryHelper::start_query(), 5)->whereIn('id', $merged_ids)->count()],
+                6 => ['1GB to 2GB' => QueryHelper::ram_where(QueryHelper::start_query(), 6)->whereIn('id', $merged_ids)->count()],
+                7 => ['512MB to 1GB' => QueryHelper::ram_where(QueryHelper::start_query(), 7)->whereIn('id', $merged_ids)->count()],
+                8 => ['< 512MB' => QueryHelper::ram_where(QueryHelper::start_query(), 8)->whereIn('id', $merged_ids)->count()],
+            ]; 
+        }
         return [
             1 => ['> 24GB' => QueryHelper::ram_where(QueryHelper::start_query(), 1)->count()],
             2 => ['16GB to 24GB' => QueryHelper::ram_where(QueryHelper::start_query(), 2)->count()],
@@ -91,25 +118,29 @@ class QueryHelper {
     }
 
 
-    public static function ram_where($query, $index, $use_or = false)
+    public static function ram_where($query, $index)
     {
-        if($index == 1 && !$use_or) {return $query->where('ram', '>', 24000);}
-        if($index == 2 && !$use_or) {return $query->whereBetween('ram', [16000, 24000]);}
-        if($index == 3 && !$use_or) {return $query->whereBetween('ram', [8000, 16000]);}
-        if($index == 4 && !$use_or) {return $query->whereBetween('ram', [4000, 8000]);}
-        if($index == 5 && !$use_or) {return $query->whereBetween('ram', [2000, 4000]);}
-        if($index == 6 && !$use_or) {return $query->whereBetween('ram', [1000, 2000]);}
-        if($index == 7 && !$use_or) {return $query->whereBetween('ram', [512, 1000]);}
-        if($index == 8 && !$use_or) {return $query->where('ram', '<', 512);}        
-        
-        if($index == 1 && $use_or) {return $query->orWhere('ram', '>', 24000);}
-        if($index == 2 && $use_or) {return $query->orWhereBetween('ram', [16000, 24000]);}
-        if($index == 3 && $use_or) {return $query->orWhereBetween('ram', [8000, 16000]);}
-        if($index == 4 && $use_or) {return $query->orWhereBetween('ram', [4000, 8000]);}
-        if($index == 5 && $use_or) {return $query->orWhereBetween('ram', [2000, 4000]);}
-        if($index == 6 && $use_or) {return $query->orWhereBetween('ram', [1000, 2000]);}
-        if($index == 7 && $use_or) {return $query->orWhereBetween('ram', [512, 1000]);}
-        if($index == 8 && $use_or) {return $query->orWhere('ram', '<', 512);}
+        if($index == 1) {return $query->where('ram', '>', 24000);}
+        if($index == 2) {return $query->whereBetween('ram', [16001, 24000]);}
+        if($index == 3) {return $query->whereBetween('ram', [8001, 16000]);}
+        if($index == 4) {return $query->whereBetween('ram', [4001, 8000]);}
+        if($index == 5) {return $query->whereBetween('ram', [2001, 4000]);}
+        if($index == 6) {return $query->whereBetween('ram', [1001, 2000]);}
+        if($index == 7) {return $query->whereBetween('ram', [512, 1000]);}
+        if($index == 8) {return $query->where('ram', '<', 512);}        
+    }
+
+
+    public static function ram_where_not($query, $index)
+    {
+        if($index == 1) {return $query->where('ram', '<', 24001);}
+        if($index == 2) {return $query->whereNotBetween('ram', [16001, 24000]);}
+        if($index == 3) {return $query->whereNotBetween('ram', [8001, 16000]);}
+        if($index == 4) {return $query->whereNotBetween('ram', [4001, 8000]);}
+        if($index == 5) {return $query->whereNotBetween('ram', [2001, 4000]);}
+        if($index == 6) {return $query->whereNotBetween('ram', [1001, 2000]);}
+        if($index == 7) {return $query->whereNotBetween('ram', [512, 1000]);}
+        if($index == 8) {return $query->where('ram', '>', 511);}        
     }
     
 
@@ -149,7 +180,7 @@ class QueryHelper {
     public static function average_network_speed_where($query, $index, $max, $spread)
     {
         if($index == 1) {return $query->where('average_network_speed', '>', ($max - $spread));}
-        if($index == 2) {return $query->whereBetween('average_network_speed', [($max - $spread * 2), ($max - $spread)]);}
+        if($index == 2) {return $query->whereBetween('average_network_speed', [($max - $spread * 2) + 1, ($max - $spread)]);}
         if($index == 3) {return $query->whereBetween('average_network_speed', [($max - $spread * 3), ($max - $spread * 2)]);}
         if($index == 4) {return $query->where('average_network_speed', '<', ($max - $spread * 3));}
     }
@@ -272,6 +303,19 @@ class QueryHelper {
     }
 
 
+    public static function geekbench_5_single_where_not($query, $index, $use_or = false)
+    {
+            $max = QueryHelper::start_query()->max('geekbench_5_single');
+            $min = QueryHelper::start_query()->min('geekbench_5_single');
+            $spread = floor($max - $min) / 4;
+
+            if($index == 1) {return $query->where('geekbench_5_single', '<', ($max - $spread));}
+            if($index == 2) {return $query->whereNotBetween('geekbench_5_single', [($max - $spread * 2), ($max - $spread)]);}
+            if($index == 3) {return $query->whereNotBetween('geekbench_5_single', [($max - $spread * 3), ($max - $spread * 2)]);}
+            if($index == 4) {return $query->where('geekbench_5_single', '>', ($max - $spread * 3));}
+    }
+
+
     public static function geekbench_5_multi_count()
     {
         $max = QueryHelper::start_query()->max('geekbench_5_multi');
@@ -306,5 +350,18 @@ class QueryHelper {
         if($index == 2 && $use_or) {return $query->orWhereBetween('geekbench_5_multi', [($max - $spread * 2), ($max - $spread)]);}
         if($index == 3 && $use_or) {return $query->orWhereBetween('geekbench_5_multi', [($max - $spread * 3), ($max - $spread * 2)]);}
         if($index == 4 && $use_or) {return $query->orWhere('geekbench_5_multi', '<', ($max - $spread * 3));}
+    }
+
+
+    public static function geekbench_5_multi_where_not($query, $index)
+    {
+        $max = QueryHelper::start_query()->max('geekbench_5_multi');
+        $min = QueryHelper::start_query()->min('geekbench_5_multi');
+        $spread = floor($max - $min) / 4;
+
+        if($index == 1) {return $query->where('geekbench_5_multi', '<', ($max - $spread));}
+        if($index == 2) {return $query->whereNotBetween('geekbench_5_multi', [($max - $spread * 2), ($max - $spread)]);}
+        if($index == 3) {return $query->whereNotBetween('geekbench_5_multi', [($max - $spread * 3), ($max - $spread * 2)]);}
+        if($index == 4) {return $query->where('geekbench_5_multi', '>', ($max - $spread * 3));}
     }
 }
