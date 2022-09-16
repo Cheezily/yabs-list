@@ -40,7 +40,7 @@ Route::get('/dashboard', [
 ])->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::get('/get_options_counts', [
+Route::post('/get_options_counts', [
     \App\Http\Controllers\ServerController::class, 'get_options_counts'
 ])->name('metrics');
 

@@ -407,7 +407,8 @@
 	export default {
 		props: [
 			'options_open',
-			'passed_show_columns'
+			'passed_show_columns',
+			'where_in'
 		],
 		data() {
 			return {
@@ -436,7 +437,10 @@
 		},
 		methods: {
 			get_options_counts() {
-				axios.get('/get_options_counts')
+				axios.post('/get_options_counts',
+				{
+					where_in: this.where_in
+				})
 				.then(res => {
 					// console.log(res.data)
 					this.options = res.data
@@ -469,6 +473,11 @@
 				console.log('updating columns')
 				this.$emit('change_table_columns', this.show_columns)
 			},
+			where_in () {
+				console.log('where_in')
+				console.log(this.where_in)
+				this.get_options_counts()
+			}
 		},
 		mounted() {
 			this.get_options_counts()

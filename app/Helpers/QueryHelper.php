@@ -18,7 +18,7 @@ class QueryHelper {
     }
 
 
-    public static function provider_names_count(Request $request)
+    public static function provider_names_count()
     {
         return QueryHelper::start_query()
             ->select([
@@ -29,6 +29,16 @@ class QueryHelper {
             ->orderBy('servers.provider_name')
             ->distinct()
             ->get();
+    }
+
+
+    public static function add_where_in($query, array $whereIn = [])
+    {
+        if(!empty($whereIn)) {
+
+        }
+        return $query;
+
     }
 
 

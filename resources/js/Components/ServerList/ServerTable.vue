@@ -6,6 +6,7 @@
 		@change_table_columns="change_table_columns"
 		@update_query="update_query"
 		:options_open=options_open
+		:where_in=where_in
 		:passed_show_columns=show_columns>
 		</OptionsList>
 
@@ -331,7 +332,8 @@
 					loading: false,
 					error_message: '',
 					selected_ram_options: [],
-					selected_cores_options: []
+					selected_cores_options: [],
+					where_in: []
 				}
 			},
 			methods: {
@@ -348,7 +350,7 @@
 					}
 					this.order_by = field
 					this.last_sort = field
-					this.get_results()
+					this.update_results()
 				},
 				get_results() {
 					this.loading = true
@@ -386,10 +388,11 @@
 					})
 					.then(res => {
 						console.log(res.data)
-							this.servers = res.data.merged
-							this.server_count = res.data.server_count
-							this.pageCount = Math.ceil(this.server_count / this.limit)
-							this.loading = false
+						this.where_in = res.data.where_in
+						this.servers = res.data.merged
+						this.server_count = res.data.server_count
+						this.pageCount = Math.ceil(this.server_count / this.limit)
+						this.loading = false
 					})
 					.catch(err => {
 						this.error_message = err.data

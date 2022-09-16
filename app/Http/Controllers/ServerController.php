@@ -10,6 +10,8 @@ class ServerController extends Controller
 {
     public function get_options_counts(Request $request)
     {
+
+        // dd($request->where_in);
         return response()->json([
             'ram' => QueryHelper::ram_count($request),
             'cores' => QueryHelper::cores_count($request),

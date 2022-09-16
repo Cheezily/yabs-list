@@ -35,6 +35,11 @@ class ResultsController extends Controller
     {
         // dd($request->selected_items);
 
+        //////////////////////////////////////////////
+        //////////////////////////////////////////////
+        // TRY INCLUDING WHERENOTBETWEEN AND ITERATING
+        //////////////////////////////////////////////
+        //////////////////////////////////////////////
 
         $query = DB::table('servers');
         $use_or = false;
@@ -128,7 +133,8 @@ class ResultsController extends Controller
 
         return response()->json([
             // 'cores_results' => $selected_cores,
-            // 'selected_ram' => $selected_ram,
+            'where_in' => $merged_ids,
+            'merged_count' => count($merged_ids),
             'merged' => $test->get(),
             'count' => $test->count(),
             'server_count' => Server::count()
