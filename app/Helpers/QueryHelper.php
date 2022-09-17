@@ -163,27 +163,51 @@ class QueryHelper {
     }
 
 
-    public static function average_network_speed_count()
+    public static function average_network_speed_count($merged_ids)
     {
         $max = QueryHelper::start_query()->max('average_network_speed');
         $min = QueryHelper::start_query()->min('average_network_speed');
         $spread = floor(($max - $min) / 4 / 1000) * 1000;
 
+        if(!empty($merged_ids)) {
+            return [
+                1 => ['> '.floor(($max - $spread)/1000000).' MB/s' => 
+                    QueryHelper::average_network_speed_where(QueryHelper::start_query(), 1, $max, $spread)
+                        ->whereIn('id', $merged_ids)->count()],
+                2 => [floor(($max - $spread * 2)/1000000).' MB/s'.' to '.floor(($max - $spread)/1000000).' MB/s' => 
+                    QueryHelper::average_network_speed_where(QueryHelper::start_query(), 2, $max, $spread)
+                        ->whereIn('id', $merged_ids)->count()],
+                3 => [floor(($max - $spread * 3)/1000000).' MB/s'.' to '.floor(($max - $spread * 2)/1000000).' MB/s' => 
+                    QueryHelper::average_network_speed_where(QueryHelper::start_query(), 3, $max, $spread)
+                        ->whereIn('id', $merged_ids)->count()],
+                4 => ['< '.floor(($max - $spread *  3)/1000000).' MB/s' => 
+                    QueryHelper::average_network_speed_where(QueryHelper::start_query(), 4, $max, $spread)
+                        ->whereIn('id', $merged_ids)->count()]
+            ];
+        }
         return [
             1 => ['> '.($max - $spread) => 
-                QueryHelper::average_network_speed_where(QueryHelper::start_query(), 1, $max, $spread)->count()],
+                QueryHelper::average_network_speed_where(QueryHelper::start_query(), 1, $max, $spread)
+                    ->count()],
             2 => [($max - $spread * 2).' to '.($max - $spread) => 
-                QueryHelper::average_network_speed_where(QueryHelper::start_query(), 2, $max, $spread)->count()],
+                QueryHelper::average_network_speed_where(QueryHelper::start_query(), 2, $max, $spread)
+                    ->count()],
             3 => [($max - $spread * 3).' to '.($max - $spread * 2) => 
-                QueryHelper::average_network_speed_where(QueryHelper::start_query(), 3, $max, $spread)->count()],
+                QueryHelper::average_network_speed_where(QueryHelper::start_query(), 3, $max, $spread)
+                    ->count()],
             4 => ['< '.($max - $spread *  3) => 
-                QueryHelper::average_network_speed_where(QueryHelper::start_query(), 3, $max, $spread)->count()]
+                QueryHelper::average_network_speed_where(QueryHelper::start_query(), 4, $max, $spread)
+                    ->count()]
         ];
     }
 
 
-    public static function average_network_speed_where($query, $index, $max, $spread)
+    public static function average_network_speed_where($query, $index)
     {
+        $max = QueryHelper::start_query()->max('average_network_speed');
+        $min = QueryHelper::start_query()->min('average_network_speed');
+        $spread = floor(($max - $min) / 4 / 1000) * 1000;
+
         if($index == 1) {return $query->where('average_network_speed', '>', ($max - $spread));}
         if($index == 2) {return $query->whereBetween('average_network_speed', [($max - $spread * 2) + 1, ($max - $spread)]);}
         if($index == 3) {return $query->whereBetween('average_network_speed', [($max - $spread * 3), ($max - $spread * 2)]);}
@@ -191,83 +215,211 @@ class QueryHelper {
     }
 
 
-    public static function disk_4k_read_speed_count()
+    public static function average_network_speed_where_not($query, $index)
+    {
+        $max = QueryHelper::start_query()->max('average_network_speed');
+        $min = QueryHelper::start_query()->min('average_network_speed');
+        $spread = floor(($max - $min) / 4 / 1000) * 1000;
+
+        if($index == 1) {return $query->where('average_network_speed', '<=', ($max - $spread));}
+        if($index == 2) {return $query->whereNotBetween('average_network_speed', [($max - $spread * 2) + 1, ($max - $spread)]);}
+        if($index == 3) {return $query->whereNotBetween('average_network_speed', [($max - $spread * 3), ($max - $spread * 2)]);}
+        if($index == 4) {return $query->where('average_network_speed', '>=', ($max - $spread * 3));}
+    }
+
+
+    public static function disk_4k_read_speed_count($merged_ids)
     {
         $max = QueryHelper::start_query()->max('disk_4k_read_speed');
         $min = QueryHelper::start_query()->min('disk_4k_read_speed');
         $spread = floor(($max - $min) / 4 / 1000000) * 1000000;
 
+        if(!empty($merged_ids)) {
+            return [
+                1 => ['> '.floor(($max - $spread)/1000000).' MB/s' =>
+                    QueryHelper::disk_4k_read_speed_where(QueryHelper::start_query(), 1)
+                        ->whereIn('id', $merged_ids)->count()],
+                2 => [floor(($max - $spread * 2)/1000000).' to '.floor(($max - $spread * 2)/1000000).' MB/s' => 
+                    QueryHelper::disk_4k_read_speed_where(QueryHelper::start_query(), 2)
+                        ->whereIn('id', $merged_ids)->count()],
+                3 => [floor(($max - $spread * 3)/1000000).' to '.floor(($max - $spread * 2)/1000000).' MB/s' => 
+                    QueryHelper::disk_4k_read_speed_where(QueryHelper::start_query(), 3)
+                        ->whereIn('id', $merged_ids)->count()],
+                4 => ['< '.floor(($max - $spread *  3)/1000000).' MB/s' => 
+                    QueryHelper::disk_4k_read_speed_where(QueryHelper::start_query(), 4)
+                        ->whereIn('id', $merged_ids)->count()],
+            ];
+        }
         return [
             1 => ['> '.floor(($max - $spread)/1000000).' MB/s' =>
-                QueryHelper::start_query()
-                ->where('disk_4k_read_speed', '>', ($max - $spread))
-                ->count()],
+                QueryHelper::disk_4k_read_speed_where(QueryHelper::start_query(), 1)
+                    ->count()],
             2 => [floor(($max - $spread * 2)/1000000).' to '.floor(($max - $spread * 2)/1000000).' MB/s' => 
-                QueryHelper::start_query()
-                ->whereBetween('disk_4k_read_speed', [($max - $spread * 2), ($max - $spread)])
-                ->count()],
+                QueryHelper::disk_4k_read_speed_where(QueryHelper::start_query(), 2)
+                    ->count()],
             3 => [floor(($max - $spread * 3)/1000000).' to '.floor(($max - $spread * 2)/1000000).' MB/s' => 
-                QueryHelper::start_query()
-                ->whereBetween('disk_4k_read_speed', [($max - $spread * 3), ($max - $spread * 2)])
-                ->count()],
+                QueryHelper::disk_4k_read_speed_where(QueryHelper::start_query(), 3)
+                    ->count()],
             4 => ['< '.floor(($max - $spread *  3)/1000000).' MB/s' => 
-                QueryHelper::start_query()
-                ->where('disk_4k_read_speed', '<', ($max - $spread * 3))
-                ->count()],
+                QueryHelper::disk_4k_read_speed_where(QueryHelper::start_query(), 4)
+                    ->count()],
         ];
     }
 
 
-    public static function disk_4k_write_speed_count()
+    public static function disk_4k_read_speed_where($query, $index)
+    {
+        $max = QueryHelper::start_query()->max('disk_4k_read_speed');
+        $min = QueryHelper::start_query()->min('disk_4k_read_speed');
+        $spread = floor(($max - $min) / 4 / 1000000) * 1000000;
+
+        if($index == 1) {return $query->where('disk_4k_read_speed', '>', ($max - $spread));}
+        if($index == 2) {return $query->whereBetween('disk_4k_read_speed', [($max - $spread * 2), ($max - $spread)]);}
+        if($index == 3) {return $query->whereBetween('disk_4k_read_speed', [($max - $spread * 3), ($max - $spread * 2)]);}
+        if($index == 4) {return $query->where('disk_4k_read_speed', '<', ($max - $spread * 3));}
+    }
+
+
+    public static function disk_4k_read_speed_where_not($query, $index)
+    {
+        $max = QueryHelper::start_query()->max('disk_4k_read_speed');
+        $min = QueryHelper::start_query()->min('disk_4k_read_speed');
+        $spread = floor(($max - $min) / 4 / 1000000) * 1000000;
+
+        if($index == 1) {return $query->where('disk_4k_read_speed', '<=', ($max - $spread));}
+        if($index == 2) {return $query->whereNotBetween('disk_4k_read_speed', [($max - $spread * 2), ($max - $spread)]);}
+        if($index == 3) {return $query->whereNotBetween('disk_4k_read_speed', [($max - $spread * 3), ($max - $spread * 2)]);}
+        if($index == 4) {return $query->where('disk_4k_read_speed', '>=', ($max - $spread * 3));}
+    }
+
+
+    public static function disk_4k_write_speed_count($merged_ids)
     {
         $max = QueryHelper::start_query()->max('disk_4k_write_speed');
         $min = QueryHelper::start_query()->min('disk_4k_write_speed');
         $spread = floor(($max - $min) / 4 / 1000000) * 1000000;
 
+        if(!empty($merged_ids)) {
+            return [
+                1 => ['> '.floor(($max - $spread)/1000000).' MB/s' =>
+                    QueryHelper::disk_4k_write_speed_where(QueryHelper::start_query(), 1)
+                        ->whereIn('id', $merged_ids)->count()],
+                2 => [floor(($max - $spread * 2)/1000000).' to '.floor(($max - $spread * 2)/1000000).' MB/s' => 
+                    QueryHelper::disk_4k_write_speed_where(QueryHelper::start_query(), 2)
+                        ->whereIn('id', $merged_ids)->count()],
+                3 => [floor(($max - $spread * 3)/1000000).' to '.floor(($max - $spread * 2)/1000000).' MB/s' => 
+                    QueryHelper::disk_4k_write_speed_where(QueryHelper::start_query(), 3)
+                        ->whereIn('id', $merged_ids)->count()],
+                4 => ['< '.floor(($max - $spread *  3)/1000000).' MB/s' => 
+                    QueryHelper::disk_4k_write_speed_where(QueryHelper::start_query(), 4)
+                        ->whereIn('id', $merged_ids)->count()],
+            ];
+        }
         return [
             1 => ['> '.floor(($max - $spread)/1000000).' MB/s' =>
-                QueryHelper::start_query()
-                ->where('disk_4k_write_speed', '>', ($max - $spread))
-                ->count()],
+                QueryHelper::disk_4k_write_speed_where(QueryHelper::start_query(), 1)
+                    ->count()],
             2 => [floor(($max - $spread * 2)/1000000).' to '.floor(($max - $spread * 2)/1000000).' MB/s' => 
-                QueryHelper::start_query()
-                ->whereBetween('disk_4k_write_speed', [($max - $spread * 2), ($max - $spread)])
-                ->count()],
+                QueryHelper::disk_4k_write_speed_where(QueryHelper::start_query(), 2)
+                    ->count()],
             3 => [floor(($max - $spread * 3)/1000000).' to '.floor(($max - $spread * 2)/1000000).' MB/s' => 
-                QueryHelper::start_query()
-                ->whereBetween('disk_4k_write_speed', [($max - $spread * 3), ($max - $spread * 2)])
-                ->count()],
+                QueryHelper::disk_4k_write_speed_where(QueryHelper::start_query(), 3)
+                    ->count()],
             4 => ['< '.floor(($max - $spread *  3)/1000000).' MB/s' => 
-                QueryHelper::start_query()
-                ->where('disk_4k_write_speed', '<', ($max - $spread * 3))
-                ->count()],
+                QueryHelper::disk_4k_write_speed_where(QueryHelper::start_query(), 4)
+                    ->count()],
         ];
     }
 
 
-    public static function disk_4k_total_iops_count()
+    public static function disk_4k_write_speed_where($query, $index)
     {
-        $max_4k_iops = QueryHelper::start_query()->max('disk_4k_total_iops');
-        $min_4k_iops = QueryHelper::start_query()->min('disk_4k_total_iops');
-        $disk_4k_spreads = floor(($max_4k_iops - $min_4k_iops) / 4 / 1000) * 1000;
+        $max = QueryHelper::start_query()->max('disk_4k_write_speed');
+        $min = QueryHelper::start_query()->min('disk_4k_write_speed');
+        $spread = floor(($max - $min) / 4 / 1000000) * 1000000;
 
+        if($index == 1) {return $query->where('disk_4k_write_speed', '>', ($max - $spread));}
+        if($index == 2) {return $query->whereBetween('disk_4k_write_speed', [($max - $spread * 2), ($max - $spread)]);}
+        if($index == 3) {return $query->whereBetween('disk_4k_write_speed', [($max - $spread * 3), ($max - $spread * 2)]);}
+        if($index == 4) {return $query->where('disk_4k_write_speed', '<', ($max - $spread * 3));}
+    }
+
+
+    public static function disk_4k_write_speed_where_not($query, $index)
+    {
+        $max = QueryHelper::start_query()->max('disk_4k_write_speed');
+        $min = QueryHelper::start_query()->min('disk_4k_write_speed');
+        $spread = floor(($max - $min) / 4 / 1000000) * 1000000;
+
+        if($index == 1) {return $query->where('disk_4k_write_speed', '<=', ($max - $spread));}
+        if($index == 2) {return $query->whereNotBetween('disk_4k_write_speed', [($max - $spread * 2), ($max - $spread)]);}
+        if($index == 3) {return $query->whereNotBetween('disk_4k_write_speed', [($max - $spread * 3), ($max - $spread * 2)]);}
+        if($index == 4) {return $query->where('disk_4k_write_speed', '>=', ($max - $spread * 3));}
+    }
+
+
+    public static function disk_4k_total_iops_count($merged_ids)
+    {
+        $max = QueryHelper::start_query()->max('disk_4k_total_iops');
+        $min = QueryHelper::start_query()->min('disk_4k_total_iops');
+        $spread = floor(($max - $min) / 4 / 1000) * 1000;
+
+        if(!empty($merged_ids)) {
+            return [
+                1 => ['> '.floor(($max - $spread)/1000).'K' => 
+                    QueryHelper::disk_4k_total_iops_where(QueryHelper::start_query(), 1)
+                        ->whereIn('id', $merged_ids)->count()],
+                2 => [floor(($max - $spread * 2)/1000).'K to '.floor(($max - $spread * 2)/1000).'K' => 
+                    QueryHelper::disk_4k_total_iops_where(QueryHelper::start_query(), 2)
+                        ->whereIn('id', $merged_ids)->count()],
+                3 => [floor(($max - $spread * 3)/1000).'K to '.floor(($max - $spread * 2)/1000).'K' => 
+                    QueryHelper::disk_4k_total_iops_where(QueryHelper::start_query(), 3)
+                        ->whereIn('id', $merged_ids)->count()],
+                4 => ['< '.floor(($max - $spread *  3)/1000).'K' => 
+                    QueryHelper::disk_4k_total_iops_where(QueryHelper::start_query(), 4)
+                        ->whereIn('id', $merged_ids)->count()],
+            ];
+        }
         return [
-            1 => ['> '.floor(($max_4k_iops - $disk_4k_spreads)/1000).'K' => QueryHelper::start_query()
-                ->where('disk_4k_total_iops', '>', ($max_4k_iops - $disk_4k_spreads))
-                ->count()],
-            2 => [floor(($max_4k_iops - $disk_4k_spreads * 2)/1000).'K to '.floor(($max_4k_iops - $disk_4k_spreads * 2)/1000).'K' => 
-                QueryHelper::start_query()
-                ->whereBetween('disk_4k_total_iops', [($max_4k_iops - $disk_4k_spreads * 2), ($max_4k_iops - $disk_4k_spreads)])
-                ->count()],
-            3 => [floor(($max_4k_iops - $disk_4k_spreads * 3)/1000).'K to '.floor(($max_4k_iops - $disk_4k_spreads * 2)/1000).'K' => 
-                QueryHelper::start_query()
-                ->whereBetween('disk_4k_total_iops', [($max_4k_iops - $disk_4k_spreads * 3), ($max_4k_iops - $disk_4k_spreads * 2)])
-                ->count()],
-            4 => ['< '.floor(($max_4k_iops - $disk_4k_spreads *  3)/1000).'K' => 
-                QueryHelper::start_query()
-                ->where('disk_4k_total_iops', '<', ($max_4k_iops - $disk_4k_spreads * 3))
-                ->count()],
+            1 => ['> '.floor(($max - $spread)/1000).'K' => 
+                QueryHelper::disk_4k_total_iops_where(QueryHelper::start_query(), 1)
+                    ->count()],
+            2 => [floor(($max - $spread * 2)/1000).'K to '.floor(($max - $spread * 2)/1000).'K' => 
+                QueryHelper::disk_4k_total_iops_where(QueryHelper::start_query(), 2)
+                    ->count()],
+            3 => [floor(($max - $spread * 3)/1000).'K to '.floor(($max - $spread * 2)/1000).'K' => 
+                QueryHelper::disk_4k_total_iops_where(QueryHelper::start_query(), 3)
+                    ->count()],
+            4 => ['< '.floor(($max - $spread *  3)/1000).'K' => 
+                QueryHelper::disk_4k_total_iops_where(QueryHelper::start_query(), 4)
+                    ->count()],
         ];
+    }
+
+
+    public static function disk_4k_total_iops_where($query, $index)
+    {
+        $max = QueryHelper::start_query()->max('disk_4k_total_iops');
+        $min = QueryHelper::start_query()->min('disk_4k_total_iops');
+        $spread = floor(($max - $min) / 4 / 1000) * 1000;
+
+        if($index == 1) {return $query->where('disk_4k_total_iops', '>', ($max - $spread));}
+        if($index == 2) {return $query->whereBetween('disk_4k_total_iops', [($max - $spread * 2), ($max - $spread)]);}
+        if($index == 3) {return $query->whereBetween('disk_4k_total_iops', [($max - $spread * 3), ($max - $spread * 2)]);}
+        if($index == 4) {return $query->where('disk_4k_total_iops', '<', ($max - $spread * 3));}
+    }
+
+
+    public static function disk_4k_total_iops_where_not($query, $index)
+    {
+        $max = QueryHelper::start_query()->max('disk_4k_total_iops');
+        $min = QueryHelper::start_query()->min('disk_4k_total_iops');
+        $spread = floor(($max - $min) / 4 / 1000) * 1000;
+
+        if($index == 1) {return $query->where('disk_4k_total_iops', '<=', ($max - $spread));}
+        if($index == 2) {return $query->whereNotBetween('disk_4k_total_iops', [($max - $spread * 2), ($max - $spread)]);}
+        if($index == 3) {return $query->whereNotBetween('disk_4k_total_iops', [($max - $spread * 3), ($max - $spread * 2)]);}
+        if($index == 4) {return $query->where('disk_4k_total_iops', '>', ($max - $spread * 3));}
     }
 
 

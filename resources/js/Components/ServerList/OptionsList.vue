@@ -276,10 +276,10 @@
 				<transition name="slide-fade">
 					<ul v-if="cores_open">
 						<li v-for="(option, index) in options.cores" :key="index"
-						class="flex justify-center w-100 mb-px">
+						class="w-11/12 mb-px">
 						<input checked type="checkbox" @click="select_index_item(selected_items.selected_cores, index)">
-							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
+							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
 					</ul>
 				</transition>
@@ -292,10 +292,10 @@
 				<transition name="slide-fade">
 					<ul v-if="ram_open">
 						<li v-for="(option, index) in options.ram" :key="index"
-						class="flex justify-center w-100 mb-px">
+						class="w-11/12 mb-px">
 						<input checked type="checkbox" @click="select_index_item(selected_items.selected_ram, index)">
-							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
+							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
 					</ul>
 				</transition>
@@ -308,10 +308,10 @@
 				<transition name="slide-fade">
 					<ul v-if="gb5_single_open">
 						<li v-for="(option, index) in options.geekbench_5_single" :key="index"
-						class="flex justify-center w-100 mb-px">
+						class="w-11/12 mb-px">
 						<input checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_single, index)">
-							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
+							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
 					</ul>
 				</transition>
@@ -324,10 +324,10 @@
 				<transition name="slide-fade">
 					<ul v-if="gb5_multi_open">
 						<li v-for="(option, index) in options.geekbench_5_multi" :key="index"
-						class="flex justify-center w-100 mb-px">
+						class="w-11/12 mb-px">
 						<input checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_multi, index)">
-							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
+							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
 					</ul>
 				</transition>
@@ -340,10 +340,10 @@
 				<transition name="slide-fade">
 					<ul v-if="disk_4k_read_open">
 						<li v-for="(option, index) in options.disk_4k_read_speed" :key="index"
-						class="flex justify-center w-100 mb-px">
+						class="w-11/12 mb-px">
 						<input checked type="checkbox" @click="select_index_item(selected_items.selected_4k_read_speed, index)">
-							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
+							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
 					</ul>
 				</transition>
@@ -356,10 +356,10 @@
 				<transition name="slide-fade">
 					<ul v-if="disk_4k_write_open">
 						<li v-for="(option, index) in options.disk_4k_write_speed" :key="index"
-						class="flex justify-center w-100 mb-px">
+						class="w-11/12 mb-px">
 						<input checked type="checkbox" @click="select_index_item(selected_items.selected_4k_write_speed, index)">
-							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
+							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
 					</ul>
 				</transition>
@@ -372,10 +372,26 @@
 				<transition name="slide-fade">
 					<ul v-if="iops_4k_open">
 						<li v-for="(option, index) in options.disk_4k_total_iops" :key="index"
-						class="flex justify-center w-100 mb-px">
+						class="w-11/12 mb-px">
 						<input checked type="checkbox" @click="select_index_item(selected_items.selected_4k_total_iops,index)">
-							<span class="w-1/2 pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="w-1/2 font-bold">({{ Object.values(option)[0] }})</span>
+							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
+						</li>
+					</ul>
+				</transition>
+
+				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+				@click="avg_network_4k_open = !avg_network_4k_open">Average Network Speed
+					<font-awesome-icon v-if="avg_network_4k_open" icon="fa-caret-left" />
+					<font-awesome-icon v-else icon="fa-caret-right" />	
+				</p>
+				<transition name="slide-fade">
+					<ul v-if="avg_network_4k_open">
+						<li v-for="(option, index) in options.average_network_speed" :key="index"
+						class="w-11/12 mb-px">
+						<input checked type="checkbox" @click="select_index_item(selected_items.selected_avg_network,index)">
+							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
 					</ul>
 				</transition>
@@ -414,14 +430,15 @@
 				options: {},
 				show_columns: {},
 				columns_open: false,
-				cores_open: false,
-				ram_open: false,
-				gb5_single_open: false,
-				gb5_multi_open: false,
-				providers_open: false,
-				disk_4k_read_open: false,
-				disk_4k_write_open: false,
-				iops_4k_open: false,
+				cores_open: true,
+				ram_open: true,
+				gb5_single_open: true,
+				gb5_multi_open: true,
+				providers_open: true,
+				disk_4k_read_open: true,
+				disk_4k_write_open: true,
+				iops_4k_open: true,
+				avg_network_4k_open: true,
 				static_provider_list: [],
 				selected_items: {
 					selected_ram: [],
@@ -432,11 +449,13 @@
 					selected_4k_total_iops: [],
 					selected_gb5_single: [],
 					selected_gb5_multi: [],
+					selected_avg_network: []
 				}
 			}
 		},
 		methods: {
 			get_options_counts(initial = false) {
+				console.log(this.selected_items)
 				axios.post('/get_options_counts',
 				{
 					selected_items: this.selected_items
@@ -525,7 +544,7 @@
 <style scoped>
 	.table-options {
 		padding-bottom: 200px;
-		width: 350px;
+		width: 320px;
 		height: 100vh;
 		position: fixed;
 		top: 0;
