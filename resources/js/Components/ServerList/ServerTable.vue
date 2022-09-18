@@ -429,6 +429,11 @@
 			},
 			computed: {
 			},
+			watch: {
+				options_open() {
+					this.$emit('options_open', this.options_open)
+				}
+			},
 			mounted() {
 				this.servers = this.passed_servers
 				this.pageCount = Math.ceil(this.passed_server_count / this.limit)
@@ -486,4 +491,6 @@
 		/* background: #ddd; */
 		/* background: rgb(166, 148, 248); */
 	}
+
+
 </style>

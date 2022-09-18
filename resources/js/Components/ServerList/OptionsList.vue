@@ -9,7 +9,7 @@
 			</button>
 
 			<div class="text-xs pl-6 mb-4">
-				<p class="mb-1 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+				<p class="mb-1 font-bold text-lg hover:text-purple-600 hover:cursor-pointer"
 				@click="columns_open = !columns_open">Select Columns 
 					<font-awesome-icon v-if="columns_open" icon="fa-caret-left" />
 					<font-awesome-icon v-else icon="fa-caret-right" />

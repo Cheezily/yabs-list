@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Transition name="slide-fade">
-			<div v-if="Object.keys(selected_server).length > 0" 
+			<div v-if="Object.keys(server).length > 0" 
 				class="hovered-server text-xs rounded-tl rounded-tr">
 
 				<button 
@@ -14,7 +14,7 @@
 					<div class="-mt-4 w-6/12">
 						<p class="column-title mb-2 text-sm">Network Tests</p>
 						<ul class="">
-							<li v-for="network in selected_server.networks" :key=network.id
+							<li v-for="network in server.networks" :key=network.id
 							class="mb-3">
 								<p><b>{{ network.location }}</b> - {{ network.provider }}</p>
 								<p>Receive Speed: ({{ format_network_speed(network.receive_speed) }})</p>
@@ -26,7 +26,7 @@
 					<div class="-mt-4 w-5/12">
 						<p class="column-title mb-2 text-sm">Note:</p>
 						<div class="text-xs">
-							{{ selected_server.note }}
+							{{ server.note }}
 						</div>
 					</div>
 
@@ -42,6 +42,11 @@
 		props: [
 			'selected_server'
 		],
+		data() {
+			return {
+				server: {}
+			}
+		},
 		methods: {
 			format_network_speed(speed) {
 				if(speed === 'busy') {return 'Busy'}
@@ -50,10 +55,22 @@
 				if(speed_k > 1000) return (speed_k / 1000).toFixed(2) + ' MB/s'
 				return speed_k.toFixed(2) + ' KB/s'
 			},
+			get_server_details() {
+				axios.post('/get_network_details', {
+					server: this.selected_server.id
+				})
+				.then(res => {
+					console.log()
+					this.server = res.data
+				})
+			}
 		},
 		watch: {
 			selected_server() {
+				console.log('clicked on server')
 				console.log(this.selected_server)
+				this.server = this.selected_server
+				this.get_server_details()
 			}
 		},
 		mounted() {
