@@ -37,7 +37,8 @@ export default {
 
     <div class="pb-[400px] bg-gray-100">
         <div class=" relative flex items-top justify-center bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0 h-16">
-            <div v-if="false && can_login" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+            
+            <div v-if="can_login" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                 <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="text-sm text-gray-700 dark:text-gray-500 underline">Your Servers</Link>
 
                 <template v-else>

@@ -277,7 +277,8 @@
 					<ul v-if="cores_open">
 						<li v-for="(option, index) in options.cores" :key="index"
 						class="w-11/12 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_items.selected_cores, index)">
+							<input :disabled=disable_all 
+								checked type="checkbox" @click="select_index_item(selected_items.selected_cores, index)">
 							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -293,7 +294,8 @@
 					<ul v-if="ram_open">
 						<li v-for="(option, index) in options.ram" :key="index"
 						class="w-11/12 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_items.selected_ram, index)">
+							<input :disabled=disable_all 
+								checked type="checkbox" @click="select_index_item(selected_items.selected_ram, index)">
 							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -309,7 +311,8 @@
 					<ul v-if="gb5_single_open">
 						<li v-for="(option, index) in options.geekbench_5_single" :key="index"
 						class="w-11/12 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_single, index)">
+							<input :disabled=disable_all 
+								checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_single, index)">
 							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -325,7 +328,8 @@
 					<ul v-if="gb5_multi_open">
 						<li v-for="(option, index) in options.geekbench_5_multi" :key="index"
 						class="w-11/12 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_multi, index)">
+							<input :disabled=disable_all 
+								checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_multi, index)">
 							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -341,7 +345,8 @@
 					<ul v-if="disk_4k_read_open">
 						<li v-for="(option, index) in options.disk_4k_read_speed" :key="index"
 						class="w-11/12 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_items.selected_4k_read_speed, index)">
+							<input :disabled=disable_all 
+								checked type="checkbox" @click="select_index_item(selected_items.selected_4k_read_speed, index)">
 							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -357,7 +362,8 @@
 					<ul v-if="disk_4k_write_open">
 						<li v-for="(option, index) in options.disk_4k_write_speed" :key="index"
 						class="w-11/12 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_items.selected_4k_write_speed, index)">
+							<input :disabled=disable_all 
+								checked type="checkbox" @click="select_index_item(selected_items.selected_4k_write_speed, index)">
 							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -373,7 +379,8 @@
 					<ul v-if="iops_4k_open">
 						<li v-for="(option, index) in options.disk_4k_total_iops" :key="index"
 						class="w-11/12 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_items.selected_4k_total_iops,index)">
+							<input :disabled=disable_all 
+								checked type="checkbox" @click="select_index_item(selected_items.selected_4k_total_iops,index)">
 							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -389,7 +396,8 @@
 					<ul v-if="avg_network_4k_open">
 						<li v-for="(option, index) in options.average_network_speed" :key="index"
 						class="w-11/12 mb-px">
-						<input checked type="checkbox" @click="select_index_item(selected_items.selected_avg_network,index)">
+							<input :disabled=disable_all 
+								checked type="checkbox" @click="select_index_item(selected_items.selected_avg_network,index)">
 							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
 						</li>
@@ -405,7 +413,8 @@
 					<ul v-if="providers_open">
 						<li v-for="option in options.providers" :key="option"
 						class="w-11/12 mb-px">
-							<input checked type="checkbox" @click="select_index_item(selected_items.selected_providers, Object.values(option)[0])">
+							<input :disabled=disable_all 
+								:checked="Object.values(option)[1] > 0" type="checkbox" @click="select_index_item(selected_items.selected_providers, Object.values(option)[0])">
 							<span class="pl-1">{{ Object.values(option)[0] }}</span>
 							<span class="float-right font-bold">({{ Object.values(option)[1] }})</span>
 						</li>
@@ -427,6 +436,7 @@
 		],
 		data() {
 			return {
+				disable_all: false,
 				options: {},
 				show_columns: {},
 				columns_open: false,
@@ -455,6 +465,7 @@
 		},
 		methods: {
 			get_options_counts(initial = false) {
+				this.disable_all = true
 				console.log(this.selected_items)
 				axios.post('/get_options_counts',
 				{
@@ -513,6 +524,7 @@
 							return 0
 						})
 					}
+					this.disable_all = false
 				})
 			},
 			select_index_item(list, index) {

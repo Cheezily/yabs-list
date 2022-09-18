@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: Anton;
+  src: url('/public/fonts/Anton.ttf')
+}
+
+.logo {
+  position: relative;
+  top: -6px;
+  font-family: Anton;
+  font-size: 34px;
+  background: -webkit-linear-gradient(#ccc, #111);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
