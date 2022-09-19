@@ -34,14 +34,6 @@ class ResultsController extends Controller
 
     public function update_results(Request $request)
     {
-        // dd($request->selected_items);
-
-        //////////////////////////////////////////////
-        //////////////////////////////////////////////
-        // TRY INCLUDING WHERENOTBETWEEN AND ITERATING
-        //////////////////////////////////////////////
-        //////////////////////////////////////////////
-
         $merged_ids = [];
         if($request->has('selected_items')) {
             $merged_ids = MergedIdsHelper::getMergedIds($request);
@@ -56,13 +48,10 @@ class ResultsController extends Controller
                 ->limit($request->limit);
 
         return response()->json([
-            // 'cores_results' => $selected_cores,
-            'where_in' => $merged_ids,
-            'merged_count' => count($merged_ids),
+            'server_count' => count($merged_ids),
             'merged' => $test->get(),
             'count' => $test->count(),
             'page' => $request->page,
-            'server_count' => Server::count()
         ]);
     }
 }

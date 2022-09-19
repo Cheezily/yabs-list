@@ -363,7 +363,6 @@
 							sort_direction: this.sort_direction,
 							page: this.page,
 							user_id: this.user_id,
-							
 					})
 					.then(res => {
 							this.servers = res.data.results
