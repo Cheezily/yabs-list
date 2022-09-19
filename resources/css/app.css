@@ -9,9 +9,9 @@
 
 .logo {
   position: relative;
-  top: -6px;
+  top: -8px;
   font-family: Anton;
-  font-size: 34px;
+  font-size: 32px;
   background: -webkit-linear-gradient(#ccc, #111);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

@@ -36,9 +36,10 @@ export default {
     <Head title="YABS List" />
 
     <div class="pb-[400px] bg-gray-100">
-        <div class=" relative flex items-top justify-center bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0 h-16">
-            
-            <div v-if="can_login" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
+        <div class=" relative flex items-top justify-between bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0 h-16">
+            <h1 class="logo ml-3 pt-0 left">YABSLIST</h1>
+
+            <div v-if="can_login" class="mt-6 hidden fixed top-0 px-3 py-4 sm:block">
                 <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="text-sm text-gray-700 dark:text-gray-500 underline">Your Servers</Link>
 
                 <template v-else>
@@ -71,5 +72,11 @@ export default {
 
 .options_open {
     margin-left: 280px;
+}
+
+.logo {
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 </style>

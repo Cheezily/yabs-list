@@ -559,10 +559,11 @@
 		width: 320px;
 		height: 100vh;
 		position: fixed;
-		top: 0;
+		top: 62px;
 		left: 0;
 		z-index: 20;
 		overflow: auto;
+		border-top: 2px #222;
 		box-shadow: 0 10px 10px 4px #777;
 		background: rgb(224,223,255);
 		background: linear-gradient(180deg, rgb(233, 232, 255) 0%, rgb(230, 230, 255) 40%, rgb(232, 251, 255) 100%); 

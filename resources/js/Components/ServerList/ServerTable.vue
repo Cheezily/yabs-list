@@ -13,7 +13,7 @@
 		<div class="max-w-10xl mx-auto sm:px-2 lg:px-8">
 			
 			<div class="flex justify-center">
-				<h1 class="logo mr-6">YABSLIST</h1>
+				
 				<button @click="options_open = !options_open"
 				class="options-button font-bold rounded px-4 py-2 mb-3">
 				{{ options_open ? 'Close' : 'Open' }} Options</button>
