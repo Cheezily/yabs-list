@@ -466,7 +466,6 @@
 		methods: {
 			get_options_counts(initial = false) {
 				this.disable_all = true
-				console.log(this.selected_items)
 				axios.post('/get_options_counts',
 				{
 					selected_items: this.selected_items
