@@ -13,7 +13,7 @@ class CountController extends Controller
     {
         $merged_ids = MergedIdsHelper::getMergedIds($request);
 
-        return response()->json([
+        $counts = [
             'ram' => QueryHelper::ram_count($merged_ids),
             'cores' => QueryHelper::cores_count($merged_ids),
             'providers' => QueryHelper::provider_names_count($merged_ids),
@@ -24,6 +24,8 @@ class CountController extends Controller
             'average_network_speed' => QueryHelper::average_network_speed_count($merged_ids),
             'geekbench_5_single' => QueryHelper::geekbench_5_single_count($merged_ids),
             'geekbench_5_multi' => QueryHelper::geekbench_5_multi_count($merged_ids),
-        ]);
+        ];
+
+        return response($counts);
     }
 }
