@@ -558,7 +558,7 @@
 		width: 320px;
 		height: 100vh;
 		position: fixed;
-		top: 62px;
+		top: 64px;
 		left: 0;
 		z-index: 20;
 		overflow: auto;

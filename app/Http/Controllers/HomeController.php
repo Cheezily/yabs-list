@@ -25,9 +25,13 @@ class HomeController extends Controller
             'user' => $user,
             'settings' => Setting::first(),
         ]);
+    }
 
-        return view('dashboard', [
-            'user' => $user,
+
+    public function new_yabs()
+    {
+        return Inertia::render('NewYabs', [
+            'user' => Auth::user(),
             'settings' => Setting::first(),
         ]);
     }

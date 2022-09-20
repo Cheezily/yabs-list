@@ -6,7 +6,7 @@ import ServerTable from '@/Components/ServerList/ServerTable.vue';
 export default {
     components: {
     Head,
-    ServerTable
+    ServerTable,
 },
     layout: AuthenticatedLayout,
     props: {
@@ -17,7 +17,6 @@ export default {
     },
     mounted() {
         console.log('helllooooo')
-        console.log(AuthenticatedLayout)
     }
 }
 </script>
@@ -36,7 +35,11 @@ export default {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <ServerTable :servers=user.servers></ServerTable>
+                        <ServerTable 
+                        :options_open=false
+                        :user=user
+                        :servers=user.servers
+                        ></ServerTable>
                     </div>
                 </div>
             </div>

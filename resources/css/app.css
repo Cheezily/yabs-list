@@ -8,8 +8,6 @@
 }
 
 .logo {
-  position: relative;
-  top: -8px;
   font-family: Anton;
   font-size: 32px;
   background: -webkit-linear-gradient(#ccc, #111);

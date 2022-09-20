@@ -37,15 +37,18 @@ export default {
 
     <div class="pb-[400px] bg-gray-100">
         <div class=" relative flex items-top justify-between bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0 h-16">
-            <h1 class="logo ml-3 pt-0 left">YABSLIST</h1>
+            <h1 class="logo ml-3 -mt-1 left">YABSLIST</h1>
 
-            <div v-if="can_login" class="mt-6 hidden fixed top-0 px-3 py-4 sm:block">
-                <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="text-sm text-gray-700 dark:text-gray-500 underline">Your Servers</Link>
+            <div v-if="can_login" class="mt-5 hidden fixed top-0 px-3 py-4 sm:block">
+                <Link v-if="$page.props.auth.user" :href="route('dashboard')" 
+                class="text-sm text-gray-700 dark:text-gray-500 underline">Your Servers</Link>
 
                 <template v-else>
-                    <Link :href="route('login')" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</Link>
+                    <Link :href="route('login')" 
+                    class="font-bold text-sm text-orange-500 hover:text-orange-700 underline">Log in</Link>
 
-                    <Link v-if="can_register" :href="route('register')" class="ml-4 text-sm text-gray-700 dark:text-gray-500 underline">Register</Link>
+                    <Link v-if="can_register" :href="route('register')" 
+                    class="ml-4 font-bold text-sm text-orange-500 hover:text-orange-700 underline">Register</Link>
                 </template>
             </div>
         </div>
@@ -55,6 +58,8 @@ export default {
             :class="{'options_open': !options_open}">
                 <ServerTable 
                 @options_open="options_open = !options_open"
+                :options_open=true
+                :user=null
                 :passed_server_count=server_count 
                 :passed_servers=passed_servers>
                 </ServerTable>

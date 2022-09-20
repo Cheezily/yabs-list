@@ -41,6 +41,9 @@ Route::get('/dashboard', [
     \App\Http\Controllers\HomeController::class, 'index'
 ])->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/new_yabs', [
+    \App\Http\Controllers\HomeController::class, 'new_yabs'
+])->middleware(['auth', 'verified'])->name('new_yabs');
 
 Route::post('/get_options_counts', [
     \App\Http\Controllers\CountController::class, 'get_options_counts'

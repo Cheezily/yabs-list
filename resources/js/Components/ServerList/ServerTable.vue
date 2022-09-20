@@ -267,6 +267,8 @@
 				'passed_servers',
 				'passed_server_count',
 				'user_id',
+				'options_open',
+				'user'
 			],
 			components: {
     ServerRow,
@@ -281,7 +283,6 @@
 				return {
 					servers: [],
 					selected_server: {},
-					options_open: true,
 					show_columns: {
 						user: false,
 						provider_name: true,
