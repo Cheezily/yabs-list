@@ -8,10 +8,11 @@ use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = User::with(
             [
@@ -20,6 +21,11 @@ class HomeController extends Controller
             ])
             ->where('id', Auth::user()->id)
             ->first();
+
+        Inertia::share('flash', [
+            'status' => 'success',
+            'message' => 'this is your test'
+        ]);
 
         return Inertia::render('Dashboard', [
             'user' => $user,

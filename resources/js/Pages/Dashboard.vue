@@ -35,7 +35,14 @@ export default {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <ServerTable 
+                        <div v-if="user.servers.length == 0">
+                            <h1>
+                                You have no submitted benchmarks to display. Click the link
+                                on the bar above to submit one!
+                            </h1>
+                        </div>
+
+                        <ServerTable v-else
                         :options_open=false
                         :user=user
                         :servers=user.servers

@@ -53,4 +53,8 @@ Route::post('/get_network_details', function (Request $request) {
     return Server::with('networks')->findOrFail($request->get('server'));
 });
 
+Route::post('/server/create', [
+    \App\Http\Controllers\ServerController::class, 'create'
+]);
+
 require __DIR__.'/auth.php';
