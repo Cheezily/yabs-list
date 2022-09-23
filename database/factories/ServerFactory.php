@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Setting;
+use App\Helpers\SettingsHelper;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,48 +18,6 @@ class ServerFactory extends Factory
      */
     public function definition()
     {
-
-//        $table->string('provider_name');
-//        $table->dateTime('when');
-//        $table->string('city');
-//        $table->string('cpu');
-//        $table->integer('cores');
-//        $table->integer('ram');
-//        $table->integer('swap');
-//        $table->string('distro');
-//        $table->string('kernel');
-//        $table->boolean('AES-NI')->default(false);
-//        $table->boolean('VM-x/AMD-V')->default(false);
-//        $table->bigInteger('disk-4k-read-speed');
-//        $table->integer('disk-4k-read-iops');
-//        $table->bigInteger('disk-4k-write-speed');
-//        $table->integer('disk-4k-write-iops');
-//        $table->bigInteger('disk-4k-total-speed');
-//        $table->integer('disk-4k-total-iops');
-//        $table->bigInteger('disk-64k-read-speed');
-//        $table->integer('disk-64k-read-iops');
-//        $table->bigInteger('disk-64k-write-speed');
-//        $table->integer('disk-64k-write-iops');
-//        $table->bigInteger('disk-64k-total-speed');
-//        $table->integer('disk-64k-total-iops');
-//        $table->bigInteger('disk-512k-read-speed');
-//        $table->integer('disk-512k-read-iops');
-//        $table->bigInteger('disk-512k-write-speed');
-//        $table->integer('disk-512k-write-iops');
-//        $table->bigInteger('disk-512k-total-speed');
-//        $table->integer('disk-512k-total-iops');
-//        $table->bigInteger('disk-1m-read-speed');
-//        $table->integer('disk-1m-read-iops');
-//        $table->bigInteger('disk-1m-write-speed');
-//        $table->integer('disk-1m-write-iops');
-//        $table->bigInteger('disk-1m-total-speed');
-//        $table->integer('disk-1m-total-iops');
-//        $table->integer('geekbench-5-single');
-//        $table->integer('geekbench-5-multi');
-//        $table->integer('geekbench-5-link');
-//        $table->string('virtualization');
-//        $table->string('note')->nullable();
-
 
         $user_count = User::count();
 
@@ -169,7 +127,7 @@ class ServerFactory extends Factory
         $geekbench_5_multi = $geekbench_5_single * $cores * (mt_rand(75, 95) / 100);
 
         $type = mt_rand(0,1) == 1 ? 'vps' : 'dedi';
-        $virt_types = explode(',', Setting::first()->virt_types);
+        $virt_types = explode(',', SettingsHelper::virt_types());
         $virtualization = $virt_types[array_rand($virt_types)];
 
         return [

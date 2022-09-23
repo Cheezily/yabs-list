@@ -23,8 +23,8 @@ return new class extends Migration
             $table->string('cpu');
             $table->integer('cores');
             $table->integer('clock_speed');
-            $table->integer('ram');
-            $table->integer('swap');
+            $table->bigInteger('ram');
+            $table->bigInteger('swap');
             $table->string('distro')->nullable();
             $table->string('kernel')->nullable();
             $table->boolean('aes_ni')->default(false);

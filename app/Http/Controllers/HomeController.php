@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SettingsHelper;
 use Inertia\Inertia;
 use App\Models\Server;
 use App\Models\Setting;
@@ -30,7 +31,7 @@ class HomeController extends Controller
 
         return Inertia::render('Dashboard', [
             'user' => $user,
-            'settings' => Setting::first(),
+            'settings' => SettingsHelper::all(),
         ]);
     }
 
@@ -39,7 +40,7 @@ class HomeController extends Controller
     {
         return Inertia::render('NewYabs', [
             'user' => Auth::user(),
-            'settings' => Setting::first(),
+            'settings' => SettingsHelper::all(),
         ]);
     }
 }

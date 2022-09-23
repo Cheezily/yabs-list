@@ -1,9 +1,10 @@
 <?php
 
-use App\Models\Setting;
+use App\Helpers\SettingsHelper;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -21,8 +22,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Setting::create([
-            'virt_types' => 'KVM,OpenVZ 6,OpenVZ 7,LXC'
+        DB::table(SettingsHelper::getTableName())
+            ->insert([
+                'virt_types' => 'KVM,OpenVZ 6,OpenVZ 7,LXC'
         ]);
 
 

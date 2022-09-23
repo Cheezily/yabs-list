@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\Server;
+use App\Helpers\SettingsHelper;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,7 @@ Route::post('/update_results', [
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'anon_yabs' => DB::table('settings')->first()->anonymous_submissions == 1,
+        'anon_yabs' => SettingsHelper::allow_anonymous_submissions() == 1,
         'can_login' => Route::has('login'),
         'can_register' => Route::has('register'),
         'server_count' => \App\Models\Server::count(),
@@ -60,9 +61,9 @@ Route::post('/server/create', [
 ]);
 
 Route::get('/guest/new_yabs', function () {
-    if (DB::table('settings')->first()->anonymous_submissions == 1) {
+    if (SettingsHelper::allow_anonymous_submissions() == 1) {
         return Inertia::render('NewYabsGuest', [
-            
+            'virt_types' => SettingsHelper::virt_types()
         ]);
     }
 })->name('guest_yabs');

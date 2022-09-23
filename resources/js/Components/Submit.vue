@@ -6,6 +6,57 @@
 		</h1>
 
 	<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+
+		<div class="pl-4 mt-4 flex flex-wrap justify-content">
+			<div class="my-1 pl-2 w-full">
+				<label class="w-1/3 text-right inline-block text-gray-700" for="provider_name">
+					What is the name of the service provider?
+				</label>
+				<input v-model="provider_name"
+				id="provider_name" class="h-10 ml-2 w-1/2 rounded" type="text" />
+				<p v-if="errors['provider_name']" class="w-1/3 text-xs italic text-red-500 text-right">
+					{{ capitalize(errors.provider_name[0]) }}
+				</p>
+			</div>
+			<div class="my-1 pl-2 w-full">
+				<label class="w-1/3 text-right inline-block text-gray-700" for="city">
+					What city is this server located in?
+				</label>
+				<input v-model="city"
+				id="city" class="h-10 ml-2 w-1/2 rounded" type="text" />
+				<p v-if="errors['city']" class="w-1/3 text-xs italic text-red-500 text-right">
+					{{ capitalize(errors.city[0]) }}
+				</p>
+			</div>
+			<div class="my-1 pl-2 w-full">
+				<label class="w-1/3 text-right inline-block text-gray-700" for="type">
+					Is this a VPS or dedicated server?
+				</label>
+				<select class="h-10 rounded ml-2" v-model="type">
+					<option value="" disabled selected>Select One</option>
+					<option value="vps">VPS</option>
+					<option value="dedi">Dedicated</option>
+				</select>
+				<p v-if="errors['type']" class="w-1/3 text-xs italic text-red-500 text-right">
+					{{ capitalize(errors.type[0]) }}
+				</p>
+			</div>
+			<div class="my-1 pl-2 w-full">
+				<label class="w-1/3 text-right inline-block text-gray-700" for="type">
+					Virtualization Type?
+				</label>
+				<select class="h-10 rounded ml-2" v-model="virtualization">
+					<option value="" disabled selected>Select One</option>
+					<option v-for="virt_type in virt_types" :key="virt_type" :value=virt_type>{{ virt_type }}</option>
+				</select>
+				<p v-if="errors['virtualization']" class="w-1/3 text-xs italic text-red-500 text-right">
+					{{ capitalize(errors.virtualization[0]) }}
+				</p>
+			</div>
+		</div>
+
+		<hr class="mt-4">
+
 		<div class="p-6 bg-white border-b border-gray-200">
 			<h1 class="text-gray-600 text-lg">
 				Submit New Benchmark
@@ -40,6 +91,16 @@
 
 			<hr class="mt-2">
 
+			<div class="mt-1 flex flex-wrap justify-center">
+				<div class="my-1 pl-2 w-1/2">
+					<label class="w-1/3 inline-block text-sm text-right" for="when">When Was This Run?</label>
+					<input v-model="when"
+					id="when" class="ml-2 w-1/2 rounded text-sm h-7" type="text" />
+				</div>
+			</div>
+
+			<hr class="mt-2">
+
 			<div class="mt-1 flex flex-wrap justify-content">
 				<div class="my-1 pl-2 w-1/2">
 					<label class="w-1/4 inline-block text-sm text-right" for="cpu">CPU</label>
@@ -65,22 +126,22 @@
 					id="swap" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
 				</div>
 				<div class="my-1 pl-2 w-1/2">
-					<label class="w-1/4 inline-block text-sm text-right" for="gb5_single">GB 5 Single Score</label>
-					<input v-model="gb5_single"
-					id="gb5_single" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
+					<label class="w-1/4 inline-block text-sm text-right" for="geekbench_5_single">GB 5 Single Score</label>
+					<input v-model="geekbench_5_single"
+					id="geekbench_5_single" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
 				</div>
 				<div class="my-1 pl-2 w-1/2">
-					<label class="w-1/4 inline-block text-sm text-right" for="gb5_multi">GB 5 Multi Score</label>
-					<input v-model="gb5_multi"
-					id="gb5_multi" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
+					<label class="w-1/4 inline-block text-sm text-right" for="geekbench_5_multi">GB 5 Multi Score</label>
+					<input v-model="geekbench_5_multi"
+					id="geekbench_5_multi" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
 				</div>
 				<p v-if="errors['cpu']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.cpu[0]) }}</p>
 				<p v-if="errors['cores']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.cores[0]) }}</p>
 				<p v-if="errors['clock_speed']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.clock_speed[0]) }}</p>
 				<p v-if="errors['ram']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.ram[0]) }}</p>
 				<p v-if="errors['swap']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.swap[0]) }}</p>
-				<p v-if="errors['gb5_single']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.gb5_single[0]) }}</p>
-				<p v-if="errors['gb5_multi']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.gb5_multi[0]) }}</p>
+				<p v-if="errors['geekbench_5_single']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.geekbench_5_single[0]) }}</p>
+				<p v-if="errors['geekbench_5_multi']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.geekbench_5_multi[0]) }}</p>
 			</div>
 
 			<hr class="mt-2 mb-2">
@@ -119,164 +180,164 @@
 
 			<div class="mt-1 flex flex-wrap justify-content">
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_4k_speed">4K Read Speed</label>
-					<input v-model="read_4k_speed"
-					id="read_4k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_4k_read_speed">4K Read Speed</label>
+					<input v-model="disk_4k_read_speed"
+					id="disk_4k_read_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_4k_speed">4K Write Speed</label>
-					<input v-model="write_4k_speed"
-					id="write_4k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_4k_write_speed">4K Write Speed</label>
+					<input v-model="disk_4k_write_speed"
+					id="disk_4k_write_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_4k_speed">4K Total Speed</label>
-					<input v-model="total_4k_speed"
-					id="total_4k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_4k_total_speed">4K Total Speed</label>
+					<input v-model="disk_4k_total_speed"
+					id="disk_4k_total_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 
-				<p v-if="errors['read_4k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_4k_speed[0]) }}</p>
-				<p v-if="errors['write_4k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_4k_speed[0]) }}</p>
-				<p v-if="errors['total_4k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_4k_speed[0]) }}</p>
+				<p v-if="errors['disk_4k_read_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_4k_read_speed[0]) }}</p>
+				<p v-if="errors['disk_4k_write_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_4k_write_speed[0]) }}</p>
+				<p v-if="errors['disk_4k_total_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_4k_total_speed[0]) }}</p>
 				
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_4k_iops">4K Read IOPS</label>
-					<input v-model="read_4k_iops"
-					id="read_4k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_4k_read_iops">4K Read IOPS</label>
+					<input v-model="disk_4k_read_iops"
+					id="disk_4k_read_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_4k_iops">4K Write IOPS</label>
-					<input v-model="write_4k_iops"
-					id="write_4k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_4k_write_iops">4K Write IOPS</label>
+					<input v-model="disk_4k_write_iops"
+					id="disk_4k_write_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_4k_iops">4K Total IOPS</label>
-					<input v-model="total_4k_iops"
-					id="total_4k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_4k_total_iops">4K Total IOPS</label>
+					<input v-model="disk_4k_total_iops"
+					id="disk_4k_total_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 
-				<p v-if="errors['read_4k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_4k_iops[0]) }}</p>
-				<p v-if="errors['write_4k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_4k_iops[0]) }}</p>
-				<p v-if="errors['total_4k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_4k_iops[0]) }}</p>
+				<p v-if="errors['disk_4k_read_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_4k_read_iops[0]) }}</p>
+				<p v-if="errors['disk_4k_write_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_4k_write_iops[0]) }}</p>
+				<p v-if="errors['disk_4k_total_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_4k_total_iops[0]) }}</p>
 
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_64k_speed">64K Read Speed</label>
-					<input v-model="read_64k_speed"
-					id="read_64k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_64k_read_speed">64K Read Speed</label>
+					<input v-model="disk_64k_read_speed"
+					id="disk_64k_read_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_64k_speed">64K Write Speed</label>
-					<input v-model="write_64k_speed"
-					id="write_64k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_64k_write_speed">64K Write Speed</label>
+					<input v-model="disk_64k_write_speed"
+					id="disk_64k_write_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_64k_speed">64K Total Speed</label>
-					<input v-model="total_64k_speed"
-					id="total_64k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_64k_total_speed">64K Total Speed</label>
+					<input v-model="disk_64k_total_speed"
+					id="disk_64k_total_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 
-				<p v-if="errors['read_64k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_64k_speed[0]) }}</p>
-				<p v-if="errors['write_64k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_64k_speed[0]) }}</p>
-				<p v-if="errors['total_64k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_64k_speed[0]) }}</p>
+				<p v-if="errors['disk_64k_read_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_64k_read_speed[0]) }}</p>
+				<p v-if="errors['disk_64k_write_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_64k_write_speed[0]) }}</p>
+				<p v-if="errors['disk_64k_total_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_64k_total_speed[0]) }}</p>
 
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_64k_iops">64K Read IOPS</label>
-					<input v-model="read_64k_iops"
-					id="read_64k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_64k_read_iops">64K Read IOPS</label>
+					<input v-model="disk_64k_read_iops"
+					id="disk_64k_read_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_64k_iops">64K Write IOPS</label>
-					<input v-model="write_64k_iops"
-					id="write_64k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_64k_write_iops">64K Write IOPS</label>
+					<input v-model="disk_64k_write_iops"
+					id="disk_64k_write_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_64k_iops">64K Total IOPS</label>
-					<input v-model="total_64k_iops"
-					id="total_64k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_64k_total_iops">64K Total IOPS</label>
+					<input v-model="disk_64k_total_iops"
+					id="disk_64k_total_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 
-				<p v-if="errors['read_64k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_64k_iops[0]) }}</p>
-				<p v-if="errors['write_64k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_64k_iops[0]) }}</p>
-				<p v-if="errors['total_64k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_64k_iops[0]) }}</p>
+				<p v-if="errors['disk_64k_read_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_64k_read_iops[0]) }}</p>
+				<p v-if="errors['disk_64k_write_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_64k_write_iops[0]) }}</p>
+				<p v-if="errors['disk_64k_total_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_64k_total_iops[0]) }}</p>
 
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_512k_speed">512K Read Speed</label>
-					<input v-model="read_512k_speed"
-					id="read_512k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_512k_read_speed">512K Read Speed</label>
+					<input v-model="disk_512k_read_speed"
+					id="disk_512k_read_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_512k_speed">512K Write Speed</label>
-					<input v-model="write_512k_speed"
-					id="write_512k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_512k_write_speed">512K Write Speed</label>
+					<input v-model="disk_512k_write_speed"
+					id="disk_512k_write_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_512k_speed">512K Total Speed</label>
-					<input v-model="total_512k_speed"
-					id="total_512k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_512k_total_speed">512K Total Speed</label>
+					<input v-model="disk_512k_total_speed"
+					id="disk_512k_total_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 
-				<p v-if="errors['read_512k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_512k_speed[0]) }}</p>
-				<p v-if="errors['write_512k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_512k_speed[0]) }}</p>
-				<p v-if="errors['total_512k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_512k_speed[0]) }}</p>
+				<p v-if="errors['disk_512k_read_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_512k_read_speed[0]) }}</p>
+				<p v-if="errors['disk_512k_write_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_512k_write_speed[0]) }}</p>
+				<p v-if="errors['disk_512k_total_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_512k_total_speed[0]) }}</p>
 				
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_512k_iops">512K Read IOPS</label>
-					<input v-model="read_512k_iops"
-					id="read_512k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_512k_read_iops">512K Read IOPS</label>
+					<input v-model="disk_512k_read_iops"
+					id="disk_512k_read_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_512k_iops">512K Write IOPS</label>
-					<input v-model="write_512k_iops"
-					id="write_512k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_512k_write_iops">512K Write IOPS</label>
+					<input v-model="disk_512k_write_iops"
+					id="disk_512k_write_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_512k_iops">512K Total IOPS</label>
-					<input v-model="total_512k_iops"
-					id="total_512k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_512k_total_iops">512K Total IOPS</label>
+					<input v-model="disk_512k_total_iops"
+					id="disk_512k_total_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				
-				<p v-if="errors['read_512k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_512k_iops[0]) }}</p>
-				<p v-if="errors['write_512k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_512k_iops[0]) }}</p>
-				<p v-if="errors['total_512k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_512k_iops[0]) }}</p>
+				<p v-if="errors['disk_512k_read_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_512k_read_iops[0]) }}</p>
+				<p v-if="errors['disk_512k_write_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_512k_write_iops[0]) }}</p>
+				<p v-if="errors['disk_512k_total_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_512k_total_iops[0]) }}</p>
 
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_1m_speed">1M Read Speed</label>
-					<input v-model="read_1m_speed"
-					id="read_1m_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_1m_read_speed">1M Read Speed</label>
+					<input v-model="disk_1m_read_speed"
+					id="disk_1m_read_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_1m_speed">1M Write Speed</label>
-					<input v-model="write_1m_speed"
-					id="write_1m_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_1m_write_speed">1M Write Speed</label>
+					<input v-model="disk_1m_write_speed"
+					id="disk_1m_write_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_1m_speed">1M Total Speed</label>
-					<input v-model="total_1m_speed"
-					id="total_1m_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_1m_total_speed">1M Total Speed</label>
+					<input v-model="disk_1m_total_speed"
+					id="disk_1m_total_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 
-				<p v-if="errors['read_1m_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_1m_speed[0]) }}</p>
-				<p v-if="errors['write_1m_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_1m_speed[0]) }}</p>
-				<p v-if="errors['total_1m_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_1m_speed[0]) }}</p>
+				<p v-if="errors['disk_1m_read_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_1m_read_speed[0]) }}</p>
+				<p v-if="errors['disk_1m_write_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_1m_write_speed[0]) }}</p>
+				<p v-if="errors['disk_1m_total_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_1m_total_speed[0]) }}</p>
 				
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_1m_iops">1M Read IOPS</label>
-					<input v-model="read_1m_iops"
-					id="read_1m_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_1m_read_iops">1M Read IOPS</label>
+					<input v-model="disk_1m_read_iops"
+					id="disk_1m_read_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_1m_iops">1M Write IOPS</label>
-					<input v-model="write_1m_iops"
-					id="write_1m_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_1m_write_iops">1M Write IOPS</label>
+					<input v-model="disk_1m_write_iops"
+					id="disk_1m_write_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 				<div class="mt-1 pl-2 w-1/3 ">
-					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_1m_iops">1M Total IOPS</label>
-					<input v-model="total_1m_iops"
-					id="total_1m_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="disk_1m_total_iops">1M Total IOPS</label>
+					<input v-model="disk_1m_total_iops"
+					id="disk_1m_total_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
 				</div>
 
-				<p v-if="errors['read_1m_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_1m_iops[0]) }}</p>
-				<p v-if="errors['write_1m_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_1m_iops[0]) }}</p>
-				<p v-if="errors['total_1m_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_1m_iops[0]) }}</p>
+				<p v-if="errors['disk_1m_read_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_1m_read_iops[0]) }}</p>
+				<p v-if="errors['disk_1m_write_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_1m_write_iops[0]) }}</p>
+				<p v-if="errors['disk_1m_total_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.disk_1m_total_iops[0]) }}</p>
 			</div>
 
 			<hr class="mt-4 mb-2">
@@ -367,50 +428,57 @@
 import { Head, Link } from '@inertiajs/inertia-vue3';
 
 	export default {
-		props: {
-			user: Object,
-		},
+		props: [
+			'user',
+			'virt_types_string'
+		],
 		components: [
 		],
 		data() {
 			return {
+				virt_types: [],
 				errors: {},
 				yabs_text: '',
+				provider_name: '',
+				type: '',
+				when: '',
+				city: '',
+				virtualization: '',
 				cpu: '',
 				cores: '',
 				clock_speed: '',
 				ram: '',
 				swap: '',
-				gb5_single: '',
-				gb5_multi: '',
+				geekbench_5_single: '',
+				geekbench_5_multi: '',
 				aes_ni: false,
 				vm_x: false,
 				distro: '',
 				kernel: '',
-				read_4k_speed: '',
-				write_4k_speed: '',
-				total_4k_speed: '',
-				read_4k_iops: '',
-				write_4k_iops: '',
-				total_4k_iops: '',
-				read_64k_speed: '',
-				write_64k_speed: '',
-				total_64k_speed: '',
-				read_64k_iops: '',
-				write_64k_iops: '',
-				total_64k_iops: '',
-				read_512k_speed: '',
-				write_512k_speed: '',
-				total_512k_speed: '',
-				read_512k_iops: '',
-				write_512k_iops: '',
-				total_512k_iops: '',
-				read_1m_speed: '',
-				write_1m_speed: '',
-				total_1m_speed: '',
-				read_1m_iops: '',
-				write_1m_iops: '',
-				total_1m_iops: '',
+				disk_4k_read_speed: '',
+				disk_4k_write_speed: '',
+				disk_4k_total_speed: '',
+				disk_4k_read_iops: '',
+				disk_4k_write_iops: '',
+				disk_4k_total_iops: '',
+				disk_64k_read_speed: '',
+				disk_64k_write_speed: '',
+				disk_64k_total_speed: '',
+				disk_64k_read_iops: '',
+				disk_64k_write_iops: '',
+				disk_64k_total_iops: '',
+				disk_512k_read_speed: '',
+				disk_512k_write_speed: '',
+				disk_512k_total_speed: '',
+				disk_512k_read_iops: '',
+				disk_512k_write_iops: '',
+				disk_512k_total_iops: '',
+				disk_1m_read_speed: '',
+				disk_1m_write_speed: '',
+				disk_1m_total_speed: '',
+				disk_1m_read_iops: '',
+				disk_1m_write_iops: '',
+				disk_1m_total_iops: '',
 				network_row_1_provider: '',
 				network_row_1_location: '',
 				network_row_1_send_speed: '',
@@ -499,6 +567,9 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 						found = true
 					}
 				}
+			},
+			get_when(line) {
+				return line.trim()
 			},
 			get_cpu(line) {
 				return line.substring(line.indexOf(':') + 1).trim()
@@ -610,12 +681,13 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				let speed_row = start_point.substring(0, line.indexOf('|') + 1).trim()
 
 				let speed = parseFloat(speed_row.substring(0, speed_row.indexOf(' ')).trim())
-				if(isNaN(speed)) {return speed_row}
+				if(isNaN(speed)) {return 0}
 
 				let suffix = speed_row.substring(speed_row.indexOf(' ')).trim()
 				if(suffix.substring(0, 1).toUpperCase() === 'K') {speed *= 1000}
 				if(suffix.substring(0, 1).toUpperCase() === 'M') {speed *= 1000000}
 				if(suffix.substring(0, 1).toUpperCase() === 'G') {speed *= 1000000000}
+				
 				return parseInt(speed)
 			},
 			get_network_row_rec_speed(line) {
@@ -623,7 +695,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				let speed_row = start_point.substring(0, line.indexOf('|') + 1).trim()
 
 				let speed = parseFloat(speed_row.substring(0, speed_row.indexOf(' ')).trim())
-				if(isNaN(speed)) {return speed_row}
+				if(isNaN(speed)) {return 0}
 
 				let suffix = speed_row.substring(speed_row.indexOf(' ')).trim()
 				if(suffix.substring(0, 1).toUpperCase() === 'K') {speed *= 1000}
@@ -640,41 +712,46 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 			},
 			submit() {
 				axios.post('/server/create',{
+					provider_name: this.provider_name.trim(),
+					type: this.type.trim(),
+					when: this.when.trim(),
+					city: this.city.trim(),
+					virtualization: this.virtualization.trim(),
 					cpu: this.cpu,
 					cores: this.cores,
 					clock_speed: this.clock_speed,
 					ram: this.ram,
 					swap: this.swap,
-					gb5_single: this.gb5_single,
-					gb5_multi: this.gb5_multi,
+					geekbench_5_single: this.geekbench_5_single,
+					geekbench_5_multi: this.geekbench_5_multi,
 					aes_ni: this.aes_ni,
 					vm_x: this.vm_x,
 					distro: this.distro,
 					kernel: this.kernel,
-					read_4k_speed: this.read_4k_speed,
-					write_4k_speed: this.write_4k_speed,
-					total_4k_speed: this.total_4k_speed,
-					read_4k_iops: this.read_4k_iops,
-					write_4k_iops: this.write_4k_iops,
-					total_4k_iops: this.total_4k_iops,
-					read_64k_speed: this.read_64k_speed,
-					write_64k_speed: this.write_64k_speed,
-					total_64k_speed: this.total_64k_speed,
-					read_64k_iops: this.read_64k_iops,
-					write_64k_iops: this.write_64k_iops,
-					total_64k_iops: this.total_64k_iops,
-					read_512k_speed: this.read_512k_speed,
-					write_512k_speed: this.write_512k_speed,
-					total_512k_speed: this.total_512k_speed,
-					read_512k_iops: this.read_512k_iops,
-					write_512k_iops: this.write_512k_iops,
-					total_512k_iops: this.total_512k_iops,
-					read_1m_speed: this.read_1m_speed,
-					write_1m_speed: this.write_1m_speed,
-					total_1m_speed: this.total_1m_speed,
-					read_1m_iops: this.read_1m_iops,
-					write_1m_iops: this.write_1m_iops,
-					total_1m_iops: this.total_1m_iops,
+					disk_4k_read_speed: this.disk_4k_read_speed,
+					disk_4k_write_speed: this.disk_4k_write_speed,
+					disk_4k_total_speed: this.disk_4k_total_speed,
+					disk_4k_read_iops: this.disk_4k_read_iops,
+					disk_4k_write_iops: this.disk_4k_write_iops,
+					disk_4k_total_iops: this.disk_4k_total_iops,
+					disk_64k_read_speed: this.disk_64k_read_speed,
+					disk_64k_write_speed: this.disk_64k_write_speed,
+					disk_64k_total_speed: this.disk_64k_total_speed,
+					disk_64k_read_iops: this.disk_64k_read_iops,
+					disk_64k_write_iops: this.disk_64k_write_iops,
+					disk_64k_total_iops: this.disk_64k_total_iops,
+					disk_512k_read_speed: this.disk_512k_read_speed,
+					disk_512k_write_speed: this.disk_512k_write_speed,
+					disk_512k_total_speed: this.disk_512k_total_speed,
+					disk_512k_read_iops: this.disk_512k_read_iops,
+					disk_512k_write_iops: this.disk_512k_write_iops,
+					disk_512k_total_iops: this.disk_512k_total_iops,
+					disk_1m_read_speed: this.disk_1m_read_speed,
+					disk_1m_write_speed: this.disk_1m_write_speed,
+					disk_1m_total_speed: this.disk_1m_total_speed,
+					disk_1m_read_iops: this.disk_1m_read_iops,
+					disk_1m_write_iops: this.disk_1m_write_iops,
+					disk_1m_total_iops: this.disk_1m_total_iops,
 					network_row_1_provider: this.network_row_1_provider.length > 0 ? this.network_row_1_provider.length : null,
 					network_row_1_location: this.network_row_1_location,
 					network_row_1_send_speed: this.network_row_1_send_speed,
@@ -751,15 +828,30 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				})
 				.catch(err => {
 					console.log(err.response.data)
-					this.$page.props.flash.message = "Please correct the listed errors and try again"
+					if (err.response.data.flash) {
+						this.$page.props.flash.message = err.response.data.flash[0]
+					} else {
+						this.$page.props.flash.message = "Please correct the listed errors and try again"
+					}
+					
 					this.$page.props.flash.status = "error"
 					this.errors = err.response.data
 				})
 			}
 		},
 		watch: {
+			when(r) {
+				console.log(new Date(r))
+			},
+
 			yabs_text(r) {
 				let lines = r.split('\n')
+
+				// find CPU
+				let when_line = this.find_item_row('Basic System Information:', lines)
+				if(when_line) {
+					this.when = this.get_when(lines[when_line - 2])
+				}
 
 				// find CPU
 				let cpu_line = this.find_item_row('Processor', lines)
@@ -781,15 +873,15 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				}
 
 				// find GB5 Single Core
-				let gb5_single = this.find_item_row('Single Core', lines)
-				if(gb5_single) {
-					this.gb5_single = this.get_gb5(lines[gb5_single])
+				let geekbench_5_single = this.find_item_row('Single Core', lines)
+				if(geekbench_5_single) {
+					this.geekbench_5_single = this.get_gb5(lines[geekbench_5_single])
 				}
 
 				// find GB5 Multi Core
-				let gb5_multi = this.find_item_row('Multi Core', lines)
-				if(gb5_multi) {
-					this.gb5_multi = this.get_gb5(lines[gb5_multi])
+				let geekbench_5_multi = this.find_item_row('Multi Core', lines)
+				if(geekbench_5_multi) {
+					this.geekbench_5_multi = this.get_gb5(lines[geekbench_5_multi])
 				}
 
 				// find AES-NI
@@ -825,41 +917,41 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				// find 4K & 64K speeds & iops
 				let row_4k_64k = this.find_item_row('Read', lines)
 				if(row_4k_64k) {
-					this.read_4k_speed = this.get_4k_64k_disk_speed(lines[row_4k_64k])
-					this.write_4k_speed = this.get_4k_64k_disk_speed(lines[row_4k_64k + 1])
-					this.total_4k_speed = this.get_4k_64k_disk_speed(lines[row_4k_64k + 2])
+					this.disk_4k_read_speed = this.get_4k_64k_disk_speed(lines[row_4k_64k])
+					this.disk_4k_write_speed = this.get_4k_64k_disk_speed(lines[row_4k_64k + 1])
+					this.disk_4k_total_speed = this.get_4k_64k_disk_speed(lines[row_4k_64k + 2])
 
-					this.read_64k_speed = this.get_512k_1m_disk_speed(lines[row_4k_64k])
-					this.write_64k_speed = this.get_512k_1m_disk_speed(lines[row_4k_64k + 1])
-					this.total_64k_speed = this.get_512k_1m_disk_speed(lines[row_4k_64k + 2])
+					this.disk_64k_read_speed = this.get_512k_1m_disk_speed(lines[row_4k_64k])
+					this.disk_64k_write_speed = this.get_512k_1m_disk_speed(lines[row_4k_64k + 1])
+					this.disk_64k_total_speed = this.get_512k_1m_disk_speed(lines[row_4k_64k + 2])
 
-					this.read_4k_iops = this.get_4k_64k_disk_iops(lines[row_4k_64k])
-					this.write_4k_iops = this.get_4k_64k_disk_iops(lines[row_4k_64k + 1])
-					this.total_4k_iops = this.get_4k_64k_disk_iops(lines[row_4k_64k + 2])
+					this.disk_4k_read_iops = this.get_4k_64k_disk_iops(lines[row_4k_64k])
+					this.disk_4k_write_iops = this.get_4k_64k_disk_iops(lines[row_4k_64k + 1])
+					this.disk_4k_total_iops = this.get_4k_64k_disk_iops(lines[row_4k_64k + 2])
 
-					this.read_64k_iops = this.get_512k_1m_disk_iops(lines[row_4k_64k])
-					this.write_64k_iops = this.get_512k_1m_disk_iops(lines[row_4k_64k + 1])
-					this.total_64k_iops = this.get_512k_1m_disk_iops(lines[row_4k_64k + 2])
+					this.disk_64k_read_iops = this.get_512k_1m_disk_iops(lines[row_4k_64k])
+					this.disk_64k_write_iops = this.get_512k_1m_disk_iops(lines[row_4k_64k + 1])
+					this.disk_64k_total_iops = this.get_512k_1m_disk_iops(lines[row_4k_64k + 2])
 				}
 
 				// find 512K speeds
 				let row_512k_1m = this.find_item_second_row('Read', lines)
 				if(row_512k_1m) {
-					this.read_512k_speed = this.get_4k_64k_disk_speed(lines[row_512k_1m])
-					this.write_512k_speed = this.get_4k_64k_disk_speed(lines[row_512k_1m + 1])
-					this.total_512k_speed = this.get_4k_64k_disk_speed(lines[row_512k_1m + 2])
+					this.disk_512k_read_speed = this.get_4k_64k_disk_speed(lines[row_512k_1m])
+					this.disk_512k_write_speed = this.get_4k_64k_disk_speed(lines[row_512k_1m + 1])
+					this.disk_512k_total_speed = this.get_4k_64k_disk_speed(lines[row_512k_1m + 2])
 					
-					this.read_1m_speed = this.get_512k_1m_disk_speed(lines[row_512k_1m])
-					this.write_1m_speed = this.get_512k_1m_disk_speed(lines[row_512k_1m + 1])
-					this.total_1m_speed = this.get_512k_1m_disk_speed(lines[row_512k_1m + 2])
+					this.disk_1m_read_speed = this.get_512k_1m_disk_speed(lines[row_512k_1m])
+					this.disk_1m_write_speed = this.get_512k_1m_disk_speed(lines[row_512k_1m + 1])
+					this.disk_1m_total_speed = this.get_512k_1m_disk_speed(lines[row_512k_1m + 2])
 
-					this.read_512k_iops = this.get_4k_64k_disk_iops(lines[row_512k_1m])
-					this.write_512k_iops = this.get_4k_64k_disk_iops(lines[row_512k_1m + 1])
-					this.total_512k_iops = this.get_4k_64k_disk_iops(lines[row_512k_1m + 2])
+					this.disk_512k_read_iops = this.get_4k_64k_disk_iops(lines[row_512k_1m])
+					this.disk_512k_write_iops = this.get_4k_64k_disk_iops(lines[row_512k_1m + 1])
+					this.disk_512k_total_iops = this.get_4k_64k_disk_iops(lines[row_512k_1m + 2])
 					
-					this.read_1m_iops = this.get_512k_1m_disk_iops(lines[row_512k_1m])
-					this.write_1m_iops = this.get_512k_1m_disk_iops(lines[row_512k_1m + 1])
-					this.total_1m_iops = this.get_512k_1m_disk_iops(lines[row_512k_1m + 2])
+					this.disk_1m_read_iops = this.get_512k_1m_disk_iops(lines[row_512k_1m])
+					this.disk_1m_write_iops = this.get_512k_1m_disk_iops(lines[row_512k_1m + 1])
+					this.disk_1m_total_iops = this.get_512k_1m_disk_iops(lines[row_512k_1m + 2])
 				}
 
 				// find ipv4 speeds
@@ -888,6 +980,9 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 					}
 				}
 			}
+		},
+		mounted() {
+			this.virt_types = this.virt_types_string.split(',')
 		}
 	}
 </script>
