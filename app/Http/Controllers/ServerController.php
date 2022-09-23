@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Rules\NetworkDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\QueryHelper;
@@ -12,7 +13,22 @@ class ServerController extends Controller
 {
     public function create(Request $request)
     {
-        if($request->user() || !DB::table('settings')->anonymous_submissions) {
+        if($request->user() || DB::table('settings')->first()->anonymous_submissions == 1) {
+
+            $network_messages = [];
+            for($i = 1; $i <= 14; $i++) {
+
+                $network_messages += ['network_row_' . $i . '_provider.required' => 'If one field is populated, all must be'];
+                $network_messages += ['network_row_' . $i . '_location.required' => 'If one field is populated, all must be'];
+                
+                $network_messages += ['network_row_' . $i . '_send_speed.integer' => 'Integer Required in bits/s'];
+                $network_messages += ['network_row_' . $i . '_send_speed.required' => 'If one field is populated, all must be'];
+                
+                $network_messages += ['network_row_' . $i . '_rec_speed.integer' => 'Integer Required in bits/s'];
+                $network_messages += ['network_row_' . $i . '_rec_speed.required' => 'If one field is populated, all must be'];
+            }
+
+
             $validator = Validator::make($request->all(), [
                 'cpu' => 'required|string|max:100',
                 'cores' => 'required|integer|max:256',
@@ -49,84 +65,45 @@ class ServerController extends Controller
                 'read_1m_iops' => 'required|integer',
                 'write_1m_iops' => 'required|integer',
                 'total_1m_iops' => 'required|integer',
-                'network_row_1_provider' => 'sometimes',
-                'network_row_1_location' => 'required_with:network_row_1_provider|max:100',
-                'network_row_1_send_speed' => 'required_with:network_row_1_provider',
-                'network_row_1_rec_speed' => 'required_with:network_row_1_provider',
-                'network_row_1_ipv4' => 'required_with:network_row_1_provider|boolean',
-                'network_row_2_provider' => 'sometimes',
-                'network_row_2_location' => 'required_with:network_row_2_provider|max:100',
-                'network_row_2_send_speed' => 'required_with:network_row_2_provider',
-                'network_row_2_rec_speed' => 'required_with:network_row_2_provider',
-                'network_row_2_ipv4' => 'required_with:network_row_2_provider|boolean',
-                'network_row_3_provider' => 'sometimes',
-                'network_row_3_location' => 'required_with:network_row_3_provider|max:100',
-                'network_row_3_send_speed' => 'required_with:network_row_3_provider',
-                'network_row_3_rec_speed' => 'required_with:network_row_3_provider',
-                'network_row_3_ipv4' => 'required_with:network_row_3_provider|boolean',
-                'network_row_4_provider' => 'sometimes',
-                'network_row_4_location' => 'required_with:network_row_4_provider|max:100',
-                'network_row_4_send_speed' => 'required_with:network_row_4_provider',
-                'network_row_4_rec_speed' => 'required_with:network_row_4_provider',
-                'network_row_4_ipv4' => 'required_with:network_row_4_provider|boolean',
-                'network_row_5_provider' => 'sometimes',
-                'network_row_5_location' => 'required_with:network_row_5_provider|max:100',
-                'network_row_5_send_speed' => 'required_with:network_row_5_provider',
-                'network_row_5_rec_speed' => 'required_with:network_row_5_provider',
-                'network_row_5_ipv4' => 'required_with:network_row_5_provider|boolean',
-                'network_row_6_provider' => 'sometimes',
-                'network_row_6_location' => 'required_with:network_row_6_provider|max:100',
-                'network_row_6_send_speed' => 'required_with:network_row_6_provider',
-                'network_row_6_rec_speed' => 'required_with:network_row_6_provider',
-                'network_row_6_ipv4' => 'required_with:network_row_6_provider|boolean',
-                'network_row_7_provider' => 'sometimes',
-                'network_row_7_location' => 'required_with:network_row_7_provider|max:100',
-                'network_row_7_send_speed' => 'required_with:network_row_7_provider',
-                'network_row_7_rec_speed' => 'required_with:network_row_7_provider',
-                'network_row_7_ipv4' => 'required_with:network_row_7_provider|boolean',
-                'network_row_8_provider' => 'sometimes',
-                'network_row_8_location' => 'required_with:network_row_8_provider|max:100',
-                'network_row_8_send_speed' => 'required_with:network_row_8_provider',
-                'network_row_8_rec_speed' => 'required_with:network_row_8_provider',
-                'network_row_8_ipv4' => 'required_with:network_row_8_provider|boolean',
-                'network_row_9_provider' => 'sometimes',
-                'network_row_9_location' => 'required_with:network_row_9_provider|max:100',
-                'network_row_9_send_speed' => 'required_with:network_row_9_provider',
-                'network_row_9_rec_speed' => 'required_with:network_row_9_provider',
-                'network_row_9_ipv4' => 'required_with:network_row_9_provider|boolean',
-                'network_row_10_provider' => 'sometimes',
-                'network_row_10_location' => 'required_with:network_row_10_provider|max:100',
-                'network_row_10_send_speed' => 'required_with:network_row_10_provider',
-                'network_row_10_rec_speed' => 'required_with:network_row_10_provider',
-                'network_row_10_ipv4' => 'required_with:network_row_10_provider|boolean',
-                'network_row_11_provider' => 'sometimes',
-                'network_row_11_location' => 'required_with:network_row_11_provider|max:100',
-                'network_row_11_send_speed' => 'required_with:network_row_11_provider',
-                'network_row_11_rec_speed' => 'required_with:network_row_11_provider',
-                'network_row_11_ipv4' => 'required_with:network_row_11_provider|boolean',
-                'network_row_12_provider' => 'sometimes',
-                'network_row_12_location' => 'required_with:network_row_12_provider|max:100',
-                'network_row_12_send_speed' => 'required_with:network_row_12_provider',
-                'network_row_12_rec_speed' => 'required_with:network_row_12_provider',
-                'network_row_12_ipv4' => 'required_with:network_row_12_provider|boolean',
-                'network_row_13_provider' => 'sometimes',
-                'network_row_13_location' => 'required_with:network_row_13_provider|max:100',
-                'network_row_13_send_speed' => 'required_with:network_row_13_provider',
-                'network_row_13_rec_speed' => 'required_with:network_row_13_provider',
-                'network_row_13_ipv4' => 'required_with:network_row_13_provider|boolean',
-                'network_row_14_provider' => 'sometimes',
-                'network_row_14_location' => 'required_with:network_row_14_provider|max:100',
-                'network_row_14_send_speed' => 'required_with:network_row_14_provider',
-                'network_row_14_rec_speed' => 'required_with:network_row_14_provider',
-                'network_row_14_ipv4' => 'required_with:network_row_14_provider|boolean',
-            ]);
+            ], $network_messages);
+
+            for($i = 1; $i <= 14; $i++) {
+                $validator->sometimes('network_row_' . $i . '_provider', 'required|max:100', function ($input) use ($i) {
+                    if(!is_null($input->get('network_row_' . $i . '_location'))
+                    || !is_null($input->get('network_row_' . $i . '_send_speed'))
+                    || !is_null($input->get('network_row_' . $i . '_rec_speed'))) {
+                        return true;
+                    };
+                });
+                $validator->sometimes('network_row_' . $i . '_location', 'required|max:100', function ($input) use ($i) {
+                    if(!is_null($input->get('network_row_' . $i . '_provider'))
+                    || !is_null($input->get('network_row_' . $i . '_send_speed'))
+                    || !is_null($input->get('network_row_' . $i . '_rec_speed'))) {
+                        return true;
+                    };
+                });
+                $validator->sometimes('network_row_' . $i . '_send_speed', 'required|integer', function ($input) use ($i) {
+                    if(!is_null($input->get('network_row_' . $i . '_provider'))
+                    || !is_null($input->get('network_row_' . $i . '_location'))
+                    || !is_null($input->get('network_row_' . $i . '_rec_speed'))) {
+                        return true;
+                    };
+                });
+                $validator->sometimes('network_row_' . $i . '_rec_speed', 'required|integer', function ($input) use ($i) {
+                    if(!is_null($input->get('network_row_' . $i . '_provider'))
+                    || !is_null($input->get('network_row_' . $i . '_location'))
+                    || !is_null($input->get('network_row_' . $i . '_send_speed'))) {
+                        return true;
+                    };
+                });
+            }
+
+
+            
 
             if($validator->fails()) {
                 return response($validator->errors(), 422);
             }
-
-
-
         }
 
         return response('Please log in to submit your results', 422);

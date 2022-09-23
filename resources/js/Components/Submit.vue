@@ -1,572 +1,377 @@
 <template>
-<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-	<div class="p-6 bg-white border-b border-gray-200">
-		<h1 class="text-gray-600 text-lg">
-			Submit New Benchmark
-			- Paste your YABS results in the textarea below
+<div>
+	<h1 class="text-gray-600 py-6 px-6 rounded mb-6 bg-white text-lg">
+			If you have an account, please log in to submit your results
+			<a :href="route('login')" class="font-bold text-orange-500 hover:text-orange-700 underline">Here</a>
 		</h1>
-		<textarea v-model="yabs_text" 
-		rows="20"
-		class="text-xs rounded mt-2 mb-4 w-full placeholder:italic placeholder:text-slate-400 h"
-		placeholder="
-# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #
-#              Yet-Another-Bench-Script      				               #
-#                     v2022-06-11                                                    #
-# https://github.com/masonr/yet-another-bench-script      #
-# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #
 
-Wed Jun 29 14:14:57 UTC 2022
+	<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+		<div class="p-6 bg-white border-b border-gray-200">
+			<h1 class="text-gray-600 text-lg">
+				Submit New Benchmark
+				- Paste your YABS results in the textarea below. Data should auto-populate.
+			</h1>
+			<textarea v-model="yabs_text" 
+			rows="20"
+			class="text-xs rounded mt-2 mb-4 w-full placeholder:italic placeholder:text-slate-400 h"
+			placeholder="
+	# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #
+	#              Yet-Another-Bench-Script      				               #
+	#                     v2022-06-11                                                    #
+	# https://github.com/masonr/yet-another-bench-script      #
+	# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #
 
-Basic System Information:
----------------------------------
-.
-.
-.
-.
-.
-.
-.
-.">
-		</textarea>
-		<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
-			These items should auto-populate when you paste your benchmark output
-			in the field above. Make any corrections below.
-		</h2>
+	Wed Jun 29 14:14:57 UTC 2022
 
-		<hr class="mt-2">
+	Basic System Information:
+	---------------------------------
+	.
+	.
+	.
+	.
+	.
+	.
+	.
+	.">
+			</textarea>
+			<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
+				Please make any corrections below.
+			</h2>
 
-		<div class="mt-1 flex flex-wrap justify-content">
-			<div class="my-1 pl-2 w-1/2">
-				<label class="w-1/4 inline-block text-sm text-right" for="cpu">CPU</label>
-				<input v-model="cpu"
-				id="cpu" class="ml-2 w-4/6 rounded text-sm h-7" type="text" />
-			</div>
-			<div class="my-1 pl-2 w-1/2">
-				<label class="w-1/4 inline-block text-sm text-right" for="cores">Cores</label>
-				<input v-model="cores"
-				id="cores" class="ml-2 rounded w-1/6 text-sm h-7" type="text" />
-				<label class="w-1/4 inline-block text-sm text-right" for="clock_speed">Clock Speed</label>
-				<input v-model="clock_speed"
-				id="clock_speed" class="ml-2 rounded w-1/6 text-sm h-7" type="text" />
-			</div>
-			<div class="my-1 pl-2 w-1/2">
-				<label class="w-1/4 inline-block text-sm text-right" for="ram">RAM (bytes)</label>
-				<input v-model="ram"
-				id="ram" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
-			</div>
-			<div class="my-1 pl-2 w-1/2">
-				<label class="w-1/4 inline-block text-sm text-right" for="swap">Swap (bytes)</label>
-				<input v-model="swap"
-				id="swap" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
-			</div>
-			<div class="my-1 pl-2 w-1/2">
-				<label class="w-1/4 inline-block text-sm text-right" for="gb5_single">GB 5 Single Score</label>
-				<input v-model="gb5_single"
-				id="gb5_single" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
-			</div>
-			<div class="my-1 pl-2 w-1/2">
-				<label class="w-1/4 inline-block text-sm text-right" for="gb5_multi">GB 5 Multi Score</label>
-				<input v-model="gb5_multi"
-				id="gb5_multi" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
-			</div>
-			<p v-if="errors['cpu']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.cpu[0]) }}</p>
-			<p v-if="errors['cores']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.cores[0]) }}</p>
-			<p v-if="errors['clock_speed']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.clock_speed[0]) }}</p>
-			<p v-if="errors['ram']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.ram[0]) }}</p>
-			<p v-if="errors['swap']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.swap[0]) }}</p>
-			<p v-if="errors['gb5_single']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.gb5_single[0]) }}</p>
-			<p v-if="errors['gb5_multi']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.gb5_multi[0]) }}</p>
-		</div>
+			<hr class="mt-2">
 
-		<hr class="mt-2 mb-2">
+			<div class="mt-1 flex flex-wrap justify-content">
+				<div class="my-1 pl-2 w-1/2">
+					<label class="w-1/4 inline-block text-sm text-right" for="cpu">CPU</label>
+					<input v-model="cpu"
+					id="cpu" class="ml-2 w-4/6 rounded text-sm h-7" type="text" />
+				</div>
+				<div class="my-1 pl-2 w-1/2">
+					<label class="w-1/4 inline-block text-sm text-right" for="cores">Cores</label>
+					<input v-model="cores"
+					id="cores" class="ml-2 rounded w-1/6 text-sm h-7" type="text" />
+					<label class="w-1/4 inline-block text-sm text-right" for="clock_speed">Clock Speed</label>
+					<input v-model="clock_speed"
+					id="clock_speed" class="ml-2 rounded w-1/6 text-sm h-7" type="text" />
+				</div>
+				<div class="my-1 pl-2 w-1/2">
+					<label class="w-1/4 inline-block text-sm text-right" for="ram">RAM (bytes)</label>
+					<input v-model="ram"
+					id="ram" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
+				</div>
+				<div class="my-1 pl-2 w-1/2">
+					<label class="w-1/4 inline-block text-sm text-right" for="swap">Swap (bytes)</label>
+					<input v-model="swap"
+					id="swap" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
+				</div>
+				<div class="my-1 pl-2 w-1/2">
+					<label class="w-1/4 inline-block text-sm text-right" for="gb5_single">GB 5 Single Score</label>
+					<input v-model="gb5_single"
+					id="gb5_single" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
+				</div>
+				<div class="my-1 pl-2 w-1/2">
+					<label class="w-1/4 inline-block text-sm text-right" for="gb5_multi">GB 5 Multi Score</label>
+					<input v-model="gb5_multi"
+					id="gb5_multi" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
+				</div>
+				<p v-if="errors['cpu']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.cpu[0]) }}</p>
+				<p v-if="errors['cores']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.cores[0]) }}</p>
+				<p v-if="errors['clock_speed']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.clock_speed[0]) }}</p>
+				<p v-if="errors['ram']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.ram[0]) }}</p>
+				<p v-if="errors['swap']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.swap[0]) }}</p>
+				<p v-if="errors['gb5_single']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.gb5_single[0]) }}</p>
+				<p v-if="errors['gb5_multi']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.gb5_multi[0]) }}</p>
+			</div>
 
-		<div class="mt-1 flex flex-wrap justify-content">
-			<div class="my-1 pl-2 w-full flex justify-center">
-				<label class="inline-block text-sm text-right" for="aes_ni">AES-NI</label>
-				<input v-model="aes_ni"
-				id="aes_ni" class="ml-2 rounded text-sm" type="checkbox" />
-				<label class="inline-block text-sm text-right ml-8" for="vm_x">VM-x/AMD-V</label>
-				<input v-model="vm_x"
-				id="vm_x" class="ml-2 rounded text-sm" type="checkbox" />
-			</div>
-		</div>
+			<hr class="mt-2 mb-2">
 
-		<hr class="mt-2 mb-2">
+			<div class="mt-1 flex flex-wrap justify-content">
+				<div class="my-1 pl-2 w-full flex justify-center">
+					<label class="inline-block text-sm text-right" for="aes_ni">AES-NI</label>
+					<input v-model="aes_ni"
+					id="aes_ni" class="ml-2 rounded text-sm" type="checkbox" />
+					<label class="inline-block text-sm text-right ml-8" for="vm_x">VM-x/AMD-V</label>
+					<input v-model="vm_x"
+					id="vm_x" class="ml-2 rounded text-sm" type="checkbox" />
+				</div>
+			</div>
 
-		<div class="mt-1 flex flex-wrap justify-content">
-			<div class="my-1 pl-2 w-1/2">
-				<label class="w-1/4 inline-block text-sm text-right" for="distro">Distro</label>
-				<input v-model="distro"
-				id="distro" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
-			</div>
-			<div class="my-1 pl-2 w-1/2">
-				<label class="w-1/4 inline-block text-sm text-right" for="kernel">Kernel</label>
-				<input v-model="kernel"
-				id="kernel" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
-			</div>
-		</div>
+			<hr class="mt-2 mb-2">
 
-		<hr class="mt-2 mb-2">
+			<div class="mt-1 flex flex-wrap justify-content">
+				<div class="my-1 pl-2 w-1/2">
+					<label class="w-1/4 inline-block text-sm text-right" for="distro">Distro</label>
+					<input v-model="distro"
+					id="distro" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
+				</div>
+				<div class="my-1 pl-2 w-1/2">
+					<label class="w-1/4 inline-block text-sm text-right" for="kernel">Kernel</label>
+					<input v-model="kernel"
+					id="kernel" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
+				</div>
+			</div>
 
-		<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
-			Disk Performance - All data should be an integer with speed denoted in bytes/s, not MB/s or GB/s
-		</h2>
+			<hr class="mt-2 mb-2">
 
-		<div class="mt-1 flex flex-wrap justify-content">
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="read_4k_speed">4K Read Speed</label>
-				<input v-model="read_4k_speed"
-				id="read_4k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="write_4k_speed">4K Write Speed</label>
-				<input v-model="write_4k_speed"
-				id="write_4k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="total_4k_speed">4K Total Speed</label>
-				<input v-model="total_4k_speed"
-				id="total_4k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="read_4k_iops">4K Read IOPS</label>
-				<input v-model="read_4k_iops"
-				id="read_4k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="write_4k_iops">4K Write IOPS</label>
-				<input v-model="write_4k_iops"
-				id="write_4k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="total_4k_iops">4K Total IOPS</label>
-				<input v-model="total_4k_iops"
-				id="total_4k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="read_64k_speed">64K Read Speed</label>
-				<input v-model="read_64k_speed"
-				id="read_64k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="write_64k_speed">64K Write Speed</label>
-				<input v-model="write_64k_speed"
-				id="write_64k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="total_64k_speed">64K Total Speed</label>
-				<input v-model="total_64k_speed"
-				id="total_64k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="read_64k_iops">64K Read IOPS</label>
-				<input v-model="read_64k_iops"
-				id="read_64k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="write_64k_iops">64K Write IOPS</label>
-				<input v-model="write_64k_iops"
-				id="write_64k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="total_64k_iops">64K Total IOPS</label>
-				<input v-model="total_64k_iops"
-				id="total_64k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="read_512k_speed">512K Read Speed</label>
-				<input v-model="read_512k_speed"
-				id="read_512k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="write_512k_speed">512K Write Speed</label>
-				<input v-model="write_512k_speed"
-				id="write_512k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="total_512k_speed">512K Total Speed</label>
-				<input v-model="total_512k_speed"
-				id="total_512k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="read_512k_iops">512K Read IOPS</label>
-				<input v-model="read_512k_iops"
-				id="read_512k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="write_512k_iops">512K Write IOPS</label>
-				<input v-model="write_512k_iops"
-				id="write_512k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="total_512k_iops">512K Total IOPS</label>
-				<input v-model="total_512k_iops"
-				id="total_512k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="read_1m_speed">1M Read Speed</label>
-				<input v-model="read_1m_speed"
-				id="read_1m_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="write_1m_speed">1M Write Speed</label>
-				<input v-model="write_1m_speed"
-				id="write_1m_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="total_1m_speed">1M Total Speed</label>
-				<input v-model="total_1m_speed"
-				id="total_1m_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="read_1m_iops">1M Read IOPS</label>
-				<input v-model="read_1m_iops"
-				id="read_1m_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="write_1m_iops">1M Write IOPS</label>
-				<input v-model="write_1m_iops"
-				id="write_1m_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/3 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="total_1m_iops">1M Total IOPS</label>
-				<input v-model="total_1m_iops"
-				id="total_1m_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-		</div>
+			<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
+				Disk Performance - All data should be an integer with speed denoted in bytes/s, not MB/s or GB/s
+			</h2>
 
-		<hr class="mt-4 mb-2">
+			<div class="mt-1 flex flex-wrap justify-content">
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_4k_speed">4K Read Speed</label>
+					<input v-model="read_4k_speed"
+					id="read_4k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_4k_speed">4K Write Speed</label>
+					<input v-model="write_4k_speed"
+					id="write_4k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_4k_speed">4K Total Speed</label>
+					<input v-model="total_4k_speed"
+					id="total_4k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
 
-		<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
-			IPv4 Network Performance - All speed data should be an integer, denoted in bits/s, not MB/s or GB/s
-		</h2>
-		
-		<div class="mt-1 flex flex-wrap justify-content">
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_1_provider">Provider</label>
-				<input v-model="network_row_1_provider"
-				id="network_row_1_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_1_location">Location</label>
-				<input v-model="network_row_1_location"
-				id="network_row_1_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_1_send_speed">Send Speed</label>
-				<input v-model="network_row_1_send_speed"
-				id="network_row_1_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_1_rec_speed">Rec Speed</label>
-				<input v-model="network_row_1_rec_speed"
-				id="network_row_1_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_2_provider">Provider</label>
-				<input v-model="network_row_2_provider"
-				id="network_row_2_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_2_location">Location</label>
-				<input v-model="network_row_2_location"
-				id="network_row_2_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_2_send_speed">Send Speed</label>
-				<input v-model="network_row_2_send_speed"
-				id="network_row_2_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_2_rec_speed">Rec Speed</label>
-				<input v-model="network_row_2_rec_speed"
-				id="network_row_2_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_3_provider">Provider</label>
-				<input v-model="network_row_3_provider"
-				id="network_row_3_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_3_location">Location</label>
-				<input v-model="network_row_3_location"
-				id="network_row_3_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_3_send_speed">Send Speed</label>
-				<input v-model="network_row_3_send_speed"
-				id="network_row_3_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_3_rec_speed">Rec Speed</label>
-				<input v-model="network_row_3_rec_speed"
-				id="network_row_3_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_4_provider">Provider</label>
-				<input v-model="network_row_4_provider"
-				id="network_row_4_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_4_location">Location</label>
-				<input v-model="network_row_4_location"
-				id="network_row_4_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_4_send_speed">Send Speed</label>
-				<input v-model="network_row_4_send_speed"
-				id="network_row_4_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_4_rec_speed">Rec Speed</label>
-				<input v-model="network_row_4_rec_speed"
-				id="network_row_4_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_5_provider">Provider</label>
-				<input v-model="network_row_5_provider"
-				id="network_row_5_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_5_location">Location</label>
-				<input v-model="network_row_5_location"
-				id="network_row_5_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_5_send_speed">Send Speed</label>
-				<input v-model="network_row_5_send_speed"
-				id="network_row_5_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_5_rec_speed">Rec Speed</label>
-				<input v-model="network_row_5_rec_speed"
-				id="network_row_5_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_6_provider">Provider</label>
-				<input v-model="network_row_6_provider"
-				id="network_row_6_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_6_location">Location</label>
-				<input v-model="network_row_6_location"
-				id="network_row_6_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_6_send_speed">Send Speed</label>
-				<input v-model="network_row_6_send_speed"
-				id="network_row_6_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_6_rec_speed">Rec Speed</label>
-				<input v-model="network_row_6_rec_speed"
-				id="network_row_6_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_7_provider">Provider</label>
-				<input v-model="network_row_7_provider"
-				id="network_row_7_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_7_location">Location</label>
-				<input v-model="network_row_7_location"
-				id="network_row_7_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_7_send_speed">Send Speed</label>
-				<input v-model="network_row_7_send_speed"
-				id="network_row_7_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_7_rec_speed">Rec Speed</label>
-				<input v-model="network_row_7_rec_speed"
-				id="network_row_7_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-		</div>
+				<p v-if="errors['read_4k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_4k_speed[0]) }}</p>
+				<p v-if="errors['write_4k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_4k_speed[0]) }}</p>
+				<p v-if="errors['total_4k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_4k_speed[0]) }}</p>
+				
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_4k_iops">4K Read IOPS</label>
+					<input v-model="read_4k_iops"
+					id="read_4k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_4k_iops">4K Write IOPS</label>
+					<input v-model="write_4k_iops"
+					id="write_4k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_4k_iops">4K Total IOPS</label>
+					<input v-model="total_4k_iops"
+					id="total_4k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
 
-		<hr class="mt-4 mb-2">
+				<p v-if="errors['read_4k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_4k_iops[0]) }}</p>
+				<p v-if="errors['write_4k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_4k_iops[0]) }}</p>
+				<p v-if="errors['total_4k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_4k_iops[0]) }}</p>
 
-		<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
-			IPv6 Network Performance - All speed data should be an integer, denoted in bits/s, not MB/s or GB/s
-		</h2>
-		
-		<div class="mt-1 flex flex-wrap justify-content">
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_8_provider">Provider</label>
-				<input v-model="network_row_8_provider"
-				id="network_row_8_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_64k_speed">64K Read Speed</label>
+					<input v-model="read_64k_speed"
+					id="read_64k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_64k_speed">64K Write Speed</label>
+					<input v-model="write_64k_speed"
+					id="write_64k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_64k_speed">64K Total Speed</label>
+					<input v-model="total_64k_speed"
+					id="total_64k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+
+				<p v-if="errors['read_64k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_64k_speed[0]) }}</p>
+				<p v-if="errors['write_64k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_64k_speed[0]) }}</p>
+				<p v-if="errors['total_64k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_64k_speed[0]) }}</p>
+
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_64k_iops">64K Read IOPS</label>
+					<input v-model="read_64k_iops"
+					id="read_64k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_64k_iops">64K Write IOPS</label>
+					<input v-model="write_64k_iops"
+					id="write_64k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_64k_iops">64K Total IOPS</label>
+					<input v-model="total_64k_iops"
+					id="total_64k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+
+				<p v-if="errors['read_64k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_64k_iops[0]) }}</p>
+				<p v-if="errors['write_64k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_64k_iops[0]) }}</p>
+				<p v-if="errors['total_64k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_64k_iops[0]) }}</p>
+
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_512k_speed">512K Read Speed</label>
+					<input v-model="read_512k_speed"
+					id="read_512k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_512k_speed">512K Write Speed</label>
+					<input v-model="write_512k_speed"
+					id="write_512k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_512k_speed">512K Total Speed</label>
+					<input v-model="total_512k_speed"
+					id="total_512k_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+
+				<p v-if="errors['read_512k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_512k_speed[0]) }}</p>
+				<p v-if="errors['write_512k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_512k_speed[0]) }}</p>
+				<p v-if="errors['total_512k_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_512k_speed[0]) }}</p>
+				
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_512k_iops">512K Read IOPS</label>
+					<input v-model="read_512k_iops"
+					id="read_512k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_512k_iops">512K Write IOPS</label>
+					<input v-model="write_512k_iops"
+					id="write_512k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_512k_iops">512K Total IOPS</label>
+					<input v-model="total_512k_iops"
+					id="total_512k_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				
+				<p v-if="errors['read_512k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_512k_iops[0]) }}</p>
+				<p v-if="errors['write_512k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_512k_iops[0]) }}</p>
+				<p v-if="errors['total_512k_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_512k_iops[0]) }}</p>
+
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_1m_speed">1M Read Speed</label>
+					<input v-model="read_1m_speed"
+					id="read_1m_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_1m_speed">1M Write Speed</label>
+					<input v-model="write_1m_speed"
+					id="write_1m_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_1m_speed">1M Total Speed</label>
+					<input v-model="total_1m_speed"
+					id="total_1m_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+
+				<p v-if="errors['read_1m_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_1m_speed[0]) }}</p>
+				<p v-if="errors['write_1m_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_1m_speed[0]) }}</p>
+				<p v-if="errors['total_1m_speed']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_1m_speed[0]) }}</p>
+				
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="read_1m_iops">1M Read IOPS</label>
+					<input v-model="read_1m_iops"
+					id="read_1m_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="write_1m_iops">1M Write IOPS</label>
+					<input v-model="write_1m_iops"
+					id="write_1m_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+				<div class="mt-1 pl-2 w-1/3 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" for="total_1m_iops">1M Total IOPS</label>
+					<input v-model="total_1m_iops"
+					id="total_1m_iops" class="rounded w-2/3 h-7 text-sm" type="text" />
+				</div>
+
+				<p v-if="errors['read_1m_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.read_1m_iops[0]) }}</p>
+				<p v-if="errors['write_1m_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.write_1m_iops[0]) }}</p>
+				<p v-if="errors['total_1m_iops']" class="w-1/3 text-xs italic text-red-500 text-right">{{ capitalize(errors.total_1m_iops[0]) }}</p>
 			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_8_location">Location</label>
-				<input v-model="network_row_8_location"
-				id="network_row_8_location" class="rounded w-2/3 h-7 text-sm" type="text" />
+
+			<hr class="mt-4 mb-2">
+
+			<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
+				IPv4 Network Performance - All speed data should be an integer, denoted in bits/s, not MB/s or GB/s
+			</h2>
+
+			<div v-for="i in 7" :key="i" class="mt-1 flex flex-wrap justify-content">
+				<div class="mt-1 pl-2 w-1/4 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" :for="'network_row_' + i + '_provider'">Provider</label>
+					<input v-model="$data['network_row_' + i + '_provider']"
+					:id="'network_row_' + i + '_provider'" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<p v-if="errors['network_row_' + i + '_provider']" class="w-full text-xs italic text-red-500 text-right">
+						{{ errors['network_row_' + i + '_provider'][0] }}</p>
+				</div>
+				<div class="mt-1 pl-2 w-1/4 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" :for="'network_row_' + i + '_location'">Location</label>
+					<input v-model="$data['network_row_' + i + '_location']"
+					:id="'network_row_' + i + '_location'" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<p v-if="errors['network_row_' + i + '_location']" class="w-full text-xs italic text-red-500 text-right">
+						{{ errors['network_row_' + i + '_location'][0] }}</p>
+				</div>
+				<div class="mt-1 pl-2 w-1/4 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" :for="'network_row_' + i + '_send_speed'">Send Speed</label>
+					<input v-model="$data['network_row_' + i + '_send_speed']"
+					:id="'network_row_' + i + '_send_speed'" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<p v-if="errors['network_row_' + i + '_send_speed']" class="w-full text-xs italic text-red-500 text-right">
+						{{ errors['network_row_' + i + '_send_speed'][0] }}</p>
+				</div>
+				<div class="mt-1 pl-2 w-1/4 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" :for="'network_row_' + i + '_rec_speed'">Rec Speed</label>
+					<input v-model="$data['network_row_' + i + '_rec_speed']"
+					:id="'network_row_' + i + '_rec_speed'" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<p v-if="errors['network_row_' + i + '_rec_speed']" class="w-full text-xs italic text-red-500 text-right">
+						{{ errors['network_row_' + i + '_rec_speed'][0] }}</p>
+				</div>
 			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_8_send_speed">Send Speed</label>
-				<input v-model="network_row_8_send_speed"
-				id="network_row_8_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_8_rec_speed">Rec Speed</label>
-				<input v-model="network_row_8_rec_speed"
-				id="network_row_8_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
+
+			<hr class="mt-4 mb-2">
+
+			<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
+				IPv6 Network Performance - All speed data should be an integer, denoted in bits/s, not MB/s or GB/s
+			</h2>
 			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_9_provider">Provider</label>
-				<input v-model="network_row_9_provider"
-				id="network_row_9_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
+			<div v-for="i in 7" :key="i" class="mt-1 flex flex-wrap justify-content">
+				<div class="mt-1 pl-2 w-1/4 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" :for="'network_row_' + (i + 7) + '_provider'">Provider</label>
+					<input v-model="$data['network_row_' + (i + 7) + '_provider']"
+					:id="'network_row_' + (i + 7) + '_provider'" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<p v-if="errors['network_row_' + (i + 7) + '_provider']" class="w-full text-xs italic text-red-500 text-right">
+						{{ errors['network_row_' + (i + 7) + '_provider'][0] }}</p>
+				</div>
+				<div class="mt-1 pl-2 w-1/4 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" :for="'network_row_' + (i + 7) + '_location'">Location</label>
+					<input v-model="$data['network_row_' + (i + 7) + '_location']"
+					:id="'network_row_' + (i + 7) + '_location'" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<p v-if="errors['network_row_' + (i + 7) + '_location']" class="w-full text-xs italic text-red-500 text-right">
+						{{ errors['network_row_' + (i + 7) + '_location'][0] }}</p>
+				</div>
+				<div class="mt-1 pl-2 w-1/4 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" :for="'network_row_' + (i + 7) + '_send_speed'">Send Speed</label>
+					<input v-model="$data['network_row_' + (i + 7) + '_send_speed']"
+					:id="'network_row_' + (i + 7) + '_send_speed'" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<p v-if="errors['network_row_' + (i + 7) + '_send_speed']" class="w-full text-xs italic text-red-500 text-right">
+						{{ errors['network_row_' + (i + 7) + '_send_speed'][0] }}</p>
+				</div>
+				<div class="mt-1 pl-2 w-1/4 ">
+					<label class="w-1/3 inline-block text-xs text-right pr-2 text-gray-600" :for="'network_row_' + (i + 7) + '_rec_speed'">Rec Speed</label>
+					<input v-model="$data['network_row_' + (i + 7) + '_rec_speed']"
+					:id="'network_row_' + (i + 7) + '_rec_speed'" class="rounded w-2/3 h-7 text-sm" type="text" />
+					<p v-if="errors['network_row_' + (i + 7) + '_rec_speed']" class="w-full text-xs italic text-red-500 text-right">
+						{{ errors['network_row_' + (i + 7) + '_rec_speed'][0] }}</p>
+				</div>
 			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_9_location">Location</label>
-				<input v-model="network_row_9_location"
-				id="network_row_9_location" class="rounded w-2/3 h-7 text-sm" type="text" />
+
+			<div class="flex justify-end mt-8">
+				<button type="submit" class="bg-green-400 rounded px-4 py-2 text-white font-bold shadow hover:bg-green-600"
+				@click="submit">Submit</button>
 			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_9_send_speed">Send Speed</label>
-				<input v-model="network_row_9_send_speed"
-				id="network_row_9_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_9_rec_speed">Rec Speed</label>
-				<input v-model="network_row_9_rec_speed"
-				id="network_row_9_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_10_provider">Provider</label>
-				<input v-model="network_row_10_provider"
-				id="network_row_10_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_10_location">Location</label>
-				<input v-model="network_row_10_location"
-				id="network_row_10_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_10_send_speed">Send Speed</label>
-				<input v-model="network_row_10_send_speed"
-				id="network_row_10_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_10_rec_speed">Rec Speed</label>
-				<input v-model="network_row_10_rec_speed"
-				id="network_row_10_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_11_provider">Provider</label>
-				<input v-model="network_row_11_provider"
-				id="network_row_11_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_11_location">Location</label>
-				<input v-model="network_row_11_location"
-				id="network_row_11_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_11_send_speed">Send Speed</label>
-				<input v-model="network_row_11_send_speed"
-				id="network_row_11_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_11_rec_speed">Rec Speed</label>
-				<input v-model="network_row_11_rec_speed"
-				id="network_row_11_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_12_provider">Provider</label>
-				<input v-model="network_row_12_provider"
-				id="network_row_12_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_12_location">Location</label>
-				<input v-model="network_row_12_location"
-				id="network_row_12_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_12_send_speed">Send Speed</label>
-				<input v-model="network_row_12_send_speed"
-				id="network_row_12_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_12_rec_speed">Rec Speed</label>
-				<input v-model="network_row_12_rec_speed"
-				id="network_row_12_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_13_provider">Provider</label>
-				<input v-model="network_row_13_provider"
-				id="network_row_13_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_13_location">Location</label>
-				<input v-model="network_row_13_location"
-				id="network_row_13_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_13_send_speed">Send Speed</label>
-				<input v-model="network_row_13_send_speed"
-				id="network_row_13_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_13_rec_speed">Rec Speed</label>
-				<input v-model="network_row_13_rec_speed"
-				id="network_row_13_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_14_provider">Provider</label>
-				<input v-model="network_row_14_provider"
-				id="network_row_14_provider" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_14_location">Location</label>
-				<input v-model="network_row_14_location"
-				id="network_row_14_location" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_14_send_speed">Send Speed</label>
-				<input v-model="network_row_14_send_speed"
-				id="network_row_14_send_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-			</div>
-			<div class="mt-1 pl-2 w-1/4 ">
-				<label class="w-1/3 inline-block text-sm text-right pr-2 text-gray-600" for="network_row_14_rec_speed">Rec Speed</label>
-				<input v-model="network_row_14_rec_speed"
-				id="network_row_14_rec_speed" class="rounded w-2/3 h-7 text-sm" type="text" />
-				<p v-if="errors['network_row_14_rec_speed']" 
-				class="text-xs italic text-red-500"
-				>{{ errors['network_row_14_rec_speed'][0] }}</p>
-			</div>
-		</div>
-		<div class="flex justify-end mt-8">
-			<button type="submit" class="bg-green-400 rounded px-4 py-2 text-white font-bold shadow hover:bg-green-600"
-			@click="submit">Submit</button>
+
 		</div>
 	</div>
 </div>
 </template>
 
 <script>
+import { Head, Link } from '@inertiajs/inertia-vue3';
+
 	export default {
 		props: {
 			user: Object,
 		},
+		components: [
+		],
 		data() {
 			return {
 				errors: {},

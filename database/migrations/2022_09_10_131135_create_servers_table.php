@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('city');
             $table->string('cpu');
             $table->integer('cores');
-            $table->integer('clock_speed')->nullable();
-            $table->integer('ram')->nullable();
-            $table->integer('swap')->nullable();
+            $table->integer('clock_speed');
+            $table->integer('ram');
+            $table->integer('swap');
             $table->string('distro')->nullable();
             $table->string('kernel')->nullable();
             $table->boolean('aes_ni')->default(false);
@@ -54,9 +54,8 @@ return new class extends Migration
             $table->bigInteger('disk_1m_total_speed');
             $table->integer('disk_1m_total_iops');
             $table->integer('geekbench_5_single');
-            $table->integer('geekbench_5_multi')->nullable();
-            $table->integer('geekbench_5_link')->nullable();
-            $table->string('virtualization')->nullable();
+            $table->integer('geekbench_5_multi');
+            $table->string('virtualization');
             $table->string('note')->nullable();
             $table->timestamps();
 

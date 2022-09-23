@@ -2,6 +2,7 @@
 import axios from 'axios';
 import ServerTable from '../Components/ServerList/ServerTable.vue'
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import NavLinks from '../Components/NavLinks.vue';
 </script>
 
 <script>
@@ -12,7 +13,8 @@ export default {
         can_login: Boolean,
         can_register: Boolean,
         passed_servers: Array,
-        server_count: Number
+        server_count: Number,
+        anon_yabs: Boolean
     },
     data() {
         return {
@@ -26,7 +28,7 @@ export default {
         },
     },
     mounted() {
-        console.log(this.passed_servers)
+        console.log(this.anon_yabs)
         this.servers = this.passed_servers
     }
 }
@@ -35,23 +37,11 @@ export default {
 <template>
     <Head title="YABS List" />
 
-    <div class="pb-[400px] bg-gray-100">
-        <div class=" relative flex items-top justify-between bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0 h-16">
-            <h1 class="logo ml-3 -mt-1 left">YABSLIST</h1>
-
-            <div v-if="can_login" class="mt-5 hidden fixed top-0 px-3 py-4 sm:block">
-                <Link v-if="$page.props.auth.user" :href="route('dashboard')" 
-                class="text-sm text-gray-700 dark:text-gray-500 underline">Your Servers</Link>
-
-                <template v-else>
-                    <Link :href="route('login')" 
-                    class="font-bold text-sm text-orange-500 hover:text-orange-700 underline">Log in</Link>
-
-                    <Link v-if="can_register" :href="route('register')" 
-                    class="ml-4 font-bold text-sm text-orange-500 hover:text-orange-700 underline">Register</Link>
-                </template>
-            </div>
-        </div>
+    <div class="pb-[200px] bg-gray-100">
+        <NavLinks 
+        :anon_yabs=anon_yabs
+		:can_register=can_register>
+        </NavLinks>
 
         <div class="bg-gray-100 flex justify-center max-w-10xl mx-auto sm:px-2 lg:px-8">
             <div class="server-table bg-white rounded sm:items-center sm:justify-between h-5/6 p-6 shadow"
@@ -70,18 +60,12 @@ export default {
 </template>
 
 <style scoped>
-.server-table {
-    width: calc(100vw - 280px);
-    transition:margin .2s linear;
-}
-
-.options_open {
-    margin-left: 280px;
-}
-
-.logo {
-    position: fixed;
-    top: 0;
-    left: 0;
-}
+	.server-table {
+			width: calc(100vw - 280px);
+			transition:margin .2s linear;
+	}
+	
+	.options_open {
+			margin-left: 280px;
+	}
 </style>

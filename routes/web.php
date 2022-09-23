@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ Route::post('/update_results', [
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
+        'anon_yabs' => DB::table('settings')->first()->anonymous_submissions == 1,
         'can_login' => Route::has('login'),
         'can_register' => Route::has('register'),
         'server_count' => \App\Models\Server::count(),
@@ -57,4 +59,11 @@ Route::post('/server/create', [
     \App\Http\Controllers\ServerController::class, 'create'
 ]);
 
+Route::get('/guest/new_yabs', function () {
+    if (DB::table('settings')->first()->anonymous_submissions == 1) {
+        return Inertia::render('NewYabsGuest', [
+            
+        ]);
+    }
+})->name('guest_yabs');
 require __DIR__.'/auth.php';
