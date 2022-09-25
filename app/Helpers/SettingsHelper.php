@@ -18,7 +18,7 @@ class SettingsHelper {
         return DB::table(self::$table)->first()->anonymous_submissions;
     }
 
-    public function all()
+    public static function all()
     {
         return DB::table(self::$table)->first();
     }

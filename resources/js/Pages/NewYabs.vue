@@ -12,7 +12,7 @@
 						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 							<Submit
 							:user=user
-							:virt_types=virt_types
+							:virt_types_string=virt_types_string
 							>
 							</Submit>
 						</div>
@@ -34,9 +34,10 @@
 				Submit
 			},
 			layout: AuthenticatedLayout,
-			props: {
-					user: Object,
-			},
+			props: [
+					'user',
+					'virt_types_string'
+			],
 			data() {
 				return {
 

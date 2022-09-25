@@ -15,6 +15,13 @@
 
 <script>
 export default {
+	methods: {
+		clear_message() {
+			setTimeout(() => {
+				this.$page.props.flash.message = null
+			}, 4000)
+		}
+	},
 	computed: {
 		message() {
 			return this.$page.props.flash.message
@@ -22,13 +29,13 @@ export default {
 	},
 	watch: {
 		message() {
-			setTimeout(() => {
-				this.$page.props.flash.message = null
-			}, 4000)
+			if(this.$page.props.flash.message) {
+				this.clear_message()
+			}
 		}
 	},
 	mounted() {
-
+		this.clear_message()
 	}
 }
 </script>

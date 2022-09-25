@@ -2,7 +2,7 @@
 import axios from 'axios';
 import ServerTable from '../Components/ServerList/ServerTable.vue'
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import NavLinks from '../Components/NavLinks.vue';
+import NavLinks from '../Components/GuestNavLinks.vue';
 </script>
 
 <script>

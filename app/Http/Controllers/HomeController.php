@@ -40,7 +40,7 @@ class HomeController extends Controller
     {
         return Inertia::render('NewYabs', [
             'user' => Auth::user(),
-            'settings' => SettingsHelper::all(),
+            'virt_types_string' => SettingsHelper::virt_types(),
         ]);
     }
 }

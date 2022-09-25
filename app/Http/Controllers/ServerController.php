@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Models\Server;
 use App\Helpers\SettingsHelper;
 use App\Rules\NetworkDetails;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Helpers\QueryHelper;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ServerController extends Controller
@@ -16,7 +14,7 @@ class ServerController extends Controller
     public function create(Request $request)
     {
         if($request->user() || SettingsHelper::allow_anonymous_submissions() == 1) {
-// return($request->ram);
+
             $network_messages = [];
             for($i = 1; $i <= 14; $i++) {
 
@@ -30,7 +28,6 @@ class ServerController extends Controller
                 $network_messages += ['network_row_' . $i . '_rec_speed.required' => 'If one field is populated, all must be'];
             }
 
-// dd(date_format(date_create($request->when),"Y-m-d H:i:s"));
             $validator = Validator::make($request->all(), [
                 'provider_name' => 'required|string',
                 'when' => 'required|string',
@@ -114,11 +111,6 @@ class ServerController extends Controller
                 return response($validator->errors(), 422);
             }
 
-
-            // if(Server::check_for_duplicates($validator)) {
-                
-            //     return response('')
-            // }
             $network_speeds = [];
             for($i = 1; $i <= 14; $i++) {
                 if(!empty($validator->valid()['network_row_' . $i . '_send_speed']) > 0
@@ -129,9 +121,8 @@ class ServerController extends Controller
             }
             $average_network_speed = floor(array_sum($network_speeds) / count($network_speeds));
 
-            // dd($average_network_speed);
-
             Server::create([
+                'user_id' => Auth::user() ? Auth::user() : null,
                 'provider_name' => $validator->valid()['provider_name'],
                 'when' => date_format(date_create($validator->valid()['when']),"Y-m-d H:i:s"),
                 'city' => $validator->valid()['city'],
