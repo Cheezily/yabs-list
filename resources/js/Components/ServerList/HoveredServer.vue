@@ -16,7 +16,11 @@
 						<ul class="">
 							<li v-for="network in server.networks" :key=network.id
 							class="mb-3">
-								<p><b>{{ network.location }}</b> - {{ network.provider }}</p>
+								<p>
+									<b>{{ network.location }}</b> - 
+									{{ network.provider }} 
+									<b>({{ network.ipv4 ? 'IPv4' : 'IPv6' }})</b>
+								</p>
 								<p>Receive Speed: ({{ format_network_speed(network.receive_speed) }})</p>
 								<p>Send Speed: ({{ format_network_speed(network.send_speed) }})</p>
 							</li>
@@ -49,7 +53,7 @@
 		},
 		methods: {
 			format_network_speed(speed) {
-				if(speed === 'busy') {return 'Busy'}
+				if(speed === 0) {return 'Busy'}
 				let speed_k = speed / 1000
 				if(speed_k > 1000000) return (speed_k / 1000000).toFixed(2) + ' GB/s'
 				if(speed_k > 1000) return (speed_k / 1000).toFixed(2) + ' MB/s'
@@ -97,6 +101,14 @@
 		overflow: auto;
 		box-shadow: 0 10px 10px 4px #777;
 		background: linear-gradient(180deg, rgb(233, 232, 255) 0%, rgb(230, 230, 255) 40%, rgb(232, 251, 255) 100%); 
+	}
+
+	@media screen and (max-width: 1440px) {
+		.hovered-server {
+			right: 0;
+			left: auto;
+			
+		}
 	}
 
 	.divider {

@@ -1,12 +1,19 @@
 <template>
 <div>
-	<h1 class="text-gray-600 py-6 px-6 rounded mb-6 bg-white text-lg">
-			If you have an account, please log in to submit your results
-			<a :href="route('login')" class="font-bold text-orange-500 hover:text-orange-700 underline">Here</a>
+
+	<div v-if="!$page.props.auth.user">
+		<h1 class="logo ml-3 -mt-6 left">
+			<a href="/">YABSLIST</a>
 		</h1>
 
+		<h2 class="text-gray-600 py-6 px-6 rounded mb-6 bg-white text-lg">
+			If you have an account, please log in to submit your results
+			<a :href="route('login')" class="font-bold text-orange-500 hover:text-orange-700 underline">Here</a>
+		</h2>
+	</div>
+
 	<div class="overflow-hidden shadow-sm sm:rounded-lg">
-		<div class="rounded bg-white px-4 pb-4 pt-4 mt-4 flex flex-wrap justify-content">
+		<div class="rounded bg-white px-4 pb-4 pt-4 flex flex-wrap justify-content">
 			<h2 class="mb-8 text-slate-700 text-xl w-full">
 				Please fill in these fileds and paste your YABS output into the textarea below
 			</h2>
@@ -865,72 +872,72 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 					disk_1m_read_iops: this.disk_1m_read_iops,
 					disk_1m_write_iops: this.disk_1m_write_iops,
 					disk_1m_total_iops: this.disk_1m_total_iops,
-					network_row_1_provider: this.network_row_1_provider.length > 0 ? this.network_row_1_provider.length : null,
+					network_row_1_provider: this.network_row_1_provider.length > 0 ? this.network_row_1_provider : null,
 					network_row_1_location: this.network_row_1_location,
 					network_row_1_send_speed: this.network_row_1_send_speed,
 					network_row_1_rec_speed: this.network_row_1_rec_speed,
 					network_row_1_ipv4: this.network_row_1_ipv4,
-					network_row_2_provider: this.network_row_2_provider > 0 ? this.network_row_2_provider.length : null,
+					network_row_2_provider: this.network_row_2_provider.length  > 0 ? this.network_row_2_provider : null,
 					network_row_2_location: this.network_row_2_location,
 					network_row_2_send_speed: this.network_row_2_send_speed,
 					network_row_2_rec_speed: this.network_row_2_rec_speed,
 					network_row_2_ipv4: this.network_row_2_ipv4,
-					network_row_3_provider: this.network_row_3_provider > 0 ? this.network_row_3_provider.length : null,
+					network_row_3_provider: this.network_row_3_provider.length  > 0 ? this.network_row_3_provider : null,
 					network_row_3_location: this.network_row_3_location,
 					network_row_3_send_speed: this.network_row_3_send_speed,
 					network_row_3_rec_speed: this.network_row_3_rec_speed,
 					network_row_3_ipv4: this.network_row_3_ipv4,
-					network_row_4_provider: this.network_row_4_provider > 0 ? this.network_row_4_provider.length : null,
+					network_row_4_provider: this.network_row_4_provider.length  > 0 ? this.network_row_4_provider : null,
 					network_row_4_location: this.network_row_4_location,
 					network_row_4_send_speed: this.network_row_4_send_speed,
 					network_row_4_rec_speed: this.network_row_4_rec_speed,
 					network_row_4_ipv4: this.network_row_4_ipv4,
-					network_row_5_provider: this.network_row_5_provider > 0 ? this.network_row_5_provider.length : null,
+					network_row_5_provider: this.network_row_5_provider.length  > 0 ? this.network_row_5_provider : null,
 					network_row_5_location: this.network_row_5_location,
 					network_row_5_send_speed: this.network_row_5_send_speed,
 					network_row_5_rec_speed: this.network_row_5_rec_speed,
 					network_row_5_ipv4: this.network_row_5_ipv4,
-					network_row_6_provider: this.network_row_6_provider > 0 ? this.network_row_6_provider.length : null,
+					network_row_6_provider: this.network_row_6_provider.length  > 0 ? this.network_row_6_provider : null,
 					network_row_6_location: this.network_row_6_location,
 					network_row_6_send_speed: this.network_row_6_send_speed,
 					network_row_6_rec_speed: this.network_row_6_rec_speed,
 					network_row_6_ipv4: this.network_row_6_ipv4,
-					network_row_7_provider: this.network_row_7_provider > 0 ? this.network_row_7_provider.length : null,
+					network_row_7_provider: this.network_row_7_provider.length > 0 ? this.network_row_7_provider : null,
 					network_row_7_location: this.network_row_7_location,
 					network_row_7_send_speed: this.network_row_7_send_speed,
 					network_row_7_rec_speed: this.network_row_7_rec_speed,
 					network_row_7_ipv4: this.network_row_7_ipv4,
-					network_row_8_provider: this.network_row_8_provider > 0 ? this.network_row_8_provider.length : null,
+					network_row_8_provider: this.network_row_8_provider.length  > 0 ? this.network_row_8_provider : null,
 					network_row_8_location: this.network_row_8_location,
 					network_row_8_send_speed: this.network_row_8_send_speed,
 					network_row_8_rec_speed: this.network_row_8_rec_speed,
 					network_row_8_ipv4: this.network_row_8_ipv4,
-					network_row_9_provider: this.network_row_9_provider > 0 ? this.network_row_9_provider.length : null,
+					network_row_9_provider: this.network_row_9_provider.length  > 0 ? this.network_row_9_provider : null,
 					network_row_9_location: this.network_row_9_location,
 					network_row_9_send_speed: this.network_row_9_send_speed,
 					network_row_9_rec_speed: this.network_row_9_rec_speed,
 					network_row_9_ipv4: this.network_row_9_ipv4,
-					network_row_10_provider: this.network_row_10_provider > 0 ? this.network_row_10_provider.length : null,
+					network_row_10_provider: this.network_row_10_provider.length  > 0 ? this.network_row_10_provider : null,
 					network_row_10_location: this.network_row_10_location,
 					network_row_10_send_speed: this.network_row_10_send_speed,
 					network_row_10_rec_speed: this.network_row_10_rec_speed,
 					network_row_10_ipv4: this.network_row_10_ipv4,
-					network_row_11_provider: this.network_row_11_provider > 0 ? this.network_row_11_provider.length : null,
+					network_row_11_provider: this.network_row_11_provider.length  > 0 ? this.network_row_11_provider : null,
 					network_row_11_location: this.network_row_11_location,
 					network_row_11_send_speed: this.network_row_11_send_speed,
 					network_row_11_rec_speed: this.network_row_11_rec_speed,
 					network_row_11_ipv4: this.network_row_11_ipv4,
-					network_row_12_provider: this.network_row_12_provider > 0 ? this.network_row_12_provider.length : null,
+					network_row_12_provider: this.network_row_12_provider.length  > 0 ? this.network_row_12_provider : null,
 					network_row_12_location: this.network_row_12_location,
 					network_row_12_send_speed: this.network_row_12_send_speed,
 					network_row_12_rec_speed: this.network_row_12_rec_speed,
 					network_row_12_ipv4: this.network_row_12_ipv4,
-					network_row_13_provider: this.network_row_13_provider > 0 ? this.network_row_13_provider.length : null,
+					network_row_13_provider: this.network_row_13_provider.length  > 0 ? this.network_row_13_provider : null,
 					network_row_13_location: this.network_row_13_location,
 					network_row_13_send_speed: this.network_row_13_send_speed,
 					network_row_13_rec_speed: this.network_row_13_rec_speed,
 					network_row_13_ipv4: this.network_row_13_ipv4,
-					network_row_14_provider: this.network_row_14_provider > 0 ? this.network_row_14_provider.length : null,
+					network_row_14_provider: this.network_row_14_provider.length  > 0 ? this.network_row_14_provider : null,
 					network_row_14_location: this.network_row_14_location,
 					network_row_14_send_speed: this.network_row_14_send_speed,
 					network_row_14_rec_speed: this.network_row_14_rec_speed,

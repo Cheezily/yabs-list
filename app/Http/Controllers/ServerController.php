@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Server;
 use App\Helpers\SettingsHelper;
+use App\Models\Network;
 use App\Rules\NetworkDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -121,7 +122,7 @@ class ServerController extends Controller
             }
             $average_network_speed = floor(array_sum($network_speeds) / count($network_speeds));
 
-            Server::create([
+            $server = Server::create([
                 'user_id' => Auth::user() ? Auth::user() : null,
                 'provider_name' => $validator->valid()['provider_name'],
                 'when' => date_format(date_create($validator->valid()['when']),"Y-m-d H:i:s"),
@@ -165,6 +166,19 @@ class ServerController extends Controller
                 'disk_1m_total_iops' => $validator->valid()['disk_1m_total_iops'],
                 'average_network_speed' => $average_network_speed
             ]);
+
+            for($i = 1; $i <= 14; $i++) {
+                if(!empty($validator->valid()['network_row_' . $i . '_provider'])) {
+                    Network::create([
+                        'server_id' => $server->id,
+                        'provider' => $validator->valid()['network_row_' . $i . '_provider'],
+                        'ipv4' => $validator->valid()['network_row_' . $i . '_ipv4'],
+                        'location' => $validator->valid()['network_row_' . $i . '_location'],
+                        'send_speed' => $validator->valid()['network_row_' . $i . '_send_speed'],
+                        'receive_speed' => $validator->valid()['network_row_' . $i . '_rec_speed']
+                    ]);
+                }
+            }
 
             return response('Benchmark submitted successfully. Thanks!', 200);
         }
