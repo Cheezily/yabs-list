@@ -5,10 +5,13 @@
 			<a :href="route('login')" class="font-bold text-orange-500 hover:text-orange-700 underline">Here</a>
 		</h1>
 
-	<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+	<div class="overflow-hidden shadow-sm sm:rounded-lg">
+		<div class="rounded bg-white px-4 pb-4 pt-4 mt-4 flex flex-wrap justify-content">
+			<h2 class="mb-8 text-slate-700 text-xl w-full">
+				Please fill in these fileds and paste your YABS output into the textarea below
+			</h2>
 
-		<div class="pl-4 mt-4 flex flex-wrap justify-content">
-			<div class="my-1 pl-2 w-full">
+			<div class="pl-2 w-full">
 				<label class="w-1/3 text-right inline-block text-gray-700" for="provider_name">
 					What is the name of the service provider?
 				</label>
@@ -53,14 +56,9 @@
 					{{ capitalize(errors.virtualization[0]) }}
 				</p>
 			</div>
-		</div>
 
-		<hr class="mt-4">
-
-		<div class="p-6 bg-white border-b border-gray-200">
-			<h1 class="text-gray-600 text-lg">
-				Submit New Benchmark
-				- Paste your YABS results in the textarea below. Data should auto-populate.
+			<h1 class="text-slate-700 text-xl w-full mt-6">
+				Paste your YABS output in the textarea below
 			</h1>
 			<textarea v-model="yabs_text" 
 			rows="20"
@@ -84,12 +82,13 @@
 	.
 	.
 	.">
-			</textarea>
-			<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
-				Please make any corrections below.
-			</h2>
+				</textarea>
+		</div>
 
-			<hr class="mt-2">
+		<div class="rounded mt-6 bg-white px-6 pb-6 pt-3 border-2 border-amber-500">
+			<h2 class="mb-6 text-gray-700 text-xl">
+				These details should be auto-populated. Please make any corrections below.
+			</h2>
 
 			<div class="mt-1 flex flex-wrap justify-center">
 				<div class="my-1 pl-2 w-1/2">
@@ -116,12 +115,12 @@
 					id="clock_speed" class="ml-2 rounded w-1/6 text-sm h-7" type="text" />
 				</div>
 				<div class="my-1 pl-2 w-1/2">
-					<label class="w-1/4 inline-block text-sm text-right" for="ram">RAM (bytes)</label>
+					<label class="w-1/4 inline-block text-sm text-right" for="ram">RAM (MB)</label>
 					<input v-model="ram"
 					id="ram" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
 				</div>
 				<div class="my-1 pl-2 w-1/2">
-					<label class="w-1/4 inline-block text-sm text-right" for="swap">Swap (bytes)</label>
+					<label class="w-1/4 inline-block text-sm text-right" for="swap">Swap (MB)</label>
 					<input v-model="swap"
 					id="swap" class="ml-2 rounded w-3/6 text-sm h-7" type="text" />
 				</div>
@@ -552,6 +551,120 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 			}
 		},
 		methods: {
+			clear_all() {
+				this.errors = {}
+				this.yabs_text = ''
+				this.provider_name = ''
+				this.type = ''
+				this.when = ''
+				this.city = ''
+				this.virtualization = ''
+				this.cpu = ''
+				this.cores = ''
+				this.clock_speed = ''
+				this.ram = ''
+				this.swap = ''
+				this.geekbench_5_single = ''
+				this.geekbench_5_multi = ''
+				this.aes_ni = false
+				this.vm_x = false
+				this.distro = ''
+				this.kernel = ''
+				this.disk_4k_read_speed = ''
+				this.disk_4k_write_speed = ''
+				this.disk_4k_total_speed = ''
+				this.disk_4k_read_iops = ''
+				this.disk_4k_write_iops = ''
+				this.disk_4k_total_iops = ''
+				this.disk_64k_read_speed = ''
+				this.disk_64k_write_speed = ''
+				this.disk_64k_total_speed = ''
+				this.disk_64k_read_iops = ''
+				this.disk_64k_write_iops = ''
+				this.disk_64k_total_iops = ''
+				this.disk_512k_read_speed = ''
+				this.disk_512k_write_speed = ''
+				this.disk_512k_total_speed = ''
+				this.disk_512k_read_iops = ''
+				this.disk_512k_write_iops = ''
+				this.disk_512k_total_iops = ''
+				this.disk_1m_read_speed = ''
+				this.disk_1m_write_speed = ''
+				this.disk_1m_total_speed = ''
+				this.disk_1m_read_iops = ''
+				this.disk_1m_write_iops = ''
+				this.disk_1m_total_iops = ''
+				this.network_row_1_provider = ''
+				this.network_row_1_location = ''
+				this.network_row_1_send_speed = ''
+				this.network_row_1_rec_speed = ''
+				this.network_row_1_ipv4 = true
+				this.network_row_2_provider = ''
+				this.network_row_2_location = ''
+				this.network_row_2_send_speed = ''
+				this.network_row_2_rec_speed = ''
+				this.network_row_2_ipv4 = true
+				this.network_row_3_provider = ''
+				this.network_row_3_location = ''
+				this.network_row_3_send_speed = ''
+				this.network_row_3_rec_speed = ''
+				this.network_row_3_ipv4 = true
+				this.network_row_4_provider = ''
+				this.network_row_4_location = ''
+				this.network_row_4_send_speed = ''
+				this.network_row_4_rec_speed = ''
+				this.network_row_4_ipv4 = true
+				this.network_row_5_provider = ''
+				this.network_row_5_location = ''
+				this.network_row_5_send_speed = ''
+				this.network_row_5_rec_speed = ''
+				this.network_row_5_ipv4 = true
+				this.network_row_6_provider = ''
+				this.network_row_6_location = ''
+				this.network_row_6_send_speed = ''
+				this.network_row_6_rec_speed = ''
+				this.network_row_6_ipv4 = true
+				this.network_row_7_provider = ''
+				this.network_row_7_location = ''
+				this.network_row_7_send_speed = ''
+				this.network_row_7_rec_speed = ''
+				this.network_row_7_ipv4 = true
+				this.network_row_8_provider = ''
+				this.network_row_8_location = ''
+				this.network_row_8_send_speed = ''
+				this.network_row_8_rec_speed = ''
+				this.network_row_8_ipv4 = false
+				this.network_row_9_provider = ''
+				this.network_row_9_location = ''
+				this.network_row_9_send_speed = ''
+				this.network_row_9_rec_speed = ''
+				this.network_row_9_ipv4 = false
+				this.network_row_10_provider = ''
+				this.network_row_10_location = ''
+				this.network_row_10_send_speed = ''
+				this.network_row_10_rec_speed = ''
+				this.network_row_10_ipv4 = false
+				this.network_row_11_provider = ''
+				this.network_row_11_location = ''
+				this.network_row_11_send_speed = ''
+				this.network_row_11_rec_speed = ''
+				this.network_row_11_ipv4 = false
+				this.network_row_12_provider = ''
+				this.network_row_12_location = ''
+				this.network_row_12_send_speed = ''
+				this.network_row_12_rec_speed = ''
+				this.network_row_12_ipv4 = false
+				this.network_row_13_provider = ''
+				this.network_row_13_location = ''
+				this.network_row_13_send_speed = ''
+				this.network_row_13_rec_speed = ''
+				this.network_row_13_ipv4 = false
+				this.network_row_14_provider = ''
+				this.network_row_14_location = ''
+				this.network_row_14_send_speed = ''
+				this.network_row_14_rec_speed = ''
+				this.network_row_14_ipv4 = false
+			},
 			find_item_row(item, lines) {
 				for(let i = 0; i < lines.length; i++) {
 					if(lines[i].substring(0,item.length) == item) {
@@ -589,9 +702,9 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				suffix = ram_info.substring(ram_info.length - 3).trim()
 
 				if(suffix === 'GiB') {
-					ram *= 1000000000
+					ram *= 1000
 				} else {
-					ram *= 1000000
+					ram *= 1
 				}
 				return parseInt(ram)
 			},
@@ -611,9 +724,9 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				suffix = swap_info.substring(swap_info.length - 3).trim()
 
 				if(suffix === 'GiB') {
-					swap *= 1000000000
+					swap *= 1000
 				} else {
-					swap *= 1000000
+					swap *= 1
 				}
 				return parseInt(swap)
 			},
@@ -825,6 +938,9 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				})
 				.then(res => {
 					console.log(res.data)
+					this.$page.props.flash.status = 'success'
+					this.$page.props.flash.message = res.data
+					this.clear_all()
 				})
 				.catch(err => {
 					console.log(err.response.data)

@@ -16,7 +16,7 @@ class ServerController extends Controller
     public function create(Request $request)
     {
         if($request->user() || SettingsHelper::allow_anonymous_submissions() == 1) {
-// return($request->type);
+// return($request->ram);
             $network_messages = [];
             for($i = 1; $i <= 14; $i++) {
 
@@ -174,6 +174,8 @@ class ServerController extends Controller
                 'disk_1m_total_iops' => $validator->valid()['disk_1m_total_iops'],
                 'average_network_speed' => $average_network_speed
             ]);
+
+            return response('Benchmark submitted successfully. Thanks!', 200);
         }
 
         return response('Please log in to submit your results', 422);
