@@ -90,18 +90,6 @@
 				if(iops > 1000) {return (iops / 1000).toFixed(2) + 'K'}
 				return iops
 			},
-			// average_network_speed(networks) {
-			// 	let total = 0
-			// 	let average = 0
-			// 	for(let i = 0; i < networks.length; i++) {
-			// 		total += networks[i].send_speed
-			// 		total += networks[i].receive_speed
-			// 	}
-			// 	average = total / (networks.length * 2) / 1000
-			// 	if(average > 1000000) return (average / 1000000).toFixed(2) + ' GB/s'
-			// 	if(average > 1000) return (average / 1000).toFixed(2) + ' MB/s'
-			// 	return average.toFixed(2) + ' KB/s'
-			// }
 		}
 	}
 </script>
@@ -109,7 +97,6 @@
 
 <style scoped>
 	tr:hover {
-		/* background: #ddf; */
 		background: rgb(224,223,255);
 		background: linear-gradient(176deg, rgba(224,223,255,1) 0%, rgba(191,191,255,1) 39%, rgba(153,238,255,1) 100%);
 		cursor: help;

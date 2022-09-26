@@ -41,7 +41,7 @@ export default {
 			}
 		},
 		mounted() {
-				console.log('helllooooo')
+				console.log('New YABS guest')
 		},
 }
 </script>

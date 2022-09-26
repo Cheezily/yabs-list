@@ -4,17 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Helpers\SettingsHelper;
 use Inertia\Inertia;
-use App\Models\Server;
-use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
-    public function index(Request $request)
+    public function dashboard(Request $request)
     {
         $user = User::with(
             [
@@ -24,10 +20,10 @@ class HomeController extends Controller
             ->where('id', Auth::user()->id)
             ->first();
 
-        Inertia::share('flash', [
-            'status' => 'success',
-            'message' => 'this is your test'
-        ]);
+        // Inertia::share('flash', [
+        //     'status' => 'success',
+        //     'message' => 'this is your test'
+        // ]);
 
         return Inertia::render('Dashboard', [
             'user' => $user,
@@ -41,6 +37,14 @@ class HomeController extends Controller
         return Inertia::render('NewYabs', [
             'user' => Auth::user(),
             'virt_types_string' => SettingsHelper::virt_types(),
+        ]);
+    }
+
+    public function user_settings()
+    {
+        return Inertia::render('UserSettings', [
+            'user' => Auth::user(),
+            'settings' => SettingsHelper::all(),
         ]);
     }
 }

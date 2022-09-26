@@ -23,7 +23,10 @@ return new class extends Migration
             $table->bigInteger('receive_speed')->nullable();
             $table->timestamps();
 
-            $table->foreign('server_id')->references('id')->on('servers');
+            $table->foreign('server_id')
+                ->references('id')
+                ->on('servers')
+                ->onDelete('cascade');
         });
     }
 

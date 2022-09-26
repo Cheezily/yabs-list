@@ -11,7 +11,7 @@ class CountController extends Controller
 {
     public function get_options_counts(Request $request)
     {
-        $merged_ids = MergedIdsHelper::getMergedIds($request);
+        $merged_ids = MergedIdsHelper::getMergedIds($request, $request->user_id);
 
         $counts = [
             'ram' => QueryHelper::ram_count($merged_ids),

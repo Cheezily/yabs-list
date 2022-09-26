@@ -12,7 +12,7 @@
 		</h2>
 	</div>
 
-	<div class="overflow-hidden shadow-sm sm:rounded-lg">
+	<div class="overflow-hidden shadow-sm sm:rounded-lg mb-32">
 		<div class="rounded bg-white px-4 pb-4 pt-4 flex flex-wrap justify-content">
 			<h2 class="mb-8 text-slate-700 text-xl w-full">
 				Please fill in these fileds and paste your YABS output into the textarea below
@@ -97,7 +97,7 @@
 				These details should be auto-populated. Please make any corrections below.
 			</h2>
 
-			<div class="mt-1 flex flex-wrap justify-center">
+			<div class="mt-1 flex flex-wrap justify-center text-gray-600">
 				<div class="my-1 pl-2 w-1/2">
 					<label class="w-1/3 inline-block text-sm text-right" for="when">When Was This Run?</label>
 					<input v-model="when"
@@ -107,7 +107,7 @@
 
 			<hr class="mt-2">
 
-			<div class="mt-1 flex flex-wrap justify-content">
+			<div class="mt-1 flex flex-wrap justify-content text-gray-600">
 				<div class="my-1 pl-2 w-1/2">
 					<label class="w-1/4 inline-block text-sm text-right" for="cpu">CPU</label>
 					<input v-model="cpu"
@@ -152,7 +152,7 @@
 
 			<hr class="mt-2 mb-2">
 
-			<div class="mt-1 flex flex-wrap justify-content">
+			<div class="mt-1 flex flex-wrap justify-content text-gray-600">
 				<div class="my-1 pl-2 w-full flex justify-center">
 					<label class="inline-block text-sm text-right" for="aes_ni">AES-NI</label>
 					<input v-model="aes_ni"
@@ -165,7 +165,7 @@
 
 			<hr class="mt-2 mb-2">
 
-			<div class="mt-1 flex flex-wrap justify-content">
+			<div class="mt-1 flex flex-wrap justify-content text-gray-600">
 				<div class="my-1 pl-2 w-1/2">
 					<label class="w-1/4 inline-block text-sm text-right" for="distro">Distro</label>
 					<input v-model="distro"
@@ -180,7 +180,7 @@
 
 			<hr class="mt-2 mb-2">
 
-			<h2 class="mt-3 mb-3 text-gray-700 text-m text-center">
+			<h2 class="mt-3 mb-3 text-gray-600 text-m text-center">
 				Disk Performance - All data should be an integer with speed denoted in bytes/s, not MB/s or GB/s
 			</h2>
 

@@ -1,11 +1,13 @@
 <template>
 	<div>
 	<transition name="slide-fade">
-		<div v-if="options_open" class="table-options">
+		<div v-if="options_open" class="pb-[200px] w-[320px] h-screen table-options fixed 
+		top-[65px] left-0 z-20 overflow-auto">
 			<button 
 			@click="$emit('close_options')"
 			class="close-options">
-				<font-awesome-icon class="close-icon" icon="fa-xmark" />
+				<font-awesome-icon class="close-icon absolute right-[10px] top-[10px] text-xl hover:text-purple" 
+				icon="fa-xmark" />
 			</button>
 
 			<div class="text-xs pl-6 mb-4">
@@ -15,7 +17,7 @@
 					<font-awesome-icon v-else icon="fa-caret-right" />
 				</p>
 				<transition name="slide-fade">
-					<ul v-if="columns_open">
+					<ul v-if="columns_open || user">
 						<li class="ml-2 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.provider_name"
@@ -267,159 +269,161 @@
 				<p class="w-5/6 border-b-2 border-gray-400 border-dotted pb-2"></p>
 			</div>
 
-			<div class="text-xs pl-6">
-				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
-				@click="cores_open = !cores_open">CPU Cores
-					<font-awesome-icon v-if="cores_open" icon="fa-caret-left" />
-					<font-awesome-icon v-else icon="fa-caret-right" />	
-				</p>
-				<transition name="slide-fade">
-					<ul v-if="cores_open">
-						<li v-for="(option, index) in options.cores" :key="index"
-						class="w-11/12 mb-px">
-							<input :disabled=disable_all 
-								checked type="checkbox" @click="select_index_item(selected_items.selected_cores, index)">
-							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
-						</li>
-					</ul>
-				</transition>
+			<div v-if="!user">
+				<div class="text-xs pl-6">
+					<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+					@click="cores_open = !cores_open">CPU Cores
+						<font-awesome-icon v-if="cores_open" icon="fa-caret-left" />
+						<font-awesome-icon v-else icon="fa-caret-right" />	
+					</p>
+					<transition name="slide-fade">
+						<ul v-if="cores_open">
+							<li v-for="(option, index) in options.cores" :key="index"
+							class="w-11/12 mb-px">
+								<input :disabled=disable_all 
+									checked type="checkbox" @click="select_index_item(selected_items.selected_cores, index)">
+								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+								<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
+							</li>
+						</ul>
+					</transition>
 
-				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
-				@click="ram_open = !ram_open">RAM
-					<font-awesome-icon v-if="ram_open" icon="fa-caret-left" />
-					<font-awesome-icon v-else icon="fa-caret-right" />	
-				</p>
-				<transition name="slide-fade">
-					<ul v-if="ram_open">
-						<li v-for="(option, index) in options.ram" :key="index"
-						class="w-11/12 mb-px">
-							<input :disabled=disable_all 
-								checked type="checkbox" @click="select_index_item(selected_items.selected_ram, index)">
-							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
-						</li>
-					</ul>
-				</transition>
+					<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+					@click="ram_open = !ram_open">RAM
+						<font-awesome-icon v-if="ram_open" icon="fa-caret-left" />
+						<font-awesome-icon v-else icon="fa-caret-right" />	
+					</p>
+					<transition name="slide-fade">
+						<ul v-if="ram_open">
+							<li v-for="(option, index) in options.ram" :key="index"
+							class="w-11/12 mb-px">
+								<input :disabled=disable_all 
+									checked type="checkbox" @click="select_index_item(selected_items.selected_ram, index)">
+								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+								<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
+							</li>
+						</ul>
+					</transition>
 
-				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
-				@click="gb5_single_open = !gb5_single_open">Geekbench 5 Single
-					<font-awesome-icon v-if="gb5_single_open" icon="fa-caret-left" />
-					<font-awesome-icon v-else icon="fa-caret-right" />	
-				</p>
-				<transition name="slide-fade">
-					<ul v-if="gb5_single_open">
-						<li v-for="(option, index) in options.geekbench_5_single" :key="index"
-						class="w-11/12 mb-px">
-							<input :disabled=disable_all 
-								checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_single, index)">
-							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
-						</li>
-					</ul>
-				</transition>
+					<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+					@click="gb5_single_open = !gb5_single_open">Geekbench 5 Single
+						<font-awesome-icon v-if="gb5_single_open" icon="fa-caret-left" />
+						<font-awesome-icon v-else icon="fa-caret-right" />	
+					</p>
+					<transition name="slide-fade">
+						<ul v-if="gb5_single_open">
+							<li v-for="(option, index) in options.geekbench_5_single" :key="index"
+							class="w-11/12 mb-px">
+								<input :disabled=disable_all 
+									checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_single, index)">
+								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+								<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
+							</li>
+						</ul>
+					</transition>
 
-				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
-				@click="gb5_multi_open = !gb5_multi_open">Geekbench 5 Multi
-					<font-awesome-icon v-if="gb5_multi_open" icon="fa-caret-left" />
-					<font-awesome-icon v-else icon="fa-caret-right" />	
-				</p>
-				<transition name="slide-fade">
-					<ul v-if="gb5_multi_open">
-						<li v-for="(option, index) in options.geekbench_5_multi" :key="index"
-						class="w-11/12 mb-px">
-							<input :disabled=disable_all 
-								checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_multi, index)">
-							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
-						</li>
-					</ul>
-				</transition>
+					<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+					@click="gb5_multi_open = !gb5_multi_open">Geekbench 5 Multi
+						<font-awesome-icon v-if="gb5_multi_open" icon="fa-caret-left" />
+						<font-awesome-icon v-else icon="fa-caret-right" />	
+					</p>
+					<transition name="slide-fade">
+						<ul v-if="gb5_multi_open">
+							<li v-for="(option, index) in options.geekbench_5_multi" :key="index"
+							class="w-11/12 mb-px">
+								<input :disabled=disable_all 
+									checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_multi, index)">
+								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+								<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
+							</li>
+						</ul>
+					</transition>
 
-				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
-				@click="disk_4k_read_open = !disk_4k_read_open">Disk - 4k Read Speed
-					<font-awesome-icon v-if="disk_4k_read_open" icon="fa-caret-left" />
-					<font-awesome-icon v-else icon="fa-caret-right" />	
-				</p>
-				<transition name="slide-fade">
-					<ul v-if="disk_4k_read_open">
-						<li v-for="(option, index) in options.disk_4k_read_speed" :key="index"
-						class="w-11/12 mb-px">
-							<input :disabled=disable_all 
-								checked type="checkbox" @click="select_index_item(selected_items.selected_4k_read_speed, index)">
-							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
-						</li>
-					</ul>
-				</transition>
+					<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+					@click="disk_4k_read_open = !disk_4k_read_open">Disk - 4k Read Speed
+						<font-awesome-icon v-if="disk_4k_read_open" icon="fa-caret-left" />
+						<font-awesome-icon v-else icon="fa-caret-right" />	
+					</p>
+					<transition name="slide-fade">
+						<ul v-if="disk_4k_read_open">
+							<li v-for="(option, index) in options.disk_4k_read_speed" :key="index"
+							class="w-11/12 mb-px">
+								<input :disabled=disable_all 
+									checked type="checkbox" @click="select_index_item(selected_items.selected_4k_read_speed, index)">
+								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+								<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
+							</li>
+						</ul>
+					</transition>
 
-				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
-				@click="disk_4k_write_open = !disk_4k_write_open">Disk - 4k Write Speed
-					<font-awesome-icon v-if="disk_4k_write_open" icon="fa-caret-left" />
-					<font-awesome-icon v-else icon="fa-caret-right" />	
-				</p>
-				<transition name="slide-fade">
-					<ul v-if="disk_4k_write_open">
-						<li v-for="(option, index) in options.disk_4k_write_speed" :key="index"
-						class="w-11/12 mb-px">
-							<input :disabled=disable_all 
-								checked type="checkbox" @click="select_index_item(selected_items.selected_4k_write_speed, index)">
-							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
-						</li>
-					</ul>
-				</transition>
+					<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+					@click="disk_4k_write_open = !disk_4k_write_open">Disk - 4k Write Speed
+						<font-awesome-icon v-if="disk_4k_write_open" icon="fa-caret-left" />
+						<font-awesome-icon v-else icon="fa-caret-right" />	
+					</p>
+					<transition name="slide-fade">
+						<ul v-if="disk_4k_write_open">
+							<li v-for="(option, index) in options.disk_4k_write_speed" :key="index"
+							class="w-11/12 mb-px">
+								<input :disabled=disable_all 
+									checked type="checkbox" @click="select_index_item(selected_items.selected_4k_write_speed, index)">
+								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+								<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
+							</li>
+						</ul>
+					</transition>
 
-				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
-				@click="iops_4k_open = !iops_4k_open">Disk - 4K Total IOPS
-					<font-awesome-icon v-if="iops_4k_open" icon="fa-caret-left" />
-					<font-awesome-icon v-else icon="fa-caret-right" />	
-				</p>
-				<transition name="slide-fade">
-					<ul v-if="iops_4k_open">
-						<li v-for="(option, index) in options.disk_4k_total_iops" :key="index"
-						class="w-11/12 mb-px">
-							<input :disabled=disable_all 
-								checked type="checkbox" @click="select_index_item(selected_items.selected_4k_total_iops,index)">
-							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
-						</li>
-					</ul>
-				</transition>
+					<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+					@click="iops_4k_open = !iops_4k_open">Disk - 4K Total IOPS
+						<font-awesome-icon v-if="iops_4k_open" icon="fa-caret-left" />
+						<font-awesome-icon v-else icon="fa-caret-right" />	
+					</p>
+					<transition name="slide-fade">
+						<ul v-if="iops_4k_open">
+							<li v-for="(option, index) in options.disk_4k_total_iops" :key="index"
+							class="w-11/12 mb-px">
+								<input :disabled=disable_all 
+									checked type="checkbox" @click="select_index_item(selected_items.selected_4k_total_iops,index)">
+								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+								<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
+							</li>
+						</ul>
+					</transition>
 
-				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
-				@click="avg_network_4k_open = !avg_network_4k_open">Average Network Speed
-					<font-awesome-icon v-if="avg_network_4k_open" icon="fa-caret-left" />
-					<font-awesome-icon v-else icon="fa-caret-right" />	
-				</p>
-				<transition name="slide-fade">
-					<ul v-if="avg_network_4k_open">
-						<li v-for="(option, index) in options.average_network_speed" :key="index"
-						class="w-11/12 mb-px">
-							<input :disabled=disable_all 
-								checked type="checkbox" @click="select_index_item(selected_items.selected_avg_network,index)">
-							<span class="pl-1">{{ Object.keys(option)[0] }}</span>
-							<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
-						</li>
-					</ul>
-				</transition>
+					<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+					@click="avg_network_4k_open = !avg_network_4k_open">Average Network Speed
+						<font-awesome-icon v-if="avg_network_4k_open" icon="fa-caret-left" />
+						<font-awesome-icon v-else icon="fa-caret-right" />	
+					</p>
+					<transition name="slide-fade">
+						<ul v-if="avg_network_4k_open">
+							<li v-for="(option, index) in options.average_network_speed" :key="index"
+							class="w-11/12 mb-px">
+								<input :disabled=disable_all 
+									checked type="checkbox" @click="select_index_item(selected_items.selected_avg_network,index)">
+								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
+								<span class="float-right font-bold">({{ Object.values(option)[0] }})</span>
+							</li>
+						</ul>
+					</transition>
 
-				<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
-				@click="providers_open = !providers_open">Providers
-					<font-awesome-icon v-if="providers_open" icon="fa-caret-left" />
-					<font-awesome-icon v-else icon="fa-caret-right" />	
-				</p>
-				<transition name="slide-fade">
-					<ul v-if="providers_open">
-						<li v-for="option in options.providers" :key="option"
-						class="w-11/12 mb-px">
-							<input :disabled=disable_all 
-								:checked="Object.values(option)[1] > 0" type="checkbox" @click="select_index_item(selected_items.selected_providers, Object.values(option)[0])">
-							<span class="pl-1">{{ Object.values(option)[0] }}</span>
-							<span class="float-right font-bold">({{ Object.values(option)[1] }})</span>
-						</li>
-					</ul>
-				</transition>
+					<p class="mb-1 mt-3 font-bold text-sm hover:text-purple-600 hover:cursor-pointer"
+					@click="providers_open = !providers_open">Providers
+						<font-awesome-icon v-if="providers_open" icon="fa-caret-left" />
+						<font-awesome-icon v-else icon="fa-caret-right" />	
+					</p>
+					<transition name="slide-fade">
+						<ul v-if="providers_open">
+							<li v-for="option in options.providers" :key="option"
+							class="w-11/12 mb-px">
+								<input :disabled=disable_all 
+									:checked="Object.values(option)[1] > 0" type="checkbox" @click="select_index_item(selected_items.selected_providers, Object.values(option)[0])">
+								<span class="pl-1">{{ Object.values(option)[0] }}</span>
+								<span class="float-right font-bold">({{ Object.values(option)[1] }})</span>
+							</li>
+						</ul>
+					</transition>
+				</div>
 			</div>
 
 			
@@ -433,6 +437,7 @@
 		props: [
 			'options_open',
 			'passed_show_columns',
+			'user'
 		],
 		data() {
 			return {
@@ -481,13 +486,6 @@
 						}
 						return 0
 					})
-					// for (const [key] of Object.entries(this.options.cores)) {this.selected_items.selected_cores.push(key)}
-					// for (const [key] of Object.entries(this.options.ram)) {this.selected_items.selected_ram.push(key)}
-					// for (const [key] of Object.entries(this.options.geekbench_5_single)) {this.selected_items.selected_gb5_single.push(key)}
-					// for (const [key] of Object.entries(this.options.geekbench_5_multi)) {this.selected_items.selected_gb5_multi.push(key)}
-					// for (const [key] of Object.entries(this.options.disk_4k_read_speed)) {this.selected_items.selected_4k_read_speed.push(key)}
-					// for (const [key] of Object.entries(this.options.disk_4k_write_speed)) {this.selected_items.selected_4k_write_speed.push(key)}
-					// for (const [key] of Object.entries(this.options.disk_4k_total_iops)) {this.selected_items.selected_4k_total_iops.push(key)}
 					if(initial) {
 						for (const [key, value] of Object.entries(this.options.providers)) {this.static_provider_list.push(value['provider_name'])}
 					} else {
@@ -546,7 +544,9 @@
 			},
 		},
 		mounted() {
-			this.get_options_counts(true)
+			if(!this.user) {
+				this.get_options_counts(true)
+			}
 			this.show_columns = this.passed_show_columns
 		}
 	}
@@ -554,30 +554,10 @@
 
 <style scoped>
 	.table-options {
-		padding-bottom: 200px;
-		width: 320px;
-		height: 100vh;
-		position: fixed;
-		top: 64px;
-		left: 0;
-		z-index: 20;
-		overflow: auto;
 		border-top: 2px #222;
 		box-shadow: 0 10px 10px 4px #777;
 		background: rgb(224,223,255);
 		background: linear-gradient(180deg, rgb(233, 232, 255) 0%, rgb(230, 230, 255) 40%, rgb(232, 251, 255) 100%); 
-	}
-
-	.close-icon {
-		position: absolute;
-		right: 10px;
-		top: 10px;
-		font-size: 24px;
-		color: #000;
-	}
-
-	.close-icon:hover {
-		color: rgb(153, 60, 182);
 	}
 
 	.slide-fade-enter-active {

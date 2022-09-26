@@ -1,5 +1,5 @@
 <template>
-		<Head title="Dashboard" />
+		<Head title="Submit New Benchmark" />
 
 		<AuthenticatedLayout>
 				<template #header>
@@ -10,6 +10,10 @@
 
 				<div class="py-12">
 						<div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+							<h1 class="text-xl mb-2">
+								Submit Benchmark
+							</h1>
+
 							<Submit
 							:user=user
 							:virt_types_string=virt_types_string
@@ -44,7 +48,7 @@
 				}
 			},
 			mounted() {
-					console.log('helllooooo')
+					console.log('Submit New YABS')
 			},
 	}
 </script>

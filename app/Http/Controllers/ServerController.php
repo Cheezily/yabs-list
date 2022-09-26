@@ -74,30 +74,34 @@ class ServerController extends Controller
 
             for($i = 1; $i <= 14; $i++) {
                 $validator->sometimes('network_row_' . $i . '_provider', 'required|max:100', function ($input) use ($i) {
-                    if(is_null($input->get('network_row_' . $i . '_location'))
+                    if(!is_null($input->get('network_row_' . $i . '_provider'))
+                    && (is_null($input->get('network_row_' . $i . '_location'))
                     || is_null($input->get('network_row_' . $i . '_send_speed'))
-                    || is_null($input->get('network_row_' . $i . '_rec_speed'))) {
+                    || is_null($input->get('network_row_' . $i . '_rec_speed')))) {
                         return true;
                     };
                 });
                 $validator->sometimes('network_row_' . $i . '_location', 'required|max:100', function ($input) use ($i) {
-                    if(is_null($input->get('network_row_' . $i . '_provider'))
+                    if(!is_null($input->get('network_row_' . $i . '_location'))
+                    && (is_null($input->get('network_row_' . $i . '_provider'))
                     || is_null($input->get('network_row_' . $i . '_send_speed'))
-                    || is_null($input->get('network_row_' . $i . '_rec_speed'))) {
+                    || is_null($input->get('network_row_' . $i . '_rec_speed')))) {
                         return true;
                     };
                 });
                 $validator->sometimes('network_row_' . $i . '_send_speed', 'required|integer', function ($input) use ($i) {
-                    if(is_null($input->get('network_row_' . $i . '_provider'))
+                    if(!is_null($input->get('network_row_' . $i . '_send_speed'))
+                    && (is_null($input->get('network_row_' . $i . '_provider'))
                     || is_null($input->get('network_row_' . $i . '_location'))
-                    || is_null($input->get('network_row_' . $i . '_rec_speed'))) {
+                    || is_null($input->get('network_row_' . $i . '_rec_speed')))) {
                         return true;
                     };
                 });
                 $validator->sometimes('network_row_' . $i . '_rec_speed', 'required|integer', function ($input) use ($i) {
-                    if(is_null($input->get('network_row_' . $i . '_provider'))
+                    if(!is_null($input->get('network_row_' . $i . '_rec_speed'))
+                    && (is_null($input->get('network_row_' . $i . '_provider'))
                     || is_null($input->get('network_row_' . $i . '_location'))
-                    || is_null($input->get('network_row_' . $i . '_send_speed'))) {
+                    || is_null($input->get('network_row_' . $i . '_send_speed')))) {
                         return true;
                     };
                 });
@@ -114,16 +118,19 @@ class ServerController extends Controller
 
             $network_speeds = [];
             for($i = 1; $i <= 14; $i++) {
-                if(!empty($validator->valid()['network_row_' . $i . '_send_speed']) > 0
-                && !empty($validator->valid()['network_row_' . $i . '_rec_speed']) > 0) {
+                if(!empty($validator->valid()['network_row_' . $i . '_send_speed'])
+                && $validator->valid()['network_row_' . $i . '_send_speed'] > 0) {
                     array_push($network_speeds, $validator->valid()['network_row_' . $i . '_send_speed']);
+                }
+                if(!empty($validator->valid()['network_row_' . $i . '_rec_speed'])
+                && $validator->valid()['network_row_' . $i . '_rec_speed'] > 0) {
                     array_push($network_speeds, $validator->valid()['network_row_' . $i . '_rec_speed']);
                 }
             }
             $average_network_speed = floor(array_sum($network_speeds) / count($network_speeds));
 
             $server = Server::create([
-                'user_id' => Auth::user() ? Auth::user() : null,
+                'user_id' => (Auth::check() ? Auth::user()->id : null),
                 'provider_name' => $validator->valid()['provider_name'],
                 'when' => date_format(date_create($validator->valid()['when']),"Y-m-d H:i:s"),
                 'city' => $validator->valid()['city'],
@@ -184,5 +191,19 @@ class ServerController extends Controller
         }
 
         return response('Please log in to submit your results', 422);
+    }
+
+
+    public function delete(Request $request)
+    {
+        $server = Server::where('user_id', Auth::user()->id)->where('id', $request->id)->first();
+
+        if(!is_null($server)) {
+            $server->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Benchmark Deleted',
+            ]);
+        }
     }
 }

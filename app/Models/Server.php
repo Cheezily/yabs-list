@@ -11,6 +11,7 @@ class Server extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'provider_name',
         'type',
         'virtualization',

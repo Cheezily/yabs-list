@@ -5,20 +5,21 @@
 		@close_options="options_open = false"
 		@change_table_columns="change_table_columns"
 		@update_query="update_query"
+		:user=user
 		:options_open=options_open
 		:where_in=where_in
 		:passed_show_columns=show_columns>
 		</OptionsList>
 
 		<div class="max-w-10xl mx-auto sm:px-2 lg:px-8">
-			
+
 			<div class="flex justify-center">
-				
 				<button @click="options_open = !options_open"
 				class="options-button font-bold rounded px-4 py-2 mb-3">
-				{{ options_open ? 'Close' : 'Open' }} Options</button>
+				{{ options_open ? 'Close' : 'Open' }} 
+				{{ user ? 'Columns List' : 'Options' }}</button>
 
-				<select class="per-page-select h-10 ml-5 rounded"
+				<select v-if="!user" class="per-page-select h-10 ml-5 rounded"
 					@change="get_results"
 					v-model="limit">
 					<option value=20>20 Per Page</option>
@@ -29,7 +30,7 @@
 			</div>
 		</div>
 
-		<div class="flex justify-center paginate-container">
+		<div v-if="!user" class="flex justify-center paginate-container">
 			<paginate
 				class="h-10"
 				:page-count="pageCount"
@@ -43,7 +44,7 @@
 			></paginate>
 		</div>
 
-		<p class="mt-2 text-xs text-grey-400 flex justify-center">
+		<p v-if="!user" class="mt-2 text-xs text-grey-400 flex justify-center">
 			<font-awesome-icon class="text-purple-700 mr-1" icon="fa-message" /> 
 			indicates that the user has 
 			left a note about this server. Click on the server row to view notes or 
@@ -359,6 +360,7 @@
 				get_results() {
 					this.loading = true
 					axios.post('/get_results', {
+							user_id: this.user ? this.user.id : null,
 							order_by: this.order_by,
 							limit: this.limit,
 							sort_direction: this.sort_direction,
@@ -366,7 +368,7 @@
 							user_id: this.user_id,
 					})
 					.then(res => {
-							this.servers = res.data.results
+							this.servers = res.data.servers
 							this.server_count = res.data.server_count
 							this.pageCount = Math.ceil(this.server_count / this.limit)
 							this.loading = false
@@ -382,6 +384,7 @@
 				update_results() {
 					this.loading = true
 					axios.post('/update_results', {
+							user_id: this.user ? this.user.id : null,
 							order_by: this.order_by,
 							limit: this.limit,
 							sort_direction: this.sort_direction,
@@ -392,7 +395,7 @@
 					.then(res => {
 						console.log(res.data)
 						this.where_in = res.data.where_in
-						this.servers = res.data.merged
+						this.servers = res.data.servers
 						this.server_count = res.data.server_count
 						this.pageCount = Math.ceil(this.server_count / this.limit)
 						this.loading = false
@@ -473,10 +476,6 @@
 		width: 34px;
 		height: 36px;
 		padding: 6px;
-		/* border-top: 1px solid #ccc;
-		border-bottom: 1px solid #ccc;
-		border-left: 1px solid #ccc;
-		border-right: 1px solid #ccc; */
 		text-align: center;
 		border-radius: 4px;
 	}
@@ -490,8 +489,6 @@
 
 	.page-item:hover :not(.page-item + .active) {
 		cursor: pointer;
-		/* background: #ddd; */
-		/* background: rgb(166, 148, 248); */
 	}
 
 
