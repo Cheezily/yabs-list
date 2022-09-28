@@ -232,7 +232,7 @@
 				<tbody>
 					<ServerRow 
 					v-for="(server, index) in servers"
-					@hover_on_server="hover_on_server"
+					@click_on_server="click_on_server"
 					@delete_server="delete_server"
 					:user=user
 					:server=server
@@ -247,10 +247,10 @@
 		:error_message=error_message
 		></ErrorPopup>
 
-		<HoveredServer 
+		<SelectedServer 
 		@clear_selected_server="clear_selected_server"
 		:selected_server=selected_server>
-		</HoveredServer>
+		</SelectedServer>
 
 		<LoadingSpinner v-if="loading"></LoadingSpinner>
 
@@ -259,210 +259,182 @@
 
 <script>
 	import ServerRow from './ServerRow.vue';
-	import HoveredServer from './HoveredServer.vue'
+	import SelectedServer from './SelectedServer.vue'
 	import Paginate from 'vuejs-paginate-next';
 	import OptionsList from './OptionsList.vue'
 	import ErrorPopup from '../ErrorPopup.vue';
 	import LoadingSpinner from '../LoadingSpinner.vue'
-import axios from 'axios';
+	import axios from 'axios';
 	
-		export default {
-			props: [
-				'passed_servers',
-				'passed_server_count',
-				'user_id',
-				'options_open',
-				'user'
-			],
-			components: {
-    ServerRow,
-    HoveredServer,
-    OptionsList,
-    paginate: Paginate,
-    OptionsList,
-		ErrorPopup,
-		LoadingSpinner
-},
-			data() {
-				return {
-					servers: [],
-					selected_server: {},
-					show_columns: {
-						user: false,
-						provider_name: true,
-						type: true,
-						virtualization: false,
-						when: true,
-						city: true,
-						cpu: true,
-						cores: true,
-						clock_speed: true,
-						ram: true,
-						swap: false,
-						distro: false,
-						kernel: false,
-						aes_ni: false,
-						vm_x: false,
-						geekbench_5_single: true,
-						geekbench_5_multi: true,
-						disk_4k_read_speed: true,
-						disk_4k_write_speed: true,
-						disk_4k_total_speed: true,
-						disk_4k_read_iops: false,
-						disk_4k_write_iops: false,
-						disk_4k_total_iops: true,
-						disk_64k_read_speed: false,
-						disk_64k_write_speed: false,
-						disk_64k_total_speed: false,
-						disk_64k_read_iops: false,
-						disk_64k_write_iops: false,
-						disk_64k_total_iops: false,
-						disk_512k_read_speed: false,
-						disk_512k_write_speed: false,
-						disk_512k_total_speed: false,
-						disk_512k_read_iops: false,
-						disk_512k_write_iops: false,
-						disk_512k_total_iops: false,
-						disk_1m_read_speed: false,
-						disk_1m_write_speed: false,
-						disk_1m_total_speed: false,
-						disk_1m_read_iops: false,
-						disk_1m_write_iops: false,
-						disk_1m_total_iops: false,
-						average_network_speed: true
-					},
-					sort_direction: 'asc',
-					limit: 100,
-					order_by: 'id',
-					page: 1,
-					last_sort: '',
-					pageCount: 0,
-					loading: false,
-					error_message: '',
-					selected_ram_options: [],
-					selected_cores_options: [],
-					where_in: []
-				}
+	export default {
+		props: [
+			'passed_servers',
+			'passed_server_count',
+			'user_id',
+			'options_open',
+			'user'
+		],
+		components: {
+			ServerRow,
+			SelectedServer,
+			OptionsList,
+			paginate: Paginate,
+			OptionsList,
+			ErrorPopup,
+			LoadingSpinner
+		},
+		data() {
+			return {
+				servers: [],
+				selected_server: {},
+				show_columns: {
+					user: false,
+					provider_name: true,
+					type: true,
+					virtualization: false,
+					when: true,
+					city: true,
+					cpu: true,
+					cores: true,
+					clock_speed: true,
+					ram: true,
+					swap: false,
+					distro: false,
+					kernel: false,
+					aes_ni: false,
+					vm_x: false,
+					geekbench_5_single: true,
+					geekbench_5_multi: true,
+					disk_4k_read_speed: true,
+					disk_4k_write_speed: true,
+					disk_4k_total_speed: true,
+					disk_4k_read_iops: false,
+					disk_4k_write_iops: false,
+					disk_4k_total_iops: true,
+					disk_64k_read_speed: false,
+					disk_64k_write_speed: false,
+					disk_64k_total_speed: false,
+					disk_64k_read_iops: false,
+					disk_64k_write_iops: false,
+					disk_64k_total_iops: false,
+					disk_512k_read_speed: false,
+					disk_512k_write_speed: false,
+					disk_512k_total_speed: false,
+					disk_512k_read_iops: false,
+					disk_512k_write_iops: false,
+					disk_512k_total_iops: false,
+					disk_1m_read_speed: false,
+					disk_1m_write_speed: false,
+					disk_1m_total_speed: false,
+					disk_1m_read_iops: false,
+					disk_1m_write_iops: false,
+					disk_1m_total_iops: false,
+					average_network_speed: true
+				},
+				sort_direction: 'asc',
+				limit: 100,
+				order_by: 'id',
+				page: 1,
+				last_sort: '',
+				pageCount: 0,
+				loading: false,
+				error_message: '',
+				selected_ram_options: [],
+				selected_cores_options: [],
+				where_in: []
+			}
+		},
+		methods: {
+			change_table_columns(show_columns) {
+				this.show_columns = show_columns
 			},
-			methods: {
-				change_table_columns(show_columns) {
-					this.show_columns = show_columns
-				},
-				sort_results(field) {
-					if(this.last_sort === field) {
-						if(this.sort_direction === 'asc') {
-							this.sort_direction = 'desc'
-						} else {
-							this.sort_direction = 'asc'
-						}
+			sort_results(field) {
+				if(this.last_sort === field) {
+					if(this.sort_direction === 'asc') {
+						this.sort_direction = 'desc'
+					} else {
+						this.sort_direction = 'asc'
 					}
-					this.order_by = field
-					this.last_sort = field
-					this.update_results()
-				},
-				get_results() {
-					this.loading = true
-					axios.post('/get_results', {
-							user_id: this.user ? this.user.id : null,
-							order_by: this.order_by,
-							limit: this.limit,
-							sort_direction: this.sort_direction,
-							page: this.page,
-							user_id: this.user_id,
-					})
-					.then(res => {
-							this.servers = res.data.servers
-							this.server_count = res.data.server_count
-							this.pageCount = Math.ceil(this.server_count / this.limit)
-							this.loading = false
-					})
-					.catch(err => {
-						this.error_message = err.data
-						setTimeout(() => {
-							this.error_message = ''
-						}, 1000)
-						this.loading = false
-					})
-        },
-				update_results() {
-					this.loading = true
-					axios.post('/update_results', {
-							user_id: this.user ? this.user.id : null,
-							order_by: this.order_by,
-							limit: this.limit,
-							sort_direction: this.sort_direction,
-							page: this.page,
-							user_id: this.user_id,
-							selected_items: this.selected_items,
-					})
-					.then(res => {
-						console.log(res.data)
-						this.where_in = res.data.where_in
+				}
+				this.order_by = field
+				this.last_sort = field
+				this.get_results()
+			},
+			get_results() {
+				this.loading = true
+				axios.post(route('get_results'), {
+					user_id: this.user,
+					order_by: this.order_by,
+					limit: this.limit,
+					sort_direction: this.sort_direction,
+					page: this.page,
+					selected_items: this.selected_items,
+				})
+				.then(res => {
 						this.servers = res.data.servers
 						this.server_count = res.data.server_count
 						this.pageCount = Math.ceil(this.server_count / this.limit)
 						this.loading = false
-					})
-					.catch(err => {
-						this.error_message = err.data
-						setTimeout(() => {
-							this.error_message = ''
-						}, 1000)
-						this.loading = false
-					})
-        },
-				hover_on_server(server) {
-					this.selected_server = server
-				},
-				clear_selected_server() {
-					this.selected_server = {}
-				},
-				pagination_click(g) {
-					this.page = g
-					this.update_results()
-					// console.log(g)
-				},
-				raw_average_network_speed(networks) {
-					let total = 0
-					for(let i = 0; i < networks.length; i++) {
-						total += networks[i].send_speed
-						total += networks[i].receive_speed
-					}
-					return total / (networks.length * 2) / 1000
-				},
-				update_query(selected_items) {
-					this.selected_items = selected_items
-					this.update_results()
-				},
-				delete_server(server) {
-					console.log(server)
-					axios.post('/server/delete', {
-						id: server.id
-					})
-					.then(res => {
-						this.$page.props.flash.status = 'success'
-						this.$page.props.flash.message = res.data
-						this.get_results()
-					})
-					.catch(err => {
-						this.$page.props.flash.status = "error"
-						this.errors = err.response.data
-					})
+				})
+				.catch(err => {
+					this.error_message = err.data
+					setTimeout(() => {
+						this.error_message = ''
+					}, 1000)
+					this.loading = false
+				})
+			},
+			click_on_server(server) {
+				this.selected_server = server
+			},
+			clear_selected_server() {
+				this.selected_server = {}
+			},
+			pagination_click(g) {
+				this.page = g
+				this.get_results()
+			},
+			raw_average_network_speed(networks) {
+				let total = 0
+				for(let i = 0; i < networks.length; i++) {
+					total += networks[i].send_speed
+					total += networks[i].receive_speed
 				}
+				return total / (networks.length * 2) / 1000
 			},
-			computed: {
+			update_query(selected_items) {
+				this.selected_items = selected_items
+				this.get_results()
 			},
-			watch: {
-				options_open() {
-					this.$emit('options_open', this.options_open)
-				}
-			},
-			mounted() {
-				this.servers = this.passed_servers
-				this.pageCount = Math.ceil(this.passed_server_count / this.limit)
+			delete_server(server) {
+				console.log(server)
+				axios.post(route('delete_server'), {
+					id: server.id
+				})
+				.then(res => {
+					this.$page.props.flash.status = 'success'
+					this.$page.props.flash.message = res.data
+					this.get_results()
+				})
+				.catch(err => {
+					this.$page.props.flash.status = "error"
+					this.errors = err.response.data
+				})
 			}
+		},
+		computed: {
+		},
+		watch: {
+			options_open() {
+				this.$emit('options_open', this.options_open)
+			}
+		},
+		mounted() {
+			this.servers = this.passed_servers
+			this.pageCount = Math.ceil(this.passed_server_count / this.limit)
 		}
-	</script>
+	}
+</script>
 
 <style>
 	th {

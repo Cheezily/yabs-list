@@ -60,7 +60,7 @@
 				return speed_k.toFixed(2) + ' KB/s'
 			},
 			get_server_details() {
-				axios.post('/get_network_details', {
+				axios.post(route('get_network_details'), {
 					server: this.selected_server.id
 				})
 				.then(res => {

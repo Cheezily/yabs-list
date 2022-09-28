@@ -477,7 +477,7 @@
 </template>
 
 <script>
-import { Head, Link } from '@inertiajs/inertia-vue3';
+import { Link } from '@inertiajs/inertia-vue3';
 import axios from 'axios';
 
 	export default {
@@ -727,7 +727,7 @@ import axios from 'axios';
 				this.network_row_14_ipv4 = false
 			},
 			provider_search(search_terms) {
-				axios.get('/provider_search', 
+				axios.get(route('provider_search'), 
 					{
 						params: {
 							search_terms
@@ -738,7 +738,7 @@ import axios from 'axios';
 					})
 			},
 			city_search(search_terms) {
-				axios.get('/city_search', 
+				axios.get(route('city_search'), 
 					{
 						params: {
 							search_terms
@@ -907,7 +907,7 @@ import axios from 'axios';
 				return words.join(" ")
 			},
 			submit() {
-				axios.post('/server/create',{
+				axios.post(route('create_server'),{
 					provider_name: this.provider_name.trim(),
 					type: this.type.trim(),
 					when: this.when.trim(),

@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:50',
+            'name' => 'required|string|max:50|unique:users',
             'email' => 'required|string|email|max:100|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);

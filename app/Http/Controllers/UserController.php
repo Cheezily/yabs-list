@@ -57,4 +57,12 @@ class UserController extends Controller
             'message' => 'Password Updated',
         ]);
     }
+
+
+    public function delete()
+    {
+        $user = Auth::user();
+        $user->delete();
+        return redirect()->route('welcome', ['deleted' => true]);
+    }
 }

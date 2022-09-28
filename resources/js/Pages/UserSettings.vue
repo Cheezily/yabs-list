@@ -58,6 +58,21 @@
 						</form>
 					</div>
 				</div>
+				
+				<div class="mt-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+					<p class="text-center pt-4">Delete your user profile and all benchmarks that your have submitted</p>
+					<div class="flex justify-end pb-6 pr-6 pt-4 bg-white border-b border-gray-200">
+						<PrimaryButton v-if="!delete_confirm" class="bg-red-600" @click="delete_confirm = true">
+								Delete Profile
+						</PrimaryButton>
+						<Link v-else :href="route('delete_user')">
+							<PrimaryButton class="bg-red-500 hover:bg-red-600" @click="delete_confirm = true">
+									Confirm
+							</PrimaryButton>
+						</Link>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</AuthenticatedLayout>
@@ -65,13 +80,14 @@
 
 <script>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head, Link } from '@inertiajs/inertia-vue3';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import axios from 'axios';
 
 export default {
 	components: {
 		Head,
+		Link,
 		PrimaryButton
 	},
 	layout: AuthenticatedLayout,
@@ -80,6 +96,7 @@ export default {
 	],
 	data() {
 		return {
+			delete_confirm: false,
 			name: '',
 			email: '',
 			password: '',

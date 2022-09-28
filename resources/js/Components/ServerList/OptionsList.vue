@@ -471,7 +471,7 @@
 		methods: {
 			get_options_counts(initial = false) {
 				this.disable_all = true
-				axios.post('/get_options_counts',
+				axios.post(route('get_options_count'),
 				{
 					selected_items: this.selected_items
 				})
@@ -533,6 +533,7 @@
 					list.push(index)
 				}
 				console.log('updating results from options list')
+				// this.$emit('get_query', this.selected_items)
 				this.$emit('update_query', this.selected_items)
 				this.get_options_counts()
 			},

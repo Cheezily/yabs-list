@@ -3,34 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\MergedIdsHelper;
-use App\Helpers\QueryHelper;
 use App\Models\Server;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
 
 class ResultsController extends Controller
 {
     public function get_results(Request $request)
-    {
-        $query = Server::with(['user', 'networks'])
-            ->orderBy($request->order_by, $request->sort_direction);
-
-        if(!is_null($request->user_id)) {
-            $servers = $query->where('user_id', $request->user_id)->get();
-        } else {
-            $servers = $query->limit($request->limit)
-                ->offset(($request->page - 1) * $request->limit)
-                ->get();
-        }
-
-        return response()->json([
-            'servers' => $servers,
-            'server_count' => Server::count()
-        ]);
-    }
-
-
-    public function update_results(Request $request)
     {
         $merged_ids = [];
         if($request->has('selected_items')) {

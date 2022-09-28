@@ -20,11 +20,6 @@ class HomeController extends Controller
             ->where('id', Auth::user()->id)
             ->first();
 
-        // Inertia::share('flash', [
-        //     'status' => 'success',
-        //     'message' => 'this is your test'
-        // ]);
-
         return Inertia::render('Dashboard', [
             'user' => $user,
             'settings' => SettingsHelper::all(),
