@@ -3,12 +3,12 @@
 
 	<div v-if="!$page.props.auth.user">
 		<h1 class="logo ml-3 -mt-6 left">
-			<a href="/">YABSLIST</a>
+			<Link href="/">YABSLIST</Link>
 		</h1>
 
 		<h2 class="text-gray-600 py-6 px-6 rounded mb-6 bg-white text-lg">
 			If you have an account, please log in to submit your results
-			<a :href="route('login')" class="font-bold text-orange-500 hover:text-orange-700 underline">Here</a>
+			<Link :href="route('login')" class="font-bold text-orange-500 hover:text-orange-700 underline">Here</Link>
 		</h2>
 	</div>
 
@@ -22,27 +22,59 @@
 				<label class="w-1/3 text-right inline-block text-gray-700" for="provider_name">
 					What is the name of the service provider?
 				</label>
-				<input v-model="provider_name"
-				id="provider_name" class="h-10 ml-2 w-1/2 rounded" type="text" />
+				<font-awesome-icon class="absolute mr-2 w-10 text-gray-400 mt-2 ml-1" icon="fa-search" />
+				<input v-model="provider_name" @focus="prevent_provider_search = false"
+				id="provider_name" class="h-8 ml-2 w-1/2 rounded pl-7" type="text" />
 				<p v-if="errors['provider_name']" class="w-1/3 text-xs italic text-red-500 text-right">
 					{{ capitalize(errors.provider_name[0]) }}
 				</p>
+				<transition name="slide">
+					<div v-if="provider_search_results.length > 0" class="mt-2 mb-4 flex justify-start">
+						<p class="mr-2 w-1/3 text-right text-sm italic text-green-700">
+							Suggestions:
+						</p>
+						<ul class="">
+							<li v-for="result in provider_search_results" :key="result"
+							class="w-full hover:font-bold cursor-pointer"
+							@click="prevent_provider_search = true; provider_name = result.provider_name; provider_search_results = []">
+								{{ result.provider_name }}
+							</li>
+						</ul>
+					</div>
+				</transition>
 			</div>
+
 			<div class="my-1 pl-2 w-full">
 				<label class="w-1/3 text-right inline-block text-gray-700" for="city">
 					What city is this server located in?
 				</label>
-				<input v-model="city"
-				id="city" class="h-10 ml-2 w-1/2 rounded" type="text" />
+				<font-awesome-icon class="absolute mr-2 w-10 text-gray-400 mt-2 ml-1" icon="fa-search" />
+				<input v-model="city" @focus="prevent_city_search = false"
+				id="city" class="h-8 ml-2 w-1/2 rounded pl-7" type="text" />
 				<p v-if="errors['city']" class="w-1/3 text-xs italic text-red-500 text-right">
 					{{ capitalize(errors.city[0]) }}
 				</p>
+				<transition name="slide">
+					<div v-if="city_search_results.length > 0" class="mt-2 mb-4 flex justify-start">
+						<p class="mr-2 w-1/3 text-right text-sm italic text-green-700">
+							Suggestions:
+						</p>
+						<ul class="">
+							<li v-for="result in city_search_results" :key="result"
+							class="w-full hover:font-bold cursor-pointer"
+							@click="prevent_city_search = true; city = result.city; city_search_results = []">
+								{{ result.city }}
+							</li>
+						</ul>
+					</div>
+				</transition>
 			</div>
+
 			<div class="my-1 pl-2 w-full">
 				<label class="w-1/3 text-right inline-block text-gray-700" for="type">
 					Is this a VPS or dedicated server?
 				</label>
-				<select class="h-10 rounded ml-2" v-model="type">
+				<select class="h-8 text-sm pt-1 rounded ml-2" v-model="type">
 					<option value="" disabled selected>Select One</option>
 					<option value="vps">VPS</option>
 					<option value="dedi">Dedicated</option>
@@ -51,16 +83,30 @@
 					{{ capitalize(errors.type[0]) }}
 				</p>
 			</div>
+
+			<transition name="slide">
+				<div v-if="type == 'vps'" class="my-1 pl-2 w-full">
+					<label class="w-1/3 text-right inline-block text-gray-700" for="type">
+						Virtualization Type?
+					</label>
+					<select class="h-8 text-sm pt-1 rounded ml-2" v-model="virtualization">
+						<option value="" disabled selected>Select One</option>
+						<option v-for="virt_type in virt_types" :key="virt_type" :value=virt_type>{{ virt_type }}</option>
+					</select>
+					<p v-if="errors['virtualization']" class="w-1/3 text-xs italic text-red-500 text-right">
+						{{ capitalize(errors.virtualization[0]) }}
+					</p>
+				</div>
+			</transition>
+
 			<div class="my-1 pl-2 w-full">
-				<label class="w-1/3 text-right inline-block text-gray-700" for="type">
-					Virtualization Type?
+				<label class="align-top w-1/3 text-right inline-block text-gray-700" for="city">
+					Any notes about this server you'd like to add?
 				</label>
-				<select class="h-10 rounded ml-2" v-model="virtualization">
-					<option value="" disabled selected>Select One</option>
-					<option v-for="virt_type in virt_types" :key="virt_type" :value=virt_type>{{ virt_type }}</option>
-				</select>
-				<p v-if="errors['virtualization']" class="w-1/3 text-xs italic text-red-500 text-right">
-					{{ capitalize(errors.virtualization[0]) }}
+				<textarea v-model="note"
+				id="city" class="h-20 ml-2 w-1/2 rounded" type="text" />
+				<p v-if="errors['city']" class="w-1/3 text-xs italic text-red-500 text-right">
+					{{ capitalize(errors.city[0]) }}
 				</p>
 			</div>
 
@@ -432,16 +478,22 @@
 
 <script>
 import { Head, Link } from '@inertiajs/inertia-vue3';
+import axios from 'axios';
 
 	export default {
 		props: [
 			'user',
 			'virt_types_string'
 		],
-		components: [
-		],
+		components: {
+			Link
+		},
 		data() {
 			return {
+				provider_search_results: [],
+				city_search_results: [],
+				prevent_provider_search: false,
+				prevent_city_search: false,
 				virt_types: [],
 				errors: {},
 				yabs_text: '',
@@ -450,6 +502,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				when: '',
 				city: '',
 				virtualization: '',
+				note: '',
 				cpu: '',
 				cores: '',
 				clock_speed: '',
@@ -566,6 +619,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				this.when = ''
 				this.city = ''
 				this.virtualization = ''
+				this.note = ''
 				this.cpu = ''
 				this.cores = ''
 				this.clock_speed = ''
@@ -671,6 +725,28 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 				this.network_row_14_send_speed = ''
 				this.network_row_14_rec_speed = ''
 				this.network_row_14_ipv4 = false
+			},
+			provider_search(search_terms) {
+				axios.get('/provider_search', 
+					{
+						params: {
+							search_terms
+						}
+					})
+					.then(res => {
+						this.provider_search_results = res.data
+					})
+			},
+			city_search(search_terms) {
+				axios.get('/city_search', 
+					{
+						params: {
+							search_terms
+						}
+					})
+					.then(res => {
+						this.city_search_results = res.data
+					})
 			},
 			find_item_row(item, lines) {
 				for(let i = 0; i < lines.length; i++) {
@@ -837,6 +913,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 					when: this.when.trim(),
 					city: this.city.trim(),
 					virtualization: this.virtualization.trim(),
+					note: this.note.trim(),
 					cpu: this.cpu,
 					cores: this.cores,
 					clock_speed: this.clock_speed,
@@ -944,13 +1021,11 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 					network_row_14_ipv4: this.network_row_14_ipv4,
 				})
 				.then(res => {
-					console.log(res.data)
 					this.$page.props.flash.status = 'success'
 					this.$page.props.flash.message = res.data
 					this.clear_all()
 				})
 				.catch(err => {
-					console.log(err.response.data)
 					if (err.response.data.flash) {
 						this.$page.props.flash.message = err.response.data.flash[0]
 					} else {
@@ -963,10 +1038,32 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 			}
 		},
 		watch: {
+			provider_name(r) {
+				if (!this.prevent_provider_search) {
+					if (r.length > 0) {
+						this.provider_search(r)
+					} else {
+						this.provider_search_results = []
+					}
+				}
+			},
+			city(r) {
+				if (!this.prevent_city_search) {
+					if (r.length > 0) {
+						this.city_search(r)
+					} else {
+						this.city_search_results = []
+					}
+				}
+			},
+			type(r) {
+				if(r != 'dedi') {
+					this.virtualization = ''
+				}
+			},
 			when(r) {
 				console.log(new Date(r))
 			},
-
 			yabs_text(r) {
 				let lines = r.split('\n')
 
@@ -1109,3 +1206,18 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 		}
 	}
 </script>
+
+<style scoped>
+	.slide-enter-active {
+			transition: all 0.2s ease-out;
+	}
+	
+	.slide-leave-active {
+			transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+	}
+	
+	.slide-enter-from,
+	.slide-leave-to {
+			transform: translateX(350px);
+	}
+</style>

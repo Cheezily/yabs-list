@@ -233,7 +233,9 @@
 					<ServerRow 
 					v-for="(server, index) in servers"
 					@hover_on_server="hover_on_server"
-					:server="server"
+					@delete_server="delete_server"
+					:user=user
+					:server=server
 					:passed_show_columns="show_columns"
 					:key="index">
 					</ServerRow>
@@ -262,6 +264,7 @@
 	import OptionsList from './OptionsList.vue'
 	import ErrorPopup from '../ErrorPopup.vue';
 	import LoadingSpinner from '../LoadingSpinner.vue'
+import axios from 'axios';
 	
 		export default {
 			props: [
@@ -430,6 +433,21 @@
 				update_query(selected_items) {
 					this.selected_items = selected_items
 					this.update_results()
+				},
+				delete_server(server) {
+					console.log(server)
+					axios.post('/server/delete', {
+						id: server.id
+					})
+					.then(res => {
+						this.$page.props.flash.status = 'success'
+						this.$page.props.flash.message = res.data
+						this.get_results()
+					})
+					.catch(err => {
+						this.$page.props.flash.status = "error"
+						this.errors = err.response.data
+					})
 				}
 			},
 			computed: {

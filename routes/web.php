@@ -38,6 +38,22 @@ Route::get('/', function () {
         ->limit(50)
         ->get()
     ]);
+})->name('welcome');
+
+Route::get('/provider_search', function (Request $request) {
+    return Server::where('provider_name', 'like', '%'.$request->search_terms.'%')
+        ->select(['provider_name'])
+        ->distinct()
+        ->limit(10)
+        ->get();
+});
+
+Route::get('/city_search', function (Request $request) {
+    return Server::where('city', 'like', '%'.$request->search_terms.'%')
+        ->select(['city'])
+        ->distinct()
+        ->limit(10)
+        ->get();
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -72,6 +88,10 @@ Route::post('/get_network_details', function (Request $request) {
 
 Route::post('/server/create', [
     \App\Http\Controllers\ServerController::class, 'create'
+]);
+
+Route::post('/server/delete', [
+    \App\Http\Controllers\ServerController::class, 'delete'
 ]);
 
 Route::get('/guest/new_yabs', function () {

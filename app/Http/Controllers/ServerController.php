@@ -34,7 +34,8 @@ class ServerController extends Controller
                 'when' => 'required|string',
                 'city' => 'required|string',
                 'type' => 'required',
-                'virtualization' => 'in:'.SettingsHelper::virt_types(),
+                'virtualization' => 'sometimes|in:'.SettingsHelper::virt_types(),
+                'note' => 'sometimes|string|max:255',
                 'cpu' => 'required|string|max:100',
                 'cores' => 'required|integer|max:256',
                 'clock_speed' => 'required|integer|max:10000',
@@ -136,6 +137,7 @@ class ServerController extends Controller
                 'city' => $validator->valid()['city'],
                 'type' => $validator->valid()['type'],
                 'virtualization' => $validator->valid()['virtualization'],
+                'note' => $validator->valid()['note'],
                 'cpu' => $validator->valid()['cpu'],
                 'cores' => $validator->valid()['cores'],
                 'clock_speed' => $validator->valid()['clock_speed'],
@@ -200,10 +202,9 @@ class ServerController extends Controller
 
         if(!is_null($server)) {
             $server->delete();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Benchmark Deleted',
-            ]);
+            return response('Benchmark Deleted', 200);
         }
+
+        return response('Error deleting benchmark. Please refresh the page and try again' ,422);
     }
 }

@@ -18,7 +18,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('welcome')">
                                     <h1 class="logo ml-3 -mt-1 left">YABSLIST</h1>
                                 </Link>
                             </div>
