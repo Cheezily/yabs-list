@@ -28,9 +28,8 @@ class ResultsController extends Controller
                 ->limit($request->limit);
 
         return response()->json([
-            'server_count' => count($merged_ids),
+            'server_count' => count($merged_ids) > 0 ? count($merged_ids) : Server::count(),
             'servers' => $query->get(),
-            'count' => $query->count(),
             'page' => $request->page,
         ]);
     }

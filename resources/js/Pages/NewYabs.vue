@@ -28,13 +28,11 @@
 <script>
 	import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 	import { Head } from '@inertiajs/inertia-vue3';
-	import ServerTable from '@/Components/ServerList/ServerTable.vue';
 	import Submit from '@/Components/Submit.vue'
 	
 	export default {
 			components: {
 				Head,
-				ServerTable,
 				Submit
 			},
 			layout: AuthenticatedLayout,

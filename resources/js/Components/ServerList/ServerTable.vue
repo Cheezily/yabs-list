@@ -11,15 +11,15 @@
 		:passed_show_columns=show_columns>
 		</OptionsList>
 
-		<div class="max-w-10xl mx-auto sm:px-2 lg:px-8">
-
-			<div class="flex justify-center">
+		<!-- Desktop Buttons -->
+		<div class="mx-auto w-full hidden lg:block px-8 h-12 fixed z-30 top-0">
+			<div class="flex justify-start pt-2">
 				<button @click="options_open = !options_open"
 				class="options-button font-bold rounded px-4 py-2 mb-3">
 				{{ options_open ? 'Close' : 'Open' }} 
 				{{ user ? 'Columns List' : 'Options' }}</button>
 
-				<select v-if="!user" class="per-page-select h-10 ml-5 rounded"
+				<select v-if="!user" class="per-page-select h-10 ml-3 rounded"
 					@change="get_results"
 					v-model="limit">
 					<option value=20>20 Per Page</option>
@@ -27,12 +27,9 @@
 					<option value=100>100 Per Page</option>
 					<option value=250>250 Per Page</option>
 				</select>
-			</div>
-		</div>
 
-		<div v-if="!user" class="flex justify-center paginate-container">
-			<paginate
-				class="h-10"
+				<paginate
+				class="h-10 w-auto ml-8"
 				:page-count="pageCount"
 				:page-range="3"
 				:margin-pages="2"
@@ -42,188 +39,227 @@
 				:container-class="'pagination'"
 				:page-class="'page-item'"
 			></paginate>
+
+			<div v-if="!user" class="hidden lg:block text-xs text-grey-400 ml-5 pt-2">
+				<p>
+					<font-awesome-icon class="text-purple-700 mr-1" icon="fa-message" /> 
+					indicates that the user has 
+					left a note about this server.
+				</p>
+				<p>
+					Click on the server row to view notes or 
+					detailed network speed information.
+				</p>
+			</div>
+			</div>
+		</div>
+		
+		<!-- Mobile Buttons -->
+		<div class="md:hidden mt-[80px] mx-0 px-0 w-full">
+			<div class="">
+				<button @click="options_open = !options_open"
+				class="options-button font-bold rounded h-8 pt-2 px-0 py-2 mb-3 ml-2 w-5/12 text-xs">
+				{{ options_open ? 'Close' : 'Open' }} 
+				{{ user ? 'Columns List' : 'Options' }}</button>
+
+				<select v-if="!user" class="float-right text-center per-page-select h-8 pt-2 mr-2 w-5/12 text-xs rounded w-full lg:w-auto"
+					@change="get_results"
+					v-model="limit">
+					<option value=20>20 Per Page</option>
+					<option value=50>50 Per Page</option>
+					<option value=100>100 Per Page</option>
+					<option value=250>250 Per Page</option>
+				</select>
+			</div>
+			<div class="w-full text-center">
+				<paginate
+					class="h-10 w-full mt-4"
+					:page-count="pageCount"
+					:page-range="3"
+					:margin-pages="2"
+					:click-handler="pagination_click"
+					:prev-text="'<<'"
+					:next-text="'>>'"
+					:container-class="'pagination'"
+					:page-class="'page-item'"
+				></paginate>
+			</div>
 		</div>
 
-		<p v-if="!user" class="mt-2 text-xs text-grey-400 flex justify-center">
-			<font-awesome-icon class="text-purple-700 mr-1" icon="fa-message" /> 
-			indicates that the user has 
-			left a note about this server. Click on the server row to view notes or 
-			detailed network speed information.
-		</p>
-
-		<div class="mt-2 pt-2 border-t-2">
+		<div class="mt-2 md:mt-16 pt-2 border-t-2 absolute pb-[100px]">
 			<table class="server-table text-xs">
 				<thead class="">
-					<tr>
-						<th v-if="show_columns.provider_name" class="pl-5">
+					<tr class="">
+						<th v-if="show_columns.provider_name" class="pl-5 pb-2">
 							<span @click="sort_results('provider_name')" 
 							class="th-text">Provider <font-awesome-icon icon="fa-sort" /></span></th>
-						<th v-if="show_columns.type" class="pl-2">
+						<th v-if="show_columns.type" class="pl-2 pb-2">
 							<span @click="sort_results('type')" 
 							class="th-text">Type <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.virtualization" class="pl-2">
+						<th v-if="show_columns.virtualization" class="pl-2 pb-2">
 							<span @click="sort_results('virtualization')" 
 							class="th-text">Virtualization <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.when" class="pl-2">
-							<span class="th-text">Date <font-awesome-icon icon="fa-sort" />
+						<th v-if="show_columns.when" class="pl-2 pb-2">
+							<span @click="sort_results('when')"
+							class="th-text">Date <font-awesome-icon icon="fa-sort" />
 							</span>
 						</th>
-						<th v-if="show_columns.city" class="pl-2">
+						<th v-if="show_columns.city" class="pl-2 pb-2">
 							<span @click="sort_results('city')" 
 							class="th-text">City <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.cpu" class="pl-2">
+						<th v-if="show_columns.cpu" class="pl-2 pb-2">
 							<span @click="sort_results('cpu')"
 							class="th-text">CPU <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.cores" class="pl-2">
+						<th v-if="show_columns.cores" class="pl-2 pb-2">
 							<span @click="sort_results('cores')"
 							class="th-text">Cores <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.clock_speed" class="pl-2">
+						<th v-if="show_columns.clock_speed" class="pl-2 pb-2">
 							<span @click="sort_results('clock_speed')"
 							class="th-text">Clock Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.ram" class="pl-2 pr-2">
+						<th v-if="show_columns.ram" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('ram')"
 							class="th-text">RAM <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.swap" class="pl-2 pr-2">
+						<th v-if="show_columns.swap" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('swap')"
 							class="th-text">Swap <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.distro" class="pl-2 pr-2">
+						<th v-if="show_columns.distro" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('distro')"
 							class="th-text">OS / Distro <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.kernel" class="pl-2 pr-2">
+						<th v-if="show_columns.kernel" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('kernel')"
 							class="th-text">Kernel <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.aes_ni" class="pl-2 pr-2">
+						<th v-if="show_columns.aes_ni" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('aes_ni')"
 							class="th-text">AES-NI <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.vm_x" class="pl-2 pr-2">
+						<th v-if="show_columns.vm_x" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('vm_x')"
 							class="th-text">VM/X <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.geekbench_5_single" class="pl-2 pr-2">
+						<th v-if="show_columns.geekbench_5_single" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('geekbench_5_single')"
 							class="th-text">GB5 Single <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.geekbench_5_multi" class="pl-2 pr-2">
+						<th v-if="show_columns.geekbench_5_multi" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('geekbench_5_multi')"
 							class="th-text">GB5 Multi <font-awesome-icon icon="fa-sort" /></span>
 						</th>
 
-						<th v-if="show_columns.disk_4k_read_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_4k_read_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_4k_read_speed')"
 							class="th-text">4K Read Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_4k_write_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_4k_write_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_4k_write_speed')"
 							class="th-text">4K Write Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_4k_total_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_4k_total_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_4k_total_speed')"
 							class="th-text">4K Total Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
 
-						<th v-if="show_columns.disk_4k_read_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_4k_read_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_4k_read_iops')"
 							class="th-text">4K Read IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_4k_write_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_4k_write_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_4k_write_iops')"
 							class="th-text">4K Write IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_4k_total_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_4k_total_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_4k_total_iops')"
 							class="th-text">4K Total IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
 
-						<th v-if="show_columns.disk_64k_read_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_64k_read_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_64k_read_speed')"
 							class="th-text">64K Read Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_64k_write_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_64k_write_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_64k_write_speed')"
 							class="th-text">64K Write Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_64k_total_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_64k_total_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_64k_total_speed')"
 							class="th-text">64K Total Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
 
-						<th v-if="show_columns.disk_64k_read_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_64k_read_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_64k_read_iops')"
 							class="th-text">64K Read IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_64k_write_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_64k_write_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_64k_write_iops')"
 							class="th-text">64K Write IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_64k_total_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_64k_total_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_64k_total_iops')"
 							class="th-text">64K Total IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
 
-						<th v-if="show_columns.disk_512k_read_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_512k_read_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_512k_read_speed')"
 							class="th-text">512K Read Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_512k_write_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_512k_write_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_512k_write_speed')"
 							class="th-text">512K Write Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_512k_total_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_512k_total_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_512k_total_speed')"
 							class="th-text">512K Total Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
 
-						<th v-if="show_columns.disk_512k_read_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_512k_read_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_512k_read_iops')"
 							class="th-text">512K Read IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_512k_write_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_512k_write_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_512k_write_iops')"
 							class="th-text">512K Write IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_512k_total_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_512k_total_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_512k_total_iops')"
 							class="th-text">512K Total IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
 
-						<th v-if="show_columns.disk_1m_read_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_1m_read_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_1m_read_speed')"
 							class="th-text">1M Read Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_1m_write_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_1m_write_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_1m_write_speed')"
 							class="th-text">1M Write Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_1m_total_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_1m_total_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_1m_total_speed')"
 							class="th-text">1M Total Speed <font-awesome-icon icon="fa-sort" /></span>
 						</th>
 
-						<th v-if="show_columns.disk_1m_read_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_1m_read_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_1m_read_iops')"
 							class="th-text">1M Read IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_1m_write_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_1m_write_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_1m_write_iops')"
 							class="th-text">1M Write IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
-						<th v-if="show_columns.disk_1m_total_iops" class="pl-2 pr-2">
+						<th v-if="show_columns.disk_1m_total_iops" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('disk_1m_total_iops')"
 							class="th-text">1M Total IOPS <font-awesome-icon icon="fa-sort" /></span>
 						</th>
 
-						<th v-if="show_columns.average_network_speed" class="pl-2 pr-2">
+						<th v-if="show_columns.average_network_speed" class="pl-2 pr-2 pb-2">
 							<span @click="sort_results('average_network_speed')"
 							class="th-text">AVG Network <font-awesome-icon icon="fa-sort" /></span>
 						</th>
@@ -271,7 +307,6 @@
 			'passed_servers',
 			'passed_server_count',
 			'user_id',
-			'options_open',
 			'user'
 		],
 		components: {
@@ -285,6 +320,7 @@
 		},
 		data() {
 			return {
+				options_open: window.innerWidth >= 768 ? true : false,
 				servers: [],
 				selected_server: {},
 				show_columns: {

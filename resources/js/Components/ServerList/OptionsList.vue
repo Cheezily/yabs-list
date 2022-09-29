@@ -1,8 +1,8 @@
 <template>
 	<div>
 	<transition name="slide-fade">
-		<div v-if="options_open" class="pb-[200px] w-[320px] h-screen table-options fixed 
-		top-[65px] left-0 z-20 overflow-auto">
+		<div v-if="options_open" class="pb-[200px] w-[300px] h-screen table-options fixed 
+		top-[65px] left-0 p-0 z-20 overflow-auto">
 			<button 
 			@click="$emit('close_options')"
 			class="close-options">
@@ -18,247 +18,247 @@
 				</p>
 				<transition name="slide-fade">
 					<ul v-if="columns_open || user">
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.provider_name"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Provider Name</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.when"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Run Date/Time</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.city"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">City</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.type"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Server Type</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.virtualization"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Virtualization</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.cpu"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">CPU</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.cores"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Cores</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.clock_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Clock Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.ram"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Ram</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.swap"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Swap</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.distro"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">OS / Distro</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.kernel"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Kernel</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.aes_ni"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">AES-NI</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.vm_x"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">VM/X</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.geekbench_5_single"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Geekbench 5 Single Core</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.geekbench_5_multi"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">Geekbench 5 Multi Core</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_4k_read_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">4K Read Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_4k_write_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">4K Write Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_4k_total_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">4K Total Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_4k_read_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">4K Read IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_4k_write_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">4K Write IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_4k_total_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">4K Total IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_64k_read_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">64K Read Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_64k_write_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">64K Write Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_64k_total_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">64K Total Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_64k_read_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">64K Read IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_64k_write_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">64K Write IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_64k_total_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">64K Total IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_512k_read_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">512K Read Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_512k_write_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">512K Write Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_512k_total_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">512K Total Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_512k_read_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">512K Read IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_512k_write_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">512K Write IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_512k_total_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">512K Total IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_1m_read_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">1M Read Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_1m_write_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">1M Write Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_1m_total_speed"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">1M Total Speed</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_1m_read_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">1M Read IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_1m_write_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">1M Write IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.disk_1m_total_iops"
 							@change="$emit('change_table_columns', show_columns)">
 							<span class="ml-1">1M Total IOPS</span>
 						</li>
-						<li class="ml-2 text-xs">
+						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.average_network_speed"
 							@change="$emit('change_table_columns', show_columns)">
@@ -279,7 +279,7 @@
 					<transition name="slide-fade">
 						<ul v-if="cores_open">
 							<li v-for="(option, index) in options.cores" :key="index"
-							class="w-11/12 mb-px">
+							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
 									checked type="checkbox" @click="select_index_item(selected_items.selected_cores, index)">
 								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
@@ -296,7 +296,7 @@
 					<transition name="slide-fade">
 						<ul v-if="ram_open">
 							<li v-for="(option, index) in options.ram" :key="index"
-							class="w-11/12 mb-px">
+							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
 									checked type="checkbox" @click="select_index_item(selected_items.selected_ram, index)">
 								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
@@ -313,7 +313,7 @@
 					<transition name="slide-fade">
 						<ul v-if="gb5_single_open">
 							<li v-for="(option, index) in options.geekbench_5_single" :key="index"
-							class="w-11/12 mb-px">
+							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
 									checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_single, index)">
 								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
@@ -330,7 +330,7 @@
 					<transition name="slide-fade">
 						<ul v-if="gb5_multi_open">
 							<li v-for="(option, index) in options.geekbench_5_multi" :key="index"
-							class="w-11/12 mb-px">
+							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
 									checked type="checkbox" @click="select_index_item(selected_items.selected_gb5_multi, index)">
 								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
@@ -347,7 +347,7 @@
 					<transition name="slide-fade">
 						<ul v-if="disk_4k_read_open">
 							<li v-for="(option, index) in options.disk_4k_read_speed" :key="index"
-							class="w-11/12 mb-px">
+							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
 									checked type="checkbox" @click="select_index_item(selected_items.selected_4k_read_speed, index)">
 								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
@@ -364,7 +364,7 @@
 					<transition name="slide-fade">
 						<ul v-if="disk_4k_write_open">
 							<li v-for="(option, index) in options.disk_4k_write_speed" :key="index"
-							class="w-11/12 mb-px">
+							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
 									checked type="checkbox" @click="select_index_item(selected_items.selected_4k_write_speed, index)">
 								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
@@ -381,7 +381,7 @@
 					<transition name="slide-fade">
 						<ul v-if="iops_4k_open">
 							<li v-for="(option, index) in options.disk_4k_total_iops" :key="index"
-							class="w-11/12 mb-px">
+							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
 									checked type="checkbox" @click="select_index_item(selected_items.selected_4k_total_iops,index)">
 								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
@@ -398,7 +398,7 @@
 					<transition name="slide-fade">
 						<ul v-if="avg_network_4k_open">
 							<li v-for="(option, index) in options.average_network_speed" :key="index"
-							class="w-11/12 mb-px">
+							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
 									checked type="checkbox" @click="select_index_item(selected_items.selected_avg_network,index)">
 								<span class="pl-1">{{ Object.keys(option)[0] }}</span>
@@ -415,7 +415,7 @@
 					<transition name="slide-fade">
 						<ul v-if="providers_open">
 							<li v-for="option in options.providers" :key="option"
-							class="w-11/12 mb-px">
+							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
 									:checked="Object.values(option)[1] > 0" type="checkbox" @click="select_index_item(selected_items.selected_providers, Object.values(option)[0])">
 								<span class="pl-1">{{ Object.values(option)[0] }}</span>

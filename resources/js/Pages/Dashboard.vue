@@ -1,26 +1,3 @@
-<script>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/inertia-vue3';
-import ServerTable from '@/Components/ServerList/ServerTable.vue';
-
-export default {
-  components: {
-  Head,
-  ServerTable,
-},
-  layout: AuthenticatedLayout,
-  props: {
-    user: Object
-  },
-  data() {
-    return {}
-  },
-  mounted() {
-    console.log('Dashboard')
-  }
-}
-</script>
-
 <template>
   <Head title="Dashboard" />
 
@@ -56,3 +33,29 @@ export default {
     </div>
   </AuthenticatedLayout>
 </template>
+
+<script>
+  import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+  import { Head } from '@inertiajs/inertia-vue3';
+  import ServerTable from '@/Components/ServerList/ServerTable.vue';
+  
+  export default {
+    components: {
+    Head,
+    ServerTable,
+  },
+    layout: AuthenticatedLayout,
+    props: {
+      user: Object
+    },
+    data() {
+      return {
+        options_open: true
+      }
+    },
+    mounted() {
+      console.log('Dashboard')
+      Window.innerWidth >= 768 ? this.options_open = true : this.options_open = false
+    }
+  }
+  </script>

@@ -7,7 +7,8 @@
 		</td>
 		<td @click="click_on_server" v-if="passed_show_columns.type" class="row-item pl-2">{{ server.type }}</td>
 		<td @click="click_on_server" v-if="passed_show_columns.virtualization" class="row-item pl-2">{{ server.virtualization }}</td>
-		<td @click="click_on_server" v-if="passed_show_columns.when" class="row-item pl-2">{{ new Date(server.when).toLocaleString() }}</td>
+		<td @click="click_on_server" v-if="passed_show_columns.when" class="row-item pl-2">{{ new Date(server.when).toLocaleString([], {
+			month: 'short', day: '2-digit', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true}) }}</td>
 		<td @click="click_on_server" v-if="passed_show_columns.city" class="row-item pl-2">{{ server.city }}</td>
 		<td @click="click_on_server" v-if="passed_show_columns.cpu" class="row-item pl-2">{{ server.cpu }}</td>
 		<td @click="click_on_server" v-if="passed_show_columns.cores" class="row-item pl-2">{{ server.cores }}</td>

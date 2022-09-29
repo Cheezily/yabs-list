@@ -1,8 +1,8 @@
 <template>
-	<div class=" relative flex items-top justify-between bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0 h-16">
+	<div class="fixed flex items-top justify-start w-full bg-white top-0 sm:pt-0 h-16 z-20">
 		<h1 class="logo ml-3 -mt-1 left">YABSLIST</h1>
 
-		<div class="mt-5 hidden fixed top-0 px-3 py-4 sm:block">
+		<div class="mt-5 fixed top-0 px-3 py-4">
 				<a v-if="$page.props.auth.user" :href="route('dashboard')" 
 				class="font-bold text-sm text-orange-500 hover:text-orange-700 underline">Your Dashboard</a>
 
