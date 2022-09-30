@@ -12,7 +12,7 @@
 		</OptionsList>
 
 		<!-- Desktop Buttons -->
-		<div class="mx-auto w-full hidden lg:block px-8 h-12"
+		<div class="mx-auto w-full hidden md:block px-8 h-12 md:ml-[220px] lg:ml-[200px] xl:ml-[100px]"
 		:class="{'relative': user,
 						'fixed z-30 top-0': !user}">
 			<div class="flex"
@@ -45,15 +45,10 @@
 				:page-class="'page-item'"
 			></paginate>
 
-			<div v-if="!user" class="hidden lg:block text-xs text-grey-400 ml-5 pt-2">
+			<div v-if="!user" class="hidden lg:block text-xs text-grey-400 ml-5 pt-3">
 				<p>
-					<font-awesome-icon class="text-purple-700 mr-1" icon="fa-message" /> 
-					indicates that the user has 
-					left a note about this server.
-				</p>
-				<p>
-					Click on the server row to view notes or 
-					detailed network speed information.
+					<font-awesome-icon class="text-purple-700 mr-0" icon="fa-message" /> 
+					: Note provided
 				</p>
 			</div>
 			</div>
