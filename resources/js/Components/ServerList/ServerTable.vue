@@ -12,8 +12,12 @@
 		</OptionsList>
 
 		<!-- Desktop Buttons -->
-		<div class="mx-auto w-full hidden lg:block px-8 h-12 fixed z-30 top-0">
-			<div class="flex justify-start pt-2">
+		<div class="mx-auto w-full hidden lg:block px-8 h-12"
+		:class="{'relative': user,
+						'fixed z-30 top-0': !user}">
+			<div class="flex"
+			:class="{'justify-center': user,
+						'justify-start pt-2': !user}">
 				<button @click="options_open = !options_open"
 				class="options-button font-bold rounded px-4 py-2 mb-3">
 				{{ options_open ? 'Close' : 'Open' }} 
@@ -29,8 +33,9 @@
 				</select>
 
 				<paginate
+				v-if="page_count > 1"
 				class="h-10 w-auto ml-8"
-				:page-count="pageCount"
+				:page-count="page_count"
 				:page-range="3"
 				:margin-pages="2"
 				:click-handler="pagination_click"
@@ -55,14 +60,15 @@
 		</div>
 		
 		<!-- Mobile Buttons -->
-		<div class="md:hidden mt-[80px] mx-0 px-0 w-full">
+		<div class="md:hidden mx-0 px-0 w-full"
+		:class="{'mt-[80px]': !user}">
 			<div class="">
 				<button @click="options_open = !options_open"
 				class="options-button font-bold rounded h-8 pt-2 px-0 py-2 mb-3 ml-2 w-5/12 text-xs">
 				{{ options_open ? 'Close' : 'Open' }} 
 				{{ user ? 'Columns List' : 'Options' }}</button>
 
-				<select v-if="!user" class="float-right text-center per-page-select h-8 pt-2 mr-2 w-5/12 text-xs rounded w-full lg:w-auto"
+				<select class="float-right text-center per-page-select h-8 pt-2 mr-2 w-5/12 text-xs rounded w-full lg:w-auto"
 					@change="get_results"
 					v-model="limit">
 					<option value=20>20 Per Page</option>
@@ -73,8 +79,9 @@
 			</div>
 			<div class="w-full text-center">
 				<paginate
+					v-if="page_count > 1"
 					class="h-10 w-full mt-4"
-					:page-count="pageCount"
+					:page-count="page_count"
 					:page-range="3"
 					:margin-pages="2"
 					:click-handler="pagination_click"
@@ -86,7 +93,9 @@
 			</div>
 		</div>
 
-		<div class="mt-2 md:mt-16 pt-2 border-t-2 absolute pb-[100px]">
+		<div class="mt-2 pt-2 border-t-2 absolute overflow-x-scroll"
+		:class="{'relative': user,
+						'md:mt-16 pb-[100px]': !user}">
 			<table class="server-table text-xs">
 				<thead class="">
 					<tr class="">
@@ -372,7 +381,7 @@
 				order_by: 'id',
 				page: 1,
 				last_sort: '',
-				pageCount: 0,
+				page_count: 0,
 				loading: false,
 				error_message: '',
 				selected_ram_options: [],
@@ -409,7 +418,7 @@
 				.then(res => {
 						this.servers = res.data.servers
 						this.server_count = res.data.server_count
-						this.pageCount = Math.ceil(this.server_count / this.limit)
+						this.page_count = Math.ceil(this.server_count / this.limit)
 						this.loading = false
 				})
 				.catch(err => {
@@ -467,7 +476,7 @@
 		},
 		mounted() {
 			this.servers = this.passed_servers
-			this.pageCount = Math.ceil(this.passed_server_count / this.limit)
+			this.page_count = Math.ceil(this.passed_server_count / this.limit)
 		}
 	}
 </script>

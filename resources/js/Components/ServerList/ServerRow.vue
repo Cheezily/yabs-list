@@ -105,7 +105,7 @@
 <style scoped>
 	tr:hover > .row-item {
 		background: rgb(224,223,255);
-		background: linear-gradient(180deg, rgba(224,223,255,1) 0%, rgba(191,191,255,1) 39%, rgba(153,238,255,1) 100%);
+		background: linear-gradient(180deg, rgba(224,223,255,1) 0%, rgba(191,191,255,1) 39%, rgb(207, 229, 255) 100%);
 		cursor: help;
 	}
 

@@ -13,8 +13,8 @@
         <h1 class="text-xl mb-2">
           Your Benchmarks
         </h1>
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-          <div class="p-6 bg-white border-b border-gray-200">
+        <div class="bg-white">
+          <div class="p-6 w-full">
             <div v-if="user.servers.length == 0">
               <h1>
                 You have no submitted benchmarks to display. Click the link
@@ -26,6 +26,7 @@
             :options_open=false
             :user=user
             :passed_servers=user.servers
+            :passed_server_count=passed_server_count
             ></ServerTable>
           </div>
         </div>
@@ -40,14 +41,15 @@
   import ServerTable from '@/Components/ServerList/ServerTable.vue';
   
   export default {
+    props: [
+      'user',
+      'passed_server_count'
+    ],
     components: {
     Head,
     ServerTable,
   },
     layout: AuthenticatedLayout,
-    props: {
-      user: Object
-    },
     data() {
       return {
         options_open: true

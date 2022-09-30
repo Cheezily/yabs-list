@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
-    public function dashboard(Request $request)
+    public function dashboard()
     {
         $user = User::with(
             [
@@ -22,6 +22,7 @@ class HomeController extends Controller
 
         return Inertia::render('Dashboard', [
             'user' => $user,
+            'passed_server_count' => count($user->servers),
             'settings' => SettingsHelper::all(),
         ]);
     }
