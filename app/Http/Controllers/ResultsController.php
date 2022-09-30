@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\MergedIdsHelper;
 use App\Models\Server;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 
 class ResultsController extends Controller
@@ -16,9 +17,9 @@ class ResultsController extends Controller
             $merged_ids = MergedIdsHelper::getMergedIds($request, $request->user_id);
         }
 
-        $query = Server::distinct();
+        $query = DB::table('servers');
             if(!empty($merged_ids)) {
-                $query->whereIn('id', $merged_ids);
+                $query->whereIntegerInRaw('id', $merged_ids);
             }
             if(!is_null($request->user_id)) {
                 $query->where('user_id', '=', $request->user_id);
@@ -29,7 +30,7 @@ class ResultsController extends Controller
 
         return response()->json([
             'server_count' => count($merged_ids) > 0 ? count($merged_ids) : Server::count(),
-            'servers' => $query->get(),
+            'servers' => $query->distinct()->get(),
             'page' => $request->page,
         ]);
     }
