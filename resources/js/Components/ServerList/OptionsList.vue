@@ -17,7 +17,7 @@
 					<font-awesome-icon v-else icon="fa-caret-right" />
 				</p>
 				<transition name="slide-fade">
-					<ul v-if="columns_open || user">
+					<ul v-show="columns_open || user">
 						<li class="ml-0 text-xs">
 							<input type="checkbox" 
 							v-model="show_columns.provider_name"
@@ -277,7 +277,7 @@
 						<font-awesome-icon v-else icon="fa-caret-right" />	
 					</p>
 					<transition name="slide-fade">
-						<ul v-if="cores_open">
+						<ul v-show="cores_open">
 							<li v-for="(option, index) in options.cores" :key="index"
 							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
@@ -294,7 +294,7 @@
 						<font-awesome-icon v-else icon="fa-caret-right" />	
 					</p>
 					<transition name="slide-fade">
-						<ul v-if="ram_open">
+						<ul v-show="ram_open">
 							<li v-for="(option, index) in options.ram" :key="index"
 							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
@@ -311,7 +311,7 @@
 						<font-awesome-icon v-else icon="fa-caret-right" />	
 					</p>
 					<transition name="slide-fade">
-						<ul v-if="gb5_single_open">
+						<ul v-show="gb5_single_open">
 							<li v-for="(option, index) in options.geekbench_5_single" :key="index"
 							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
@@ -328,7 +328,7 @@
 						<font-awesome-icon v-else icon="fa-caret-right" />	
 					</p>
 					<transition name="slide-fade">
-						<ul v-if="gb5_multi_open">
+						<ul v-show="gb5_multi_open">
 							<li v-for="(option, index) in options.geekbench_5_multi" :key="index"
 							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
@@ -345,7 +345,7 @@
 						<font-awesome-icon v-else icon="fa-caret-right" />	
 					</p>
 					<transition name="slide-fade">
-						<ul v-if="disk_4k_read_open">
+						<ul v-show="disk_4k_read_open">
 							<li v-for="(option, index) in options.disk_4k_read_speed" :key="index"
 							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
@@ -362,7 +362,7 @@
 						<font-awesome-icon v-else icon="fa-caret-right" />	
 					</p>
 					<transition name="slide-fade">
-						<ul v-if="disk_4k_write_open">
+						<ul v-show="disk_4k_write_open">
 							<li v-for="(option, index) in options.disk_4k_write_speed" :key="index"
 							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
@@ -379,7 +379,7 @@
 						<font-awesome-icon v-else icon="fa-caret-right" />	
 					</p>
 					<transition name="slide-fade">
-						<ul v-if="iops_4k_open">
+						<ul v-show="iops_4k_open">
 							<li v-for="(option, index) in options.disk_4k_total_iops" :key="index"
 							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
@@ -396,7 +396,7 @@
 						<font-awesome-icon v-else icon="fa-caret-right" />	
 					</p>
 					<transition name="slide-fade">
-						<ul v-if="avg_network_4k_open">
+						<ul v-show="avg_network_4k_open">
 							<li v-for="(option, index) in options.average_network_speed" :key="index"
 							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
@@ -413,7 +413,7 @@
 						<font-awesome-icon v-else icon="fa-caret-right" />	
 					</p>
 					<transition name="slide-fade">
-						<ul v-if="providers_open">
+						<ul v-show="providers_open">
 							<li v-for="option in options.providers" :key="option"
 							class="w-full pr-2 mb-px">
 								<input :disabled=disable_all 
