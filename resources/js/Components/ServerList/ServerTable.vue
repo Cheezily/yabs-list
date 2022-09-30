@@ -489,8 +489,6 @@
 
 	.options-button,
 	.per-page-select {
-		/* background: linear-gradient(176deg, rgba(224,223,255,1) 0%, rgba(191,191,255,1) 10%, rgba(153,238,255,1) 100%); */
-		background: linear-gradient(176deg, rgb(181, 178, 255) 0%, rgb(166, 166, 255) 10%, rgb(90, 228, 255) 100%);
 		background: linear-gradient(180deg, rgb(201, 199, 255) 0%, rgb(201, 201, 255) 40%, rgb(226, 226, 255) 100%); 
 		color: #000;
 		border: none;
@@ -511,8 +509,6 @@
 	}
 
 	.page-item + .active {
-		/* background: linear-gradient(176deg, rgba(224,223,255,1) 0%, rgba(191,191,255,1) 10%, rgba(153,238,255,1) 100%); */
-		background: linear-gradient(176deg, rgb(181, 178, 255) 0%, rgb(166, 166, 255) 10%, rgb(90, 228, 255) 100%);
 		background: linear-gradient(180deg, rgb(201, 199, 255) 0%, rgb(201, 201, 255) 40%, rgb(226, 226, 255) 100%); 
 		color: #000;
 	}
@@ -520,6 +516,4 @@
 	.page-item:hover :not(.page-item + .active) {
 		cursor: pointer;
 	}
-
-
 </style>

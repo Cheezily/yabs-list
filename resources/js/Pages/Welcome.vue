@@ -29,6 +29,9 @@ import FlashMessage from '@/Components/FlashMessage.vue';
         </ServerTable>
       </div>
     </div>
+    <a class="github-link text-gray-700 font-bold py-2 px-4 text-xs
+    fixed bottom-[0px] right-[5px] rounded shadow hover:bg-purple-300" 
+    href="https://github.com/Cheezily/yabs-list" target="_blank">GitHub :)</a>
   </div>
 
 </template>
@@ -76,5 +79,20 @@ export default {
   .server-table {
     margin: 0 8px;
   }
+}
+
+.github-link {
+  background: linear-gradient(180deg, rgb(201, 199, 255) 0%, rgb(201, 201, 255) 40%, rgb(226, 226, 255) 100%); 
+  animation: slidedown 1s 5s forwards;
+}
+
+.github-link:hover {
+  background: linear-gradient(180deg, rgb(173, 171, 245) 0%, rgb(158, 158, 240) 10%, rgb(172, 230, 241) 100%);
+  animation: slidedown 1s 5s forwards;
+}
+
+@keyframes slidedown {
+  from { bottom: 0; }
+  to { bottom: -100px; }
 }
 </style>
