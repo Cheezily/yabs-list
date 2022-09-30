@@ -23,6 +23,7 @@ return new class extends Migration
             $table->boolean('is_provider')->default(false);
             $table->string('provider_name')->nullable();
             $table->text('description')->nullable();
+            $table->boolean('is_admin')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -31,8 +32,9 @@ return new class extends Migration
         $password = substr(str_shuffle($alpha_numeric),0,16);
 
         App\Models\User::create([
-            'name' => 'Anonymous',
-            'email' => 'test@test.com',
+            'name' => config('admin.default_username'),
+            'email' => config('admin.default_email'),
+            'is_admin' => true,
             'password' => bcrypt($password),
             'email_verified_at' => now(),
             'remember_token' => Str::random(10),

@@ -51,7 +51,7 @@ class MergedIdsHelper {
             foreach($request->selected_items['selected_4k_read_speed'] as $index) {
                 $query = QueryHelper::disk_4k_read_speed_where_not($query, intval($index));
             }
-            $selected_4k_read_speed = $query->select('id')->get()->pluck('id')->toArray();
+            $selected_4k_read_speed = $query->select('id')->pluck('id')->toArray();
         }
 
         if(!is_null($request->selected_items['selected_4k_write_speed'])) {
@@ -59,7 +59,7 @@ class MergedIdsHelper {
             foreach($request->selected_items['selected_4k_write_speed'] as $index) {
                 $query = QueryHelper::disk_4k_write_speed_where_not($query, intval($index));
             }
-            $selected_4k_write_speed = $query->select('id')->get()->pluck('id')->toArray();
+            $selected_4k_write_speed = $query->select('id')->pluck('id')->toArray();
         }
 
         if(!is_null($request->selected_items['selected_4k_write_speed'])) {
@@ -67,7 +67,7 @@ class MergedIdsHelper {
             foreach($request->selected_items['selected_4k_total_iops'] as $index) {
                 $query = QueryHelper::disk_4k_total_iops_where_not($query, intval($index));
             }
-            $selected_4k_total_iops = $query->select('id')->get()->pluck('id')->toArray();
+            $selected_4k_total_iops = $query->select('id')->pluck('id')->toArray();
         }
 
         if(!is_null($request->selected_items['selected_avg_network'])) {
@@ -75,7 +75,7 @@ class MergedIdsHelper {
             foreach($request->selected_items['selected_avg_network'] as $index) {
                 $query = QueryHelper::average_network_speed_where_not($query, intval($index));
             }
-            $selected_avg_network = $query->select('id')->get()->pluck('id')->toArray();
+            $selected_avg_network = $query->select('id')->pluck('id')->toArray();
         }
 
         return array_intersect(
