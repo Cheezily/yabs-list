@@ -93,7 +93,7 @@
 			</div>
 		</div>
 
-		<div class="mt-2 pt-2 border-t-2 absolute overflow-x-scroll"
+		<div class="mt-2 pt-2 border-t-2 absolute overflow-x-scroll md:overflow-x-auto"
 		:class="{'relative': user,
 						'md:mt-16 pb-[100px]': !user}">
 			<table class="server-table text-xs">
