@@ -16,6 +16,8 @@
 		<div class="rounded bg-white px-4 pb-4 pt-4 flex flex-wrap justify-content">
 			<h2 class="mb-8 text-slate-700 text-xl w-full">
 				Please fill in these fileds and paste your YABS output into the textarea below
+				<button class="bg-amber-500 float-right text-white text-sm rounded hover:bg-amber-600 px-4 py-2 font-bold"
+				@click="clear_all()">Clear All</button>
 			</h2>
 
 			<div class="pl-2 w-full">
@@ -46,7 +48,7 @@
 
 			<div class="my-1 pl-2 w-full">
 				<label class="w-1/3 text-right inline-block text-gray-700" for="city">
-					What city is this server located in?
+					What city is this server located in? <span class="text-gray-500">(Optional)</span>
 				</label>
 				<font-awesome-icon class="absolute mr-2 w-10 text-gray-400 mt-2 ml-1" icon="fa-search" />
 				<input v-model="city" @focus="prevent_city_search = false"
@@ -87,7 +89,7 @@
 			<transition name="slide">
 				<div v-if="type == 'vps'" class="my-1 pl-2 w-full">
 					<label class="w-1/3 text-right inline-block text-gray-700" for="type">
-						Virtualization Type?
+						Virtualization Type? <span class="text-gray-500">(Optional)</span>
 					</label>
 					<select class="h-8 text-sm pt-1 rounded ml-2" v-model="virtualization">
 						<option value="" disabled selected>Select One</option>
@@ -101,13 +103,10 @@
 
 			<div class="my-1 pl-2 w-full">
 				<label class="align-top w-1/3 text-right inline-block text-gray-700" for="city">
-					Any notes about this server you'd like to add?
+					Any notes about this server you'd like to add? <span class="text-gray-500">(Optional)</span>
 				</label>
 				<textarea v-model="note"
 				id="city" class="h-20 ml-2 w-1/2 rounded" type="text" />
-				<p v-if="errors['city']" class="w-1/3 text-xs italic text-red-500 text-right">
-					{{ capitalize(errors.city[0]) }}
-				</p>
 			</div>
 
 			<h1 class="text-slate-700 text-xl w-full mt-6">
@@ -148,6 +147,7 @@
 					<label class="w-1/3 inline-block text-sm text-right" for="when">When Was This Run?</label>
 					<input v-model="when"
 					id="when" class="ml-2 w-1/2 rounded text-sm h-7" type="text" />
+					<p v-if="errors['when']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.cpu[0]) }}</p>
 				</div>
 			</div>
 
@@ -498,7 +498,7 @@ import axios from 'axios';
 				errors: {},
 				yabs_text: '',
 				provider_name: '',
-				type: '',
+				type: 'vps',
 				when: '',
 				city: '',
 				virtualization: '',

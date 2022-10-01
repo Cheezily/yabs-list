@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('provider_name');
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->dateTime('when');
-            $table->string('city');
+            $table->string('city')->nullable();
             $table->string('cpu');
             $table->integer('cores');
             $table->integer('clock_speed');
@@ -55,7 +55,7 @@ return new class extends Migration
             $table->integer('disk_1m_total_iops');
             $table->integer('geekbench_5_single');
             $table->integer('geekbench_5_multi');
-            $table->string('virtualization');
+            $table->string('virtualization')->nullable();
             $table->string('note')->nullable();
             $table->timestamps();
 

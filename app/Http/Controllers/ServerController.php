@@ -31,11 +31,11 @@ class ServerController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'provider_name' => 'required|string',
-                'when' => 'required|string',
-                'city' => 'required|string',
-                'type' => 'required',
-                'virtualization' => 'sometimes|in:'.SettingsHelper::virt_types(),
-                'note' => 'sometimes|string|max:255',
+                'when' => 'required|date',
+                'city' => 'nullable',
+                'type' => 'nullable',
+                'virtualization' => 'nullable|in:'.SettingsHelper::virt_types(),
+                'note' => 'nullable|string|max:255',
                 'cpu' => 'required|string|max:100',
                 'cores' => 'required|integer|max:256',
                 'clock_speed' => 'required|integer|max:10000',
