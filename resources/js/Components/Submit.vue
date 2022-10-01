@@ -615,7 +615,7 @@ import axios from 'axios';
 				this.errors = {}
 				this.yabs_text = ''
 				this.provider_name = ''
-				this.type = ''
+				this.type = 'vps'
 				this.when = ''
 				this.city = ''
 				this.virtualization = ''
