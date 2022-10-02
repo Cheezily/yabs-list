@@ -55,6 +55,7 @@ Route::get('/search/provider', function (Request $request) {
     return Server::where('provider_name', 'like', '%'.$request->search_terms.'%')
         ->select(['provider_name'])
         ->distinct()
+        ->orderBy('provider_name', 'asc')
         ->limit(10)
         ->get();
 })->name('provider_search');
@@ -63,6 +64,7 @@ Route::get('/search/city', function (Request $request) {
     return Server::where('city', 'like', '%'.$request->search_terms.'%')
         ->select(['city'])
         ->distinct()
+        ->orderBy('city', 'asc')
         ->limit(10)
         ->get();
 })->name('city_search');
