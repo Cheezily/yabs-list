@@ -1083,13 +1083,13 @@ import axios from 'axios';
 				// find GB5 Single Core
 				let geekbench_5_single = this.find_item_row('Geekbench 5 Benchmark Test:', lines)
 				if(geekbench_5_single) {
-					this.geekbench_5_single = this.get_gb5(lines[geekbench_5_single + 2])
+					this.geekbench_5_single = this.get_gb5(lines[geekbench_5_single + 4])
 				}
 
 				// find GB5 Multi Core
 				let geekbench_5_multi = this.find_item_row('Geekbench 5 Benchmark Test:', lines)
 				if(geekbench_5_multi) {
-					this.geekbench_5_multi = this.get_gb5(lines[geekbench_5_multi + 3])
+					this.geekbench_5_multi = this.get_gb5(lines[geekbench_5_multi + 5])
 				}
 
 				// find AES-NI
