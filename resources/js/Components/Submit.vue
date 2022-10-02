@@ -147,7 +147,7 @@
 					<label class="w-1/3 inline-block text-sm text-right" for="when">When Was This Run?</label>
 					<input v-model="when"
 					id="when" class="ml-2 w-1/2 rounded text-sm h-7" type="text" />
-					<p v-if="errors['when']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.cpu[0]) }}</p>
+					<p v-if="errors['when']" class="w-full text-xs italic text-red-500 text-center">{{ capitalize(errors.when[0]) }}</p>
 				</div>
 			</div>
 
@@ -776,20 +776,17 @@ import axios from 'axios';
 			get_clock_speed(line) {
 				return parseInt(line.substring(line.indexOf('@') + 1).trim())
 			},
-			get_ram(line) {
-				let ram = 0
-				let suffix = ''
-				let ram_info = line.substring(line.indexOf(':') + 2).trim()
+			get_ram_or_swap(line) {
+				let mem = 0
+				let mem_info = line.substring(line.indexOf(':') + 2).trim()
+				mem = mem_info.substring(0, mem_info.indexOf(' ')).trim()
 
-				ram = ram_info.substring(0, ram_info.indexOf(' ')).trim()
-				suffix = ram_info.substring(ram_info.length - 3).trim()
-
-				if(suffix === 'GiB') {
-					ram *= 1000
+				if(mem_info.indexOf('G') != -1) {
+					mem *= 1000
 				} else {
-					ram *= 1
+					mem *= 1
 				}
-				return parseInt(ram)
+				return parseInt(mem)
 			},
 			get_gb5(line) {
 				console.log(line.substring(line.indexOf('|') + 1).trim())
@@ -798,21 +795,6 @@ import axios from 'axios';
 			get_aes_or_vm(line) {
 				return line.indexOf('Enabled') > 0 ? true : false
 			},
-			get_swap(line) {
-				let swap = 0
-				let suffix = ''
-				let swap_info = line.substring(line.indexOf(':') + 2).trim()
-
-				swap = swap_info.substring(0, swap_info.indexOf(' ')).trim()
-				suffix = swap_info.substring(swap_info.length - 3).trim()
-
-				if(suffix === 'GiB') {
-					swap *= 1000
-				} else {
-					swap *= 1
-				}
-				return parseInt(swap)
-			},
 			get_distro(line) {
 				return line.substring(line.indexOf(':') + 1).trim()
 			},
@@ -820,29 +802,25 @@ import axios from 'axios';
 				return line.substring(line.indexOf(':') + 1).trim()
 			},
 			get_4k_64k_disk_speed(line) {
-				let suffix = ''
 				let speed = 0
 				let speed_info = line.substring(line.indexOf('|') + 1, line.indexOf('(')).trim()
 				speed = parseFloat(speed_info)
-				suffix = line.substring(line.indexOf('.') + 3, line.indexOf('(')).trim()
 
-				if(suffix === 'KB/s') {speed *= 1000}
-				if(suffix === 'MB/s') {speed *= 1000000}
-				if(suffix === 'GB/s') {speed *= 1000000000}
+				if(speed_info.indexOf('K') != -1) {speed *= 1000}
+				if(speed_info.indexOf('M') != -1) {speed *= 1000000}
+				if(speed_info.indexOf('G') != -1) {speed *= 1000000000}
 
 				return parseInt(speed)
 			},
 			get_512k_1m_disk_speed(line) {
-				let suffix = ''
 				let speed = 0
 				let starting_point = line.substring(line.indexOf('|', line.indexOf('|') + 1) - 1).trim()
 				let speed_info = starting_point.substring(starting_point.indexOf('|') + 1, starting_point.indexOf('(')).trim()
 				speed = parseFloat(speed_info)
-				suffix = starting_point.substring(starting_point.indexOf('.') + 3, starting_point.indexOf('(')).trim()
 
-				if(suffix === 'KB/s') {speed *= 1000}
-				if(suffix === 'MB/s') {speed *= 1000000}
-				if(suffix === 'GB/s') {speed *= 1000000000}
+				if(speed_info.indexOf('K') != -1) {speed *= 1000}
+				if(speed_info.indexOf('M') != -1) {speed *= 1000000}
+				if(speed_info.indexOf('G') != -1) {speed *= 1000000000}
 
 				return parseInt(speed)
 			},
@@ -1089,7 +1067,13 @@ import axios from 'axios';
 				// find RAM
 				let ram_line = this.find_item_row('RAM', lines)
 				if(ram_line) {
-					this.ram = this.get_ram(lines[ram_line])
+					this.ram = this.get_ram_or_swap(lines[ram_line])
+				}
+				
+				// find Swap
+				let swap_line = this.find_item_row('Swap', lines)
+				if(swap_line) {
+					this.swap = this.get_ram_or_swap(lines[swap_line])
 				}
 
 				// find GB5 Single Core
@@ -1114,12 +1098,6 @@ import axios from 'axios';
 				let vm_line = this.find_item_row('VM-x', lines)
 				if(vm_line) {
 					this.vm_x = this.get_aes_or_vm(lines[vm_line])
-				}
-
-				// find Swap
-				let swap_line = this.find_item_row('Swap', lines)
-				if(swap_line) {
-					this.swap = this.get_swap(lines[swap_line])
 				}
 
 				// find Distro
