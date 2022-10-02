@@ -779,7 +779,10 @@ import axios from 'axios';
 			get_ram_or_swap(line) {
 				let mem = 0
 				let mem_info = line.substring(line.indexOf(':') + 2).trim()
-				mem = mem_info.substring(0, mem_info.indexOf(' ')).trim()
+				console.log('mem: ' + mem_info)
+				console.log(parseFloat(mem_info))
+				// mem = mem_info.substring(0, mem_info.indexOf(' ')).trim()
+				mem = parseFloat(mem_info)
 
 				if(mem_info.indexOf('G') != -1) {
 					mem *= 1000
