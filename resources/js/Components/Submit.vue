@@ -619,7 +619,7 @@ import axios from 'axios';
 				this.when = ''
 				this.city = ''
 				this.virtualization = ''
-				this.note = ''
+				// this.note = ''
 				this.cpu = ''
 				this.cores = ''
 				this.clock_speed = ''
