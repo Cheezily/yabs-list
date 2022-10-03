@@ -887,7 +887,7 @@ import axios from 'axios';
 				axios.post(route('create_server'),{
 					provider_name: this.provider_name.trim(),
 					type: this.type.trim(),
-					when: this.when.trim(),
+					when: this.when,
 					city: this.city.trim(),
 					virtualization: this.virtualization.trim(),
 					note: this.note.trim(),
