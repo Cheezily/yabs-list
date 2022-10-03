@@ -132,9 +132,9 @@ class ServerController extends Controller
 
             $server = Server::create([
                 'user_id' => (Auth::check() ? Auth::user()->id : null),
-                'provider_name' => $validator->valid()['provider_name'],
+                'provider_name' => trim($validator->valid()['provider_name']),
                 'when' => date_format(date_create($validator->valid()['when']),"Y-m-d H:i:s"),
-                'city' => $validator->valid()['city'],
+                'city' => trim($validator->valid()['city']),
                 'type' => $validator->valid()['type'],
                 'virtualization' => $validator->valid()['virtualization'],
                 'note' => $validator->valid()['note'],
@@ -147,8 +147,8 @@ class ServerController extends Controller
                 'geekbench_5_multi' => $validator->valid()['geekbench_5_multi'],
                 'aes_ni' => $validator->valid()['aes_ni'],
                 'vm_x' => $validator->valid()['vm_x'],
-                'distro' => $validator->valid()['distro'],
-                'kernel' => $validator->valid()['kernel'],
+                'distro' => trim($validator->valid()['distro']),
+                'kernel' => trim($validator->valid()['kernel']),
                 'disk_4k_read_speed' => $validator->valid()['disk_4k_read_speed'],
                 'disk_4k_write_speed' => $validator->valid()['disk_4k_write_speed'],
                 'disk_4k_total_speed' => $validator->valid()['disk_4k_total_speed'],
@@ -180,9 +180,9 @@ class ServerController extends Controller
                 if(!empty($validator->valid()['network_row_' . $i . '_provider'])) {
                     Network::create([
                         'server_id' => $server->id,
-                        'provider' => $validator->valid()['network_row_' . $i . '_provider'],
+                        'provider' => trim($validator->valid()['network_row_' . $i . '_provider']),
                         'ipv4' => $validator->valid()['network_row_' . $i . '_ipv4'],
-                        'location' => $validator->valid()['network_row_' . $i . '_location'],
+                        'location' => trim($validator->valid()['network_row_' . $i . '_location']),
                         'send_speed' => $validator->valid()['network_row_' . $i . '_send_speed'],
                         'receive_speed' => $validator->valid()['network_row_' . $i . '_rec_speed']
                     ]);
