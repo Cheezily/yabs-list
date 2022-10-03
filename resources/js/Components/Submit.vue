@@ -765,7 +765,11 @@ import axios from 'axios';
 				}
 			},
 			get_when(line) {
-				return new Date(line.trim())
+				let date_line = new Date(line.trim())
+				if(date_line == 'Invalid Date') {
+					return line
+				}
+				return date_line
 			},
 			get_cpu(line) {
 				return line.substring(line.indexOf(':') + 1).trim()
