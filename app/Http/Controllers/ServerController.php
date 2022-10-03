@@ -134,7 +134,7 @@ class ServerController extends Controller
                 'user_id' => (Auth::check() ? Auth::user()->id : null),
                 'provider_name' => trim($validator->valid()['provider_name']),
                 'when' => date_format(date_create($validator->valid()['when']),"Y-m-d H:i:s"),
-                'city' => trim($validator->valid()['city']),
+                'city' => ucfirst(trim($validator->valid()['city'])),
                 'type' => $validator->valid()['type'],
                 'virtualization' => $validator->valid()['virtualization'],
                 'note' => $validator->valid()['note'],
