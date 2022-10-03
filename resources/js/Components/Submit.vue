@@ -765,7 +765,7 @@ import axios from 'axios';
 				}
 			},
 			get_when(line) {
-				return line.trim()
+				return new Date(line.trim())
 			},
 			get_cpu(line) {
 				return line.substring(line.indexOf(':') + 1).trim()
@@ -779,9 +779,6 @@ import axios from 'axios';
 			get_ram_or_swap(line) {
 				let mem = 0
 				let mem_info = line.substring(line.indexOf(':') + 2).trim()
-				console.log('mem: ' + mem_info)
-				console.log(parseFloat(mem_info))
-				// mem = mem_info.substring(0, mem_info.indexOf(' ')).trim()
 				mem = parseFloat(mem_info)
 
 				if(mem_info.indexOf('G') != -1) {
@@ -792,7 +789,6 @@ import axios from 'axios';
 				return parseInt(mem)
 			},
 			get_gb5(line) {
-				console.log(line.substring(line.indexOf('|') + 1).trim())
 				return parseInt(line.substring(line.indexOf('|') + 1).trim())
 			},
 			get_aes_or_vm(line) {
@@ -1042,13 +1038,10 @@ import axios from 'axios';
 					this.virtualization = ''
 				}
 			},
-			when(r) {
-				console.log(new Date(r))
-			},
 			yabs_text(r) {
 				let lines = r.split('\n')
 
-				// find CPU
+				// find When Run
 				let when_line = this.find_item_row('Basic System Information:', lines)
 				if(when_line) {
 					this.when = this.get_when(lines[when_line - 2])
