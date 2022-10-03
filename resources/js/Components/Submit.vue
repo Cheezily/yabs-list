@@ -1159,8 +1159,10 @@ import axios from 'axios';
 				// find ipv4 speeds
 				let row_ipv4 = this.find_item_row('iperf3 Network Speed Tests (IPv4):', lines)
 				if(row_ipv4) {
+					let end_of_lines = false
 					for(let i = 1; i < 8; i++) {
-						if(lines[i + row_ipv4 + 3].indexOf('|') > 0) {
+						if(!this.get_network_row_provider(lines[i + row_ipv4 + 3]).trim()) {end_of_lines = true}
+						if(!end_of_lines && lines[i + row_ipv4 + 3].indexOf('|') > 0) {
 							this['network_row_' + i + '_provider'] = this.get_network_row_provider(lines[i + row_ipv4 + 3])
 							this['network_row_' + i + '_location'] = this.get_network_row_location(lines[i + row_ipv4 + 3])
 							this['network_row_' + i + '_send_speed'] = this.get_network_row_send_speed(lines[i + row_ipv4 + 3])
@@ -1172,8 +1174,10 @@ import axios from 'axios';
 				// find ipv6 speeds
 				let row_ipv6 = this.find_item_row('iperf3 Network Speed Tests (IPv6):', lines)
 				if(row_ipv6) {
+					let end_of_lines = false
 					for(let i = 1; i < 8; i++) {
-						if(lines[i + row_ipv6 + 3].indexOf('|') > 0) {
+						if(!this.get_network_row_provider(lines[i + row_ipv6 + 3]).trim()) {end_of_lines = true}
+						if(!end_of_lines && lines[i + row_ipv6 + 3].indexOf('|') > 0) {
 							this['network_row_' + (i + 7) + '_provider'] = this.get_network_row_provider(lines[i + row_ipv6 + 3])
 							this['network_row_' + (i + 7) + '_location'] = this.get_network_row_location(lines[i + row_ipv6 + 3])
 							this['network_row_' + (i + 7) + '_send_speed'] = this.get_network_row_send_speed(lines[i + row_ipv6 + 3])
