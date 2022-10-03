@@ -52,7 +52,7 @@ Route::post('/get_network_details', function (Request $request) {
 })->name('get_network_details');
 
 Route::get('/search/provider', function (Request $request) {
-    return Server::where('provider_name', 'like', '%'.$request->search_terms.'%')
+    return Server::where('provider_name', 'like', $request->search_terms.'%')
         ->select(['provider_name'])
         ->distinct()
         ->orderBy('provider_name', 'asc')
@@ -61,7 +61,7 @@ Route::get('/search/provider', function (Request $request) {
 })->name('provider_search');
 
 Route::get('/search/city', function (Request $request) {
-    return Server::where('city', 'like', '%'.$request->search_terms.'%')
+    return Server::where('city', 'like', $request->search_terms.'%')
         ->select(['city'])
         ->distinct()
         ->orderBy('city', 'asc')
