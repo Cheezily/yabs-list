@@ -1023,7 +1023,6 @@ import axios from 'axios';
 						this.provider_search_results = []
 					}
 				}
-				this.provider_name = this.provider_name.trim()
 			},
 			city(r) {
 				if (!this.prevent_city_search) {
@@ -1033,7 +1032,6 @@ import axios from 'axios';
 						this.city_search_results = []
 					}
 				}
-				this.city = this.city.trim()
 			},
 			type(r) {
 				if(r != 'dedi') {
