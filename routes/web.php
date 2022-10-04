@@ -34,7 +34,7 @@ Route::get('/', function (Request $request) {
         'server_count' => \App\Models\Server::count(),
         'passed_servers' => \App\Models\Server::with(['networks', 'user'])
         ->orderBy('created_at', 'desc')
-        ->limit(50)
+        ->limit(100)
         ->get()
     ]);
 })->name('welcome');
