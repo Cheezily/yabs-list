@@ -10,8 +10,8 @@
 					<font-awesome-icon class="close-icon" icon="fa-xmark" />
 				</button>
 
-				<div class="flex justify-between">
-					<div class="-mt-4 w-6/12">
+				<div class="md:flex justify-between">
+					<div class="-mt-4 w-full md:w-6/12">
 						<p class="column-title mb-2 text-sm">Network Tests</p>
 						<ul class="">
 							<li v-for="network in server.networks" :key=network.id
@@ -27,9 +27,9 @@
 						</ul>
 					</div>
 
-					<div class="-mt-4 w-5/12">
-						<p class="column-title mb-2 text-sm">Note:</p>
-						<div class="text-xs">
+					<div class="mt-10 mb-8 md:-mt-4 md:w-5/12 sm:w-full">
+						<p class="column-title mb-2 text-sm md:ml-10 sm:mr-0">Note:</p>
+						<div class="text-xs md:ml-10">
 							{{ server.note }}
 						</div>
 					</div>

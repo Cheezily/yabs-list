@@ -130,51 +130,53 @@ class ServerController extends Controller
             }
             $average_network_speed = floor(array_sum($network_speeds) / count($network_speeds));
 
-            $server = Server::create([
-                'user_id' => (Auth::check() ? Auth::user()->id : null),
-                'provider_name' => trim($validator->valid()['provider_name']),
-                'when' => date_format(date_create($validator->valid()['when']),"Y-m-d H:i:s"),
-                'city' => ucfirst(trim($validator->valid()['city'])),
-                'type' => $validator->valid()['type'],
-                'virtualization' => $validator->valid()['virtualization'],
-                'note' => $validator->valid()['note'],
-                'cpu' => $validator->valid()['cpu'],
-                'cores' => $validator->valid()['cores'],
-                'clock_speed' => $validator->valid()['clock_speed'],
-                'ram' => $validator->valid()['ram'],
-                'swap' => $validator->valid()['swap'],
-                'geekbench_5_single' => $validator->valid()['geekbench_5_single'],
-                'geekbench_5_multi' => $validator->valid()['geekbench_5_multi'],
-                'aes_ni' => $validator->valid()['aes_ni'],
-                'vm_x' => $validator->valid()['vm_x'],
-                'distro' => trim($validator->valid()['distro']),
-                'kernel' => trim($validator->valid()['kernel']),
-                'disk_4k_read_speed' => $validator->valid()['disk_4k_read_speed'],
-                'disk_4k_write_speed' => $validator->valid()['disk_4k_write_speed'],
-                'disk_4k_total_speed' => $validator->valid()['disk_4k_total_speed'],
-                'disk_4k_read_iops' => $validator->valid()['disk_4k_read_iops'],
-                'disk_4k_write_iops' => $validator->valid()['disk_4k_write_iops'],
-                'disk_4k_total_iops' => $validator->valid()['disk_4k_total_iops'],
-                'disk_64k_read_speed' => $validator->valid()['disk_64k_read_speed'],
-                'disk_64k_write_speed' => $validator->valid()['disk_64k_write_speed'],
-                'disk_64k_total_speed' => $validator->valid()['disk_64k_total_speed'],
-                'disk_64k_read_iops' => $validator->valid()['disk_64k_read_iops'],
-                'disk_64k_write_iops' => $validator->valid()['disk_64k_write_iops'],
-                'disk_64k_total_iops' => $validator->valid()['disk_64k_total_iops'],
-                'disk_512k_read_speed' => $validator->valid()['disk_512k_read_speed'],
-                'disk_512k_write_speed' => $validator->valid()['disk_512k_write_speed'],
-                'disk_512k_total_speed' => $validator->valid()['disk_512k_total_speed'],
-                'disk_512k_read_iops' => $validator->valid()['disk_512k_read_iops'],
-                'disk_512k_write_iops' => $validator->valid()['disk_512k_write_iops'],
-                'disk_512k_total_iops' => $validator->valid()['disk_512k_total_iops'],
-                'disk_1m_read_speed' => $validator->valid()['disk_1m_read_speed'],
-                'disk_1m_write_speed' => $validator->valid()['disk_1m_write_speed'],
-                'disk_1m_total_speed' => $validator->valid()['disk_1m_total_speed'],
-                'disk_1m_read_iops' => $validator->valid()['disk_1m_read_iops'],
-                'disk_1m_write_iops' => $validator->valid()['disk_1m_write_iops'],
-                'disk_1m_total_iops' => $validator->valid()['disk_1m_total_iops'],
-                'average_network_speed' => $average_network_speed
-            ]);
+            $server = new Server();
+            $server->user_id = Auth::check() ? Auth::user()->id : null;
+            $server->provider_name = trim($validator->valid()['provider_name']);
+            $server->when = date_format(date_create($validator->valid()['when']),"Y-m-d H:i:s");
+            $server->city = ucfirst(trim($validator->valid()['city']));
+            $server->type = $validator->valid()['type'];
+            $server->virtualization = $validator->valid()['virtualization'];
+            $server->note = $validator->valid()['note'];
+            $server->cpu = $validator->valid()['cpu'];
+            $server->cores = $validator->valid()['cores'];
+            $server->clock_speed = $validator->valid()['clock_speed'];
+            $server->ram = $validator->valid()['ram'];
+            $server->swap = $validator->valid()['swap'];
+            $server->geekbench_5_single = $validator->valid()['geekbench_5_single'];
+            $server->geekbench_5_multi = $validator->valid()['geekbench_5_multi'];
+            $server->aes_ni = $validator->valid()['aes_ni'];
+            $server->vm_x = $validator->valid()['vm_x'];
+            $server->distro = trim($validator->valid()['distro']);
+            $server->kernel = trim($validator->valid()['kernel']);
+            $server->disk_4k_read_speed = $validator->valid()['disk_4k_read_speed'];
+            $server->disk_4k_write_speed = $validator->valid()['disk_4k_write_speed'];
+            $server->disk_4k_total_speed = $validator->valid()['disk_4k_total_speed'];
+            $server->disk_4k_read_iops = $validator->valid()['disk_4k_read_iops'];
+            $server->disk_4k_write_iops = $validator->valid()['disk_4k_write_iops'];
+            $server->disk_4k_total_iops = $validator->valid()['disk_4k_total_iops'];
+            $server->disk_64k_read_speed = $validator->valid()['disk_64k_read_speed'];
+            $server->disk_64k_write_speed = $validator->valid()['disk_64k_write_speed'];
+            $server->disk_64k_total_speed = $validator->valid()['disk_64k_total_speed'];
+            $server->disk_64k_read_iops = $validator->valid()['disk_64k_read_iops'];
+            $server->disk_64k_write_iops = $validator->valid()['disk_64k_write_iops'];
+            $server->disk_64k_total_iops = $validator->valid()['disk_64k_total_iops'];
+            $server->disk_512k_read_speed = $validator->valid()['disk_512k_read_speed'];
+            $server->disk_512k_write_speed = $validator->valid()['disk_512k_write_speed'];
+            $server->disk_512k_total_speed = $validator->valid()['disk_512k_total_speed'];
+            $server->disk_512k_read_iops = $validator->valid()['disk_512k_read_iops'];
+            $server->disk_512k_write_iops = $validator->valid()['disk_512k_write_iops'];
+            $server->disk_512k_total_iops = $validator->valid()['disk_512k_total_iops'];
+            $server->disk_1m_read_speed = $validator->valid()['disk_1m_read_speed'];
+            $server->disk_1m_write_speed = $validator->valid()['disk_1m_write_speed'];
+            $server->disk_1m_total_speed = $validator->valid()['disk_1m_total_speed'];
+            $server->disk_1m_read_iops = $validator->valid()['disk_1m_read_iops'];
+            $server->disk_1m_write_iops = $validator->valid()['disk_1m_write_iops'];
+            $server->disk_1m_total_iops = $validator->valid()['disk_1m_total_iops'];
+            $server->average_network_speed = $average_network_speed;
+
+            $server->save();
+            
 
             for($i = 1; $i <= 14; $i++) {
                 if(!empty($validator->valid()['network_row_' . $i . '_provider'])) {

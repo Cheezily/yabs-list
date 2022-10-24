@@ -110,11 +110,11 @@
 			</div>
 
 			<h1 class="text-slate-700 text-xl w-full mt-6">
-				Paste your YABS output in the textarea below
+				Paste your YABS output in the textarea below and then click Submit on the bottom of the page.
 			</h1>
 			<textarea v-model="yabs_text" 
 			rows="20"
-			class="text-xs rounded mt-2 mb-4 w-full placeholder:italic placeholder:text-slate-400 h"
+			class="text-xs rounded mt-2 mb-4 w-full placeholder:italic placeholder:text-slate-400 border-green-400 focus:border-green-600 border-2 focus:ring-0 focus:bg-green-50"
 			placeholder="
 	# ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## #
 	#              Yet-Another-Bench-Script      				               #
@@ -137,7 +137,7 @@
 				</textarea>
 		</div>
 
-		<div class="rounded mt-6 bg-white px-6 pb-6 pt-3 border-2 border-amber-500">
+		<div class="rounded mt-6 bg-white px-6 pb-6 pt-3">
 			<h2 class="mb-6 text-gray-700 text-xl">
 				These details should be auto-populated. Please make any corrections below.
 			</h2>
