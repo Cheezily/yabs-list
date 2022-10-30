@@ -11,7 +11,13 @@ class CountController extends Controller
 {
     public function get_options_counts(Request $request)
     {
+        // $start_time = microtime(true);
+
         $merged_ids = MergedIdsHelper::getMergedIds($request, $request->user_id);
+
+        // $end_time = microtime(true);
+        // $execution_time = ($end_time - $start_time);
+        // return(" Execution time of script = ".$execution_time." sec");
 
         $counts = [
             'ram' => QueryHelper::ram_count($merged_ids),

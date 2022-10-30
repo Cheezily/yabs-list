@@ -495,7 +495,6 @@
 							let found = false
 							this.options.providers.forEach((e) => {
 								if (i === e['provider_name']) {
-									console.log('found')
 									found = true
 								}
 							})
@@ -534,8 +533,11 @@
 				}
 				console.log('updating results from options list')
 				// this.$emit('get_query', this.selected_items)
-				this.$emit('update_query', this.selected_items)
+				console.log('getting counts')
 				this.get_options_counts()
+				console.log('updating the results')
+				this.$emit('update_query', this.selected_items)
+				
 			},
 		},
 		watch: {
